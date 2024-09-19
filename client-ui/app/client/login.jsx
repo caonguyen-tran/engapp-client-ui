@@ -7,13 +7,14 @@ import { COLORS } from "../../constants/Instant";
 import APIs, { endpoints } from "../../apis/APIs";
 import { useAuth } from "./../../context/AuthContext";
 import * as SecureStore from "expo-secure-store"
-const Login = ({navigation}) => {
+import { useNavigation } from "@react-navigation/native";
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { current, dispatch } = useAuth();
-
+  const { saveToken } = useAuth();
+  const navigation = useNavigation()
   const login = async () => {
     setLoading(true);
     try {
@@ -23,15 +24,7 @@ const Login = ({navigation}) => {
       };
 
       const res = await APIs.post(endpoints["user-service"]["user-login"], data);
-      SecureStore.setItem("access-token", res.data.data)
-      
-      dispatch({
-        type: "LOGIN",
-        payload: res.data.data,
-      });
-
-      console.log(SecureStore.getItem("access-token"))
-
+      saveToken(res.data.data)
     } catch (ex) {
       setError("Tên đăng nhập hoặc mật khẩu không đúng!");
       console.log(ex);

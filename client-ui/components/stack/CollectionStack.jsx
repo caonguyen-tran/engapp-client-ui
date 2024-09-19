@@ -6,12 +6,12 @@ import CollectionHome from "../screens/Collection/CollectionHome";
 import CollectionDetail from "../screens/Collection/CollectionDetail";
 import { createStackNavigator } from "@react-navigation/stack";
 import HeaderStack from "../Header/HeaderStack";
+import WordStack from "./WordStack";
 
 const Stack = createNativeStackNavigator();
 const CollectionStack = () => {
   return (
     <>
-      <HeaderStack />
       <NavigationContainer independent={true}>
         <Stack.Navigator>
           <Stack.Screen

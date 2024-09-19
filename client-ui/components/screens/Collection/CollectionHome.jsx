@@ -1,84 +1,84 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, ScrollView, StyleSheet } from "react-native";
 import { COLORS } from "../../../constants/Instant";
-import { ImageSlider } from "react-native-image-slider-banner";
-import { useEffect } from "react";
-import { Image } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import HeaderStack from "../../Header/HeaderStack";
+import CollectionItem from "./CollectionItem";
+import ReminderView from "./ReminderView";
+import FeatureGrid from "./FeatureGrid";
+import { View } from "react-native";
 
-const CollectionHome = () => {
+const CollectionHome = ({ navigation }) => {
+  const data = [
+    {
+      id: "66eab6c4588d1c6c4596c78a",
+      name: "Bộ từ vựng TOEIC 400+ phần 2",
+      description: "Bộ từ vựng TOEIC đạt mốc 400+ phần 2",
+      image:
+        "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658243/collection-service/trn6cwxrhtf4w8obveqq.webp",
+      createAt: "2024-09-18T11:17:24.293Z",
+      updateAt: "2024-09-18T11:17:24.293Z",
+      createBy: "133a645e-23f4-4201-b791-eec97ebc9653",
+    },
+    {
+      id: "66eab6b5588d1c6c4596c789",
+      name: "Bộ từ vựng TOEIC 400+ phần 1 ",
+      description: "Bộ từ vựng TOEIC đạt mốc 400+ phần 1",
+      image:
+        "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658228/collection-service/yowzew8ymmp5ywfdcmau.webp",
+      createAt: "2024-09-18T11:17:09.969Z",
+      updateAt: "2024-09-18T11:17:09.969Z",
+      createBy: "133a645e-23f4-4201-b791-eec97ebc9653",
+    },
+    {
+      id: "66eab69f588d1c6c4596c788",
+      name: "Bộ từ vựng TOEIC 450+ phần 1 ",
+      description: "Bộ từ vựng TOEIC đạt mốc 450+ phần 1",
+      image:
+        "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658206/collection-service/dic5q6gg3zdysswqmwk8.webp",
+      createAt: "2024-09-18T11:16:47.633Z",
+      updateAt: "2024-09-18T11:16:47.633Z",
+      createBy: "133a645e-23f4-4201-b791-eec97ebc9653",
+    },
+    {
+      id: "66eab69f588d1c6c4596c782",
+      name: "Bộ từ vựng TOEIC 450+ phần 1 ",
+      description: "Bộ từ vựng TOEIC đạt mốc 450+ phần 1",
+      image:
+        "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658206/collection-service/dic5q6gg3zdysswqmwk8.webp",
+      createAt: "2024-09-18T11:16:47.633Z",
+      updateAt: "2024-09-18T11:16:47.633Z",
+      createBy: "133a645e-23f4-4201-b791-eec97ebc9653",
+    },
+    {
+      id: "66eab69f588d1c6c4596c784",
+      name: "Bộ từ vựng TOEIC 450+ phần 1 ",
+      description: "Bộ từ vựng TOEIC đạt mốc 450+ phần 1",
+      image:
+        "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658206/collection-service/dic5q6gg3zdysswqmwk8.webp",
+      createAt: "2024-09-18T11:16:47.633Z",
+      updateAt: "2024-09-18T11:16:47.633Z",
+      createBy: "133a645e-23f4-4201-b791-eec97ebc9653",
+    },
+  ];
+
   return (
-    <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-      <View style={styles.viewMain}>
-        <View style={styles.viewSliderStyle}>
-          <View style={styles.viewContent}>
-            <View style={{ marginBottom: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: "500" }}>
-                Đã đến lúc ôn tập
-              </Text>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: "600",
-                  paddingHorizontal: 5,
-                  color: "red",
-                }}
-              >
-                2
-              </Text>
-            </View>
-            <TouchableOpacity style={styles.learnButton}>
-              <Text style={{ fontSize: 18, fontWeight: "600", color: "white" }}>
-                Ôn tập ngay
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.viewImage}>
-            <Image
-              source={require("../../../assets/images/EngApp.png")}
-              style={{ height: 120, width: 150 }}
-            />
-          </View>
+    <>
+      <HeaderStack />
+      <ScrollView contentContainerStyle={styles.container}>
+        <View>
+          <ReminderView />
+          <FeatureGrid />
         </View>
-
-        <View style={styles.listView}>
-          <View style={styles.listHeader}>
-            <Text
-              style={{
-                textAlign: "left",
-                fontSize: 25,
-                fontWeight: "500",
-                color: "gray",
-                paddingVertical: 8,
-              }}
-            >
-              Bộ sưu tập từ vựng
-            </Text>
-          </View>
-          <View style={styles.listItem}>
-            <View style={styles.itemHeader}>
-              <Text>Header</Text>
-            </View>
-            <View style={styles.itemContent}>
-              <Text>content</Text>
-            </View>
-            <View style={styles.itemReaction}>
-              <Text>reaction</Text>
-              <TouchableOpacity style={styles.downloadButton}>
-                <Text style={{fontSize: 18, fontWeight: "500", marginRight: 6}}>Học</Text>
-                <Feather name="book-open" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </View>
-    </ScrollView>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
+            <CollectionItem item={item} navigation={navigation} />
+          )}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContainer}
+          scrollEnabled={false}
+        />
+      </ScrollView>
+    </>
   );
 };
 
@@ -88,98 +88,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  viewMain: {
+  listContainer: {
+    padding: 16,
     width: "100%",
-    flex: 1,
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  viewReminder: {},
-  viewSliderStyle: {
-    width: "98%",
-    height: 200,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    display: "flex",
-    alignItems: "center",
-    backgroundColor: COLORS.lightColor,
-    borderRadius: 6,
-    marginTop: 30,
-  },
-  viewImage: {
-    height: 60,
-    paddingLeft: 30,
-    display: "flex",
-    justifyContent: "center",
-  },
-  viewContent: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingLeft: 20,
-  },
-  learnButton: {
-    width: 200,
-    height: 45,
-    backgroundColor: "gray",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 6,
-  },
-  downloadButton: {
-    width: 100,
-    height: 45,
-    backgroundColor: "gray",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 6,
-  },
-  listHeader: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "left",
-    width: "100%",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  listView: {
-    flex: 1,
-    marginTop: 20,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-  },
-  listItem: {
-    marginBottom: 20,
-    backgroundColor: "red",
-    height: 260,
-    width: "97%",
-    padding: 10,
-  },
-  itemHeader: {
-    height: 60,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  itemContent: {
-    flex: 1,
-  },
-  itemReaction: {
-    height: 50,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10
   },
 });
 

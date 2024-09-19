@@ -39,8 +39,8 @@ const BottomNavigator = ({ navigation }) => {
           }}
         />
         <Tab.Screen
-          name="HomeStack"
-          component={HomeStack}
+          name="WordStack"
+          component={WordStack}
           options={{
             headerShown: false,
             tabBarIcon: ({ focused }) => {
@@ -56,8 +56,8 @@ const BottomNavigator = ({ navigation }) => {
         />
 
         <Tab.Screen
-          name="WordStack"
-          component={WordStack}
+          name="HomeStack"
+          component={HomeStack}
           options={{
             headerShown: false,
             tabBarIcon: ({ focused }) => {
