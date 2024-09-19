@@ -6,7 +6,8 @@ export const COLORS = {
     textColor: "#fff",
     lightColor: "#D4E7C5",
     shopThemme: "#F8FAE5",
-    shopActive: "#739072"
+    shopActive: "#739072",
+    line: ""
 }
 
 export const PAGE_SIZE = 8

@@ -12,44 +12,36 @@ import IntroLotties from "../../components/lotties/IntroLotties";
 
 const Intro = ({ navigation }) => {
   return (
-    <SafeAreaView
-      style={{
-        paddingTop: Platform.OS == "android" ? 26 : 0,
-        flex: 1,
-        backgroundColor: "#fff",
-      }}
-    >
-      <View style={IntroStyle.container}>
-        <Text
-          style={{
-            color: "black",
-            fontSize: 32,
-            fontFamily: "arial",
-            fontWeight: 600,
-            marginTop: 60
-          }}
-        >
-          ENGAPP
-        </Text>
-        <Text
-          style={{
-            color: "black",
-            fontSize: 24,
-            fontFamily: "arial",
-            fontWeight: 600,
-          }}
-        >
-          WITH FRIENDS
-        </Text>
-        <IntroLotties />
-        <TouchableOpacity
-          style={IntroStyle.btnStyle}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={IntroStyle.textStyle}>Bắt đầu</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={IntroStyle.container}>
+      <Text
+        style={{
+          color: "black",
+          fontSize: 32,
+          fontFamily: "arial",
+          fontWeight: 600,
+          marginTop: 60,
+        }}
+      >
+        ENGAPP
+      </Text>
+      <Text
+        style={{
+          color: "black",
+          fontSize: 24,
+          fontFamily: "arial",
+          fontWeight: 600,
+        }}
+      >
+        WITH FRIENDS
+      </Text>
+      <IntroLotties />
+      <TouchableOpacity
+        style={IntroStyle.btnStyle}
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text style={IntroStyle.textStyle}>Bắt đầu</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -58,7 +50,7 @@ const IntroStyle = StyleSheet.create({
     height: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#FFF",
   },
   btnStyle: {
     backgroundColor: COLORS.active,

@@ -6,15 +6,15 @@ import { useState } from "react";
 import { COLORS } from "../../constants/Instant";
 import APIs, { endpoints } from "../../apis/APIs";
 import { useAuth } from "./../../context/AuthContext";
-
-const Login = () => {
+import * as SecureStore from "expo-secure-store"
+const Login = ({navigation}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user, dispatch } = useAuth();
+  const { current, dispatch } = useAuth();
 
-  const login = async ({ navigation }) => {
+  const login = async () => {
     setLoading(true);
     try {
       let data = {
@@ -22,16 +22,16 @@ const Login = () => {
         password: password,
       };
 
-      const res = await APIs.post(endpoints["user-login"], data);
-
-      console.log(res.data);
-
+      const res = await APIs.post(endpoints["user-service"]["user-login"], data);
+      SecureStore.setItem("access-token", res.data.data)
+      
       dispatch({
-        type: "login",
+        type: "LOGIN",
         payload: res.data.data,
       });
 
-      navigation.navigate("BottomNavigator");
+      console.log(SecureStore.getItem("access-token"))
+
     } catch (ex) {
       setError("Tên đăng nhập hoặc mật khẩu không đúng!");
       console.log(ex);
@@ -112,7 +112,7 @@ const Login = () => {
           </Text>
           <Pressable
             onPress={() => {
-              navigation.navigate("Register");
+              navigation.navigate("Register")
             }}
           >
             <Text

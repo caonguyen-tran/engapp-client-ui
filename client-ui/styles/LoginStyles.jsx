@@ -9,7 +9,7 @@ const LoginStyles = StyleSheet.create({
         paddingRight: 30,
         flex: 1,
         alignItems: "flex-start",
-        backgroundColor: "#F6F6F6",
+        backgroundColor: "#fff",
         width: "100%"
     },
     headerText: {
@@ -27,7 +27,7 @@ const LoginStyles = StyleSheet.create({
     inputView: {
         paddingVertical: 10,
         paddingHorizontal: 30, 
-        backgroundColor: "#EBF0EC",
+        backgroundColor: COLORS.textColor,
         fontSize: 16,
         borderRadius: 12,
         color: "#000",
