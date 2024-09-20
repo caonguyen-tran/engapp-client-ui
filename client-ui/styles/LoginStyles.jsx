@@ -26,7 +26,7 @@ const LoginStyles = StyleSheet.create({
     },
     inputView: {
         paddingVertical: 10,
-        paddingHorizontal: 30, 
+        paddingHorizontal: 20, 
         backgroundColor: COLORS.textColor,
         fontSize: 16,
         borderRadius: 12,
@@ -40,6 +40,7 @@ const LoginStyles = StyleSheet.create({
     textInput: {
         fontSize: 18,
         width: "90%",
+        height: "100%"
     },
     loginButton: {
         backgroundColor:COLORS.active,

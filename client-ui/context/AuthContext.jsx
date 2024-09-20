@@ -1,5 +1,12 @@
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import * as SecureStore from "expo-secure-store";
+import { authApi, endpoints } from "../apis/APIs";
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -20,19 +27,28 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadToken = async () => {
       const tokenValue = await SecureStore.getItemAsync("access-token");
+
       if (tokenValue) {
-        setToken(tokenValue);
+        const validate = await authApi(tokenValue).post(
+          endpoints["security-service"]["validate-token"]
+        );
+        if (validate.data.data.valid) {
+          setToken(tokenValue);
+        } else {
+          setToken(null);
+          await SecureStore.deleteItemAsync("access-token")
+        }
       }
     };
     loadToken();
-  }, []);
+  }, [token]);
 
   return (
     <AuthContext.Provider
       value={{
-        token, 
+        token,
         saveToken,
-        removeToken
+        removeToken,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import HeaderElement from "../../Header/HeaderElement";
+import HeaderElement from "../../../components/Header/HeaderElement";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 

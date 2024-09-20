@@ -1,18 +1,22 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text, View } from "react-native";
-import WordHome from "../screens/Word/WordHome";
-import LearnProcess from "../screens/Word/LearnWord";
-import LearnWord from "../screens/Word/LearnWord";
-import ChooseListNew from "../screens/Word/ChooseListNew";
-import LearnNewWordProcess from "../screens/Word/LearnNewWordProcess";
-import MatchByStart from "../screens/Word/MatchByStart";
+import ChooseListNew from "../../app/screens/Word/ChooseListNew";
+import LearnWord from "../../app/screens/Word/LearnWord";
+import WordHome from "./../../app/screens/Word/WordHome";
+import LearnNewWordProcess from "../../app/screens/Word/LearnNewWordProcess";
+import MatchByStart from "./../../app/screens/Word/MatchByStart";
+import DownloadDetail from "../../app/screens/Collection/DownloadDetail";
 
 const Stack = createNativeStackNavigator();
 const WordStack = () => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
+        <Stack.Screen
+          name="WordHome"
+          component={WordHome}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="ChooseListNew"
           component={ChooseListNew}
@@ -24,12 +28,6 @@ const WordStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="WordHome"
-          component={WordHome}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
           name="LearnNewWordProcess"
           component={LearnNewWordProcess}
           options={{ headerShown: false }}
@@ -39,6 +37,11 @@ const WordStack = () => {
           component={MatchByStart}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+            name="DownloadDetail"
+            component={DownloadDetail}
+            options={{ headerShown: false }}
+          />
       </Stack.Navigator>
     </NavigationContainer>
   );

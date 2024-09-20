@@ -11,7 +11,9 @@ const Input = ({
     isLogin,
     isPassword,
     type,
-    holderText
+    holderText,
+    custom,
+    multipleLine
 }) => {
     const [visible, setVisible] = useState(false)
     return (
@@ -23,7 +25,7 @@ const Input = ({
             {isLogin ? <Text></Text> : <Text style={{color: "red", fontSize: 18}}> *</Text>}
           </View>
           {isPassword ? 
-            <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"}]}>
+            <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"},]}>
                 <TextInput
                 value={value}
                 secureTextEntry={!visible}
@@ -48,11 +50,12 @@ const Input = ({
             <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"}]}>
                 <TextInput
                 value={value}
-                style={LoginStyles.textInput}
+                style={[LoginStyles.textInput, custom]}
                 onChangeText={onChangeHandle}
                 keyboardType={type}
                 placeholder={holderText}
                 placeholderTextColor="gray"
+                multiline={multipleLine}
                 />
             </View>
           }

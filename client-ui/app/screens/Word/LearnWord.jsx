@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import AnswerAlert from "./AnswerAlert";
-import HeaderElement from "../../Header/HeaderElement";
+import AnswerAlert from "../../../components/screens/Word/AnswerAlert";
+import HeaderElement from "../../../components/Header/HeaderElement";
 
 const { height } = Dimensions.get("window");
 

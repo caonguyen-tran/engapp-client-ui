@@ -1,58 +1,56 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../../constants/Instant";
+import { useCount } from "../../../context/CountContext";
 
-const ReminderView = () => {
+const ReminderView = ({custom}) => {
+  const { count } = useCount();
+
   return (
     <>
-      <View style={styles.viewSliderStyle}>
-        <View style={styles.viewContent}>
-          <View style={{ marginBottom: 20 }}>
-            <Text style={{ fontSize: 20, fontWeight: "500" }}>
-              Đã đến lúc ôn tập
-            </Text>
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: "600",
-                paddingHorizontal: 5,
-                color: "red",
-              }}
-            >
-              2
-            </Text>
+      {count > 0 ? (
+        <View style={[styles.viewSliderStyle, custom]}>
+          <View style={styles.viewContent}>
+            <View style={{ marginBottom: 20 }}>
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>
+                Đã đến lúc ôn tập
+              </Text>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: "600",
+                  paddingHorizontal: 5,
+                  color: "red",
+                }}
+              >
+                {count}
+              </Text>
+            </View>
+            <TouchableOpacity style={styles.learnButton}>
+              <Text style={{ fontSize: 18, fontWeight: "600", color: "#fff" }}>
+                Ôn tập ngay
+              </Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.learnButton}>
-            <Text style={{ fontSize: 18, fontWeight: "600", color: "white" }}>
-              Ôn tập ngay
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.viewImage}>
+            <Image
+              source={require("../../../assets/images/EngApp.png")}
+              style={{ height: 120, width: 150 }}
+            />
+          </View>
         </View>
-        <View style={styles.viewImage}>
-          <Image
-            source={require("../../../assets/images/EngApp.png")}
-            style={{ height: 120, width: 150 }}
-          />
-        </View>
-      </View>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  viewMain: {
-    width: "100%",
-    flex: 1,
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  viewReminder: {},
   viewSliderStyle: {
     width: "98%",
     height: 200,
     flexDirection: "row",
-    justifyContent: "flex-start",
-    display: "flex",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: COLORS.lightColor,
     borderRadius: 6,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
   learnButton: {
     width: 200,
     height: 45,
-    backgroundColor: "gray",
+    backgroundColor: COLORS.itemColor,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

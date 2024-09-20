@@ -6,7 +6,7 @@ import BottomNavigator from "../../components/nav/BottomNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuth } from "../../context/AuthContext";
 
-const MainNavigation = ({ access_token }) => {
+const MainNavigation = () => {
   const Stack = createNativeStackNavigator();
   const {token} = useAuth()
   return (

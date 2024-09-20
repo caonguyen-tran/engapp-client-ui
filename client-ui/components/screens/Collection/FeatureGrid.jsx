@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import { COLORS } from "../../../constants/Instant";
 import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const FeatureGrid = () => {
+  const navigation = useNavigation()
   const features = [
     {
       key: "ChatGPT",
@@ -37,7 +39,7 @@ const FeatureGrid = () => {
   return (
     <View style={styles.grid}>
       {features.map((item) => (
-        <TouchableOpacity key={item.key} style={styles.item}>
+        <TouchableOpacity key={item.key} style={styles.item} onPress={() => navigation.navigate("MyCollection")}>
           <Entypo name="open-book" size={24} color="black" style={{paddingVertical: 10}}/>
           <Text style={styles.itemText}>{item.label}</Text>
         </TouchableOpacity>

@@ -1,6 +1,6 @@
 import { Image, Pressable, Text, TouchableOpacity, View } from "react-native";
 import LoadingView from "../../components/lotties/LoadingView";
-import Input from "../../components/static/Input";
+import Input from "../../components/Input/Input";
 import LoginStyles from "../../styles/LoginStyles";
 import { useState } from "react";
 import { COLORS } from "../../constants/Instant";

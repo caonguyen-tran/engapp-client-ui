@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Input from "../../components/static/Input";
+import Input from "../../components/Input/Input";
 import LoadingView from "../../components/lotties/LoadingView";
 import LoginStyles from "../../styles/LoginStyles";
 import { COLORS } from "../../constants/Instant";

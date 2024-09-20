@@ -1,16 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import { TouchableOpacity } from "react-native";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-const CollectionItem = ({item, navigation}) => {
-  const timeAgo = moment(item.createAt).fromNow();
+const DownloadedItem = ({item, navigation}) => {
+  const timeAgo = moment(item.downloadAt).fromNow();
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate("CollectionDetail", {collectionId: item.id})}>
-      <Image source={{ uri: item.image }} style={styles.image} resizeMode="contain"/>
+    <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate("DownloadDetail", {collectionId: item.collection.id})}>
+      <Image source={{ uri: item.collection.image }} style={styles.image} resizeMode="contain"/>
       <View style={styles.infoContainer}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.time}>{timeAgo}</Text>
+        <Text style={styles.name}>{item.collection.name}</Text>
+        <Text style={styles.description}>{item.collection.description}</Text>
+        <Text style={styles.time}>Download at {timeAgo}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -56,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CollectionItem;
+export default DownloadedItem;
