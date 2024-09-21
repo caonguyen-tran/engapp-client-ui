@@ -8,5 +8,5 @@ export const COLORS = {
     shopThemme: "#F8FAE5",
     shopActive: "#739072",
     line: "",
-    btnColor: "#6200EA"
+    btnColor: "#308AFF"
 }

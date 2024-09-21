@@ -15,7 +15,7 @@ const HeaderElement = ({callback, handlePress, textHeader}) => {
         paddingHorizontal: 20,
       }}
     >
-      <TouchableOpacity>
+      <TouchableOpacity onPress={callback}>
         <AntDesign name="close" size={24} color="black"/>
       </TouchableOpacity>
       <Text style={{ fontSize: 24, fontWeight: "600" }}>{textHeader}</Text>

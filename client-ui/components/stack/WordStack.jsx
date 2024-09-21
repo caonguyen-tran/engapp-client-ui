@@ -18,30 +18,31 @@ const WordStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="LearnNewWordProcess"
+          component={LearnNewWordProcess}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+
+        <Stack.Screen
           name="ChooseListNew"
           component={ChooseListNew}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
           name="LearnWord"
           component={LearnWord}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="LearnNewWordProcess"
-          component={LearnNewWordProcess}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
           name="MatchByStart"
           component={MatchByStart}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
-            name="DownloadDetail"
-            component={DownloadDetail}
-            options={{ headerShown: false }}
-          />
+          name="DownloadDetail"
+          component={DownloadDetail}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

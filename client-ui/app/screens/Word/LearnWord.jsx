@@ -64,6 +64,10 @@ const LearnWord = ({ navigation }) => {
     }
   }, [visible]);
 
+  const callback = () => {
+    setVisible(!visible)
+  }
+
   return (
     <>
       <HeaderElement textHeader="Học từ" />
@@ -89,7 +93,7 @@ const LearnWord = ({ navigation }) => {
             </TouchableOpacity>
           ))}
         </View>
-        {visible ? <></> : <AnswerAlert position={position} isCorrect={true} />}
+        {visible ? <></> : <AnswerAlert callback={callback} position={position} isCorrect={true} />}
       </View>
     </>
   );
