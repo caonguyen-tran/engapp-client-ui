@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../constants/Instant";
 import { AntDesign, Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 
-const HeaderElement = ({callback, handlePress, textHeader}) => {
+const HeaderElement = ({closeHandle, handlePress, textHeader}) => {
   return (
     <View
       style={{
@@ -15,7 +15,7 @@ const HeaderElement = ({callback, handlePress, textHeader}) => {
         paddingHorizontal: 20,
       }}
     >
-      <TouchableOpacity onPress={callback}>
+      <TouchableOpacity onPress={closeHandle}>
         <AntDesign name="close" size={24} color="black"/>
       </TouchableOpacity>
       <Text style={{ fontSize: 24, fontWeight: "600" }}>{textHeader}</Text>

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Animated,
-  Button,
   Dimensions,
   StyleSheet,
   Text,
@@ -9,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-const LearnWord = ({ navigation, word, handleChoice, listWord, visibleCallback, correctCallback }) => {
+const LearnWordVI = ({ word, handleChoice, listWord, visibleCallback, correctCallback }) => {
   const [options, setOptions] = useState([]);
 
   const fillOptions = (arrays) => {
@@ -17,13 +15,14 @@ const LearnWord = ({ navigation, word, handleChoice, listWord, visibleCallback, 
     let i = 0;
     while(i < 3){
       if(arrays[i].id !== word.id){
-        fillArray.push(arrays[i].wordResponse.definition)
+        fillArray.push(arrays[i].wordResponse.word)
       }
-      i++; 
+      i++ ;
     }
     let ranNum = Math.floor(Math.random() * fillArray.length)
 
-    fillArray.splice(ranNum, 0, word.wordResponse.definition)
+    fillArray.splice(ranNum, 0, word.wordResponse.word)
+    console.log(fillArray)
     setOptions([...fillArray])
   }
 
@@ -33,7 +32,7 @@ const LearnWord = ({ navigation, word, handleChoice, listWord, visibleCallback, 
   }, [word]);
 
   const handleChooseOption = (index) => {
-    const isCorrect = options[index] === word.wordResponse.definition
+    const isCorrect = options[index] === word.wordResponse.word
     if(isCorrect){ 
       correctCallback(true)
       handleChoice(true)
@@ -50,23 +49,19 @@ const LearnWord = ({ navigation, word, handleChoice, listWord, visibleCallback, 
       {word ? (
         <View style={styles.mainView}>
           <View style={styles.questionView}>
-            <Text style={styles.question}>{word.wordResponse.word}</Text>
+            <Text style={styles.question}>{word.wordResponse.definition}</Text>
           </View>
-          {options ? (
-            <View style={{ flex: 1 }}>
-              {options.map((option, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.option}
-                  onPress={() => handleChooseOption(index)}
-                >
-                  <Text style={styles.optionText}>{option}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          ) : (
-            <></>
-          )}
+          <View style={{ flex: 1 }}>
+            {options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.option}
+                onPress={() => handleChooseOption(index)}
+              >
+                <Text style={styles.optionText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       ) : (
         <></>
@@ -176,4 +171,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LearnWord;
+export default LearnWordVI;

@@ -8,6 +8,7 @@ import LoadingView from "../../../components/lotties/LoadingView";
 import EmptyView from "../../../components/lotties/EmptyView";
 import ListWordView from "../Word/ListWordView";
 import CreateNewWord from "../../../components/screens/Word/CreateNewWord";
+import NoActiveView from "../../../components/lotties/NoActiveView";
 
 const CollectionDetail = ({ navigation, route }) => {
   const [data, setData] = useState([]);
@@ -54,9 +55,21 @@ const CollectionDetail = ({ navigation, route }) => {
             {data.length !== 0 ? (
               <>
                 <ListWordView data={data} />
+                {isOwner ? (
+                  <CollectionDetailFooter
+                    label="Thêm từ"
+                    navigation={navigation}
+                  />
+                ) : (
+                  <CollectionDetailFooter
+                    label="Tải bộ từ"
+                    navigation={navigation}
+                    collectionId={collectionId}
+                  />
+                )}
               </>
             ) : (
-              <EmptyView />
+              <NoActiveView textAlert="Không có từ vựng nào trong bộ sưu tập này!" visible={false} />
             )}
           </>
         )}
@@ -66,18 +79,6 @@ const CollectionDetail = ({ navigation, route }) => {
           <></>
         )}
       </ScrollView>
-      {isOwner ? (
-        <CollectionDetailFooter
-          label="Thêm từ"
-          navigation={navigation}
-        />
-      ) : (
-        <CollectionDetailFooter
-          label="Tải bộ từ"
-          navigation={navigation}
-          collectionId={collectionId}
-        />
-      )}
     </>
   );
 };

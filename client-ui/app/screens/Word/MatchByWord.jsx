@@ -1,14 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Animated, Dimensions, TouchableOpacity } from "react-native";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import HeaderScreen from "../../../components/Header/HeaderScreen";
 import AnswerAlert from "../../../components/screens/Word/AnswerAlert";
 import HeaderElement from "../../../components/Header/HeaderElement";
 
 const { height } = Dimensions.get("window");
 
-const MatchByStart = ({ route }) => {
+const MatchByWord = ({ route }) => {
   const { listNew } = route.params;
   const [queue, setQueue] = useState([...listNew]);
   const [listWord, setListWord] = useState([]);
@@ -32,26 +31,26 @@ const MatchByStart = ({ route }) => {
         setListWord((prev) => {
           const updatedListWord = [
             ...prev,
-            { ...queue[index], enToVi: 0, viToEn: 0, matchEng: 0 },
+            { ...queue[index], questionType: 0 },
           ];
           return updatedListWord;
         });
 
         setCorrect(true);
-      } 
-      else {
+      } else {
         setCorrect(false);
         setQueue((prev) => [...prev, queue[index]]);
       }
-      setInput("");
-      setVisible(false);
+
+      setVisible(!visible);
     }
   };
 
   const nextOnPress = () => {
     setIndex(index + 1);
     setVisible(!visible);
-  }
+    setInput("");
+  };
 
   useEffect(() => {
     if (listWord.length >= 5) {
@@ -62,12 +61,12 @@ const MatchByStart = ({ route }) => {
   }, [listWord]);
 
   useEffect(() => {
-    if (visible) {
+    if (!visible) {
       Animated.timing(position, {
         toValue: height,
         duration: 500,
         useNativeDriver: true,
-      }).start(() => setVisible(false));
+      }).start();
     } else {
       setVisible(true);
       Animated.timing(position, {
@@ -82,8 +81,9 @@ const MatchByStart = ({ route }) => {
     Alert.alert(
       "Thông báo",
       "Bạn có muốn thoát tiến trình học không ?",
-      [{ text: "OK", onPress: () => navigation.navigate("WordHome") },
-        {text: 'Cancel', onPress: () => {}, style: 'cancel'}
+      [
+        { text: "OK", onPress: () => navigation.navigate("WordHome") },
+        { text: "Cancel", onPress: () => {}, style: "cancel" },
       ],
       { cancelable: true }
     );
@@ -91,7 +91,7 @@ const MatchByStart = ({ route }) => {
 
   return (
     <>
-      <HeaderElement textHeader="Bắt đầu" callback={() => handleClose()}/>
+      <HeaderElement textHeader="Bắt đầu" closeHandle={() => handleClose()} />
       {queue && queue[index] && queue[index].wordResponse ? (
         <View style={styles.container}>
           <View style={styles.wordView}>
@@ -143,25 +143,14 @@ const MatchByStart = ({ route }) => {
         <></>
       )}
 
-      {visible ? (
-        <></>
-      ) : correct ? (
-        <AnswerAlert
-          position={position}
-          isCorrect={true}
-          data={queue[index]}
-          answer={input}
-          nextPressHandle={() => nextOnPress()}
-        />
-      ) : (
-        <AnswerAlert
-          position={position}
-          isCorrect={false}
-          data={queue[index]}
-          answer={input}
-          nextPressHandle={() => nextOnPress()}
-        />
-      )}
+      <AnswerAlert
+        position={position}
+        isCorrect={correct}
+        data={queue[index]}
+        answer={input}
+        nextPressHandle={() => nextOnPress()}
+        word={queue[index]}
+      />
     </>
   );
 };
@@ -223,4 +212,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MatchByStart;
+export default MatchByWord;

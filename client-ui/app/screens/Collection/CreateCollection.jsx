@@ -11,6 +11,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import Input from "../../../components/Input/Input";
 import { useNavigation } from "@react-navigation/native";
+import InputComponent from "../../../components/Input/InputComponent";
 
 const CreateCollection = () => {
   const [info, setInfo] = useState({
@@ -71,6 +72,7 @@ const CreateCollection = () => {
           holderText="Nhập mô tả..."
           multipleLine={true}
         />
+
 
         <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>
           <Text style={styles.imagePickerButtonText}>Chọn ảnh</Text>

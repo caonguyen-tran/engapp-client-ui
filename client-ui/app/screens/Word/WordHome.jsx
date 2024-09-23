@@ -12,6 +12,7 @@ import {
 import WordLevelView from "../../../components/screens/Word/WordLevelView";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
+import { COLORS } from './../../../constants/Instant';
 
 const WordHome = () => {
   const navigation = useNavigation();
@@ -53,12 +54,12 @@ const WordHome = () => {
           </Text>
           <View style={styles.statisticView}>
             <Text style={styles.learnedWords}>Đã học 148/302 từ</Text>
-            <WordLevelView keyLevel={wordLevel["one"]} color="#7191f5" />
-            <WordLevelView keyLevel={wordLevel["two"]} color="#6df9af" />
-            <WordLevelView keyLevel={wordLevel["three"]} color="#fafcaa" />
-            <WordLevelView keyLevel={wordLevel["four"]} color="#44c2c2" />
-            <WordLevelView keyLevel={wordLevel["five"]} color="#c2cffc" />
-            <WordLevelView keyLevel={wordLevel["six"]} color="#ff882b" />
+            <WordLevelView keyLevel={wordLevel["one"]} color={COLORS.level1} />
+            <WordLevelView keyLevel={wordLevel["two"]} color={COLORS.level2} />
+            <WordLevelView keyLevel={wordLevel["three"]} color={COLORS.level3} />
+            <WordLevelView keyLevel={wordLevel["four"]} color={COLORS.level4} />
+            <WordLevelView keyLevel={wordLevel["five"]} color={COLORS.level5} />
+            <WordLevelView keyLevel={wordLevel["six"]} color={COLORS.level6} />
           </View>
           <ReminderView
             custom={{

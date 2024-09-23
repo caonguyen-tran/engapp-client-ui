@@ -1,11 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChooseListNew from "../../app/screens/Word/ChooseListNew";
-import LearnWord from "../../app/screens/Word/LearnWord";
 import WordHome from "./../../app/screens/Word/WordHome";
 import LearnNewWordProcess from "../../app/screens/Word/LearnNewWordProcess";
-import MatchByStart from "./../../app/screens/Word/MatchByStart";
 import DownloadDetail from "../../app/screens/Collection/DownloadDetail";
+import MatchByWord from "./../../app/screens/Word/MatchByWord";
+import ProcessComplete from "../../app/screens/Word/ProcessComplete";
 
 const Stack = createNativeStackNavigator();
 const WordStack = () => {
@@ -18,26 +18,27 @@ const WordStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="ProcessComplete"
+          component={ProcessComplete}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+
+        <Stack.Screen
           name="LearnNewWordProcess"
           component={LearnNewWordProcess}
           options={{ headerShown: false, gestureEnabled: false }}
         />
-
         <Stack.Screen
           name="ChooseListNew"
           component={ChooseListNew}
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
-          name="LearnWord"
-          component={LearnWord}
+          name="MatchByWord"
+          component={MatchByWord}
           options={{ headerShown: false, gestureEnabled: false }}
         />
-        <Stack.Screen
-          name="MatchByStart"
-          component={MatchByStart}
-          options={{ headerShown: false, gestureEnabled: false }}
-        />
+
         <Stack.Screen
           name="DownloadDetail"
           component={DownloadDetail}

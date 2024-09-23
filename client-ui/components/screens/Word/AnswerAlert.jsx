@@ -7,11 +7,18 @@ import {
   Animated,
   Button,
 } from "react-native";
+import { COLORS } from "../../../constants/Instant";
 
-const AnswerAlert = ({ isCorrect, visible, close, position, callback, nextPressHandle, answer }) => {
+const AnswerAlert = ({
+  isCorrect,
+  position,
+  nextPressHandle,
+  answer,
+  word,
+}) => {
 
-
-  return (
+  
+  return word ? (
     <Animated.View
       style={{
         position: "absolute",
@@ -36,17 +43,52 @@ const AnswerAlert = ({ isCorrect, visible, close, position, callback, nextPressH
           flexDirection: "row",
           justifyContent: "flex-start",
           alignItems: "center",
-          backgroundColor: isCorrect ? "green" : "red",
+          backgroundColor: isCorrect ? COLORS.succcess : COLORS.fail,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
         }}
       >
         <Text style={styles.alertText}>
-          {isCorrect ? "Ban da chon dung" : "Ban sai roi!"}
+          {isCorrect ? "Bạn đã chọn đúng 🗿" : "Sai mất rùi 💀"}
         </Text>
       </View>
       <View style={styles.contentView}>
-        
+        <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: "500" }}>
+              Câu trả lời của bạn
+            </Text>
+            <Text style={{ fontSize: 16, marginLeft: 10 }}>{answer}</Text>
+          </View>
+          <View>
+            <Text style={{ fontSize: 18, fontWeight: "500" }}>Đáp án</Text>
+            <Text style={{ fontSize: 16, marginLeft: 10 }}>
+              {word.wordResponse.word}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.descriptionView}>
+          <View style={{ flexDirection: "row", marginBottom: 10 }}>
+            <Text style={{ fontSize: 16, fontWeight: "600" }}>Loại từ: </Text>
+            <Text style={{ fontSize: 16 }}>
+              {`${word.wordResponse.pofSpeech.viName} (${word.wordResponse.pofSpeech.engName})`}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", marginBottom: 10 }}>
+            <Text style={{ fontSize: 16, fontWeight: "600" }}>Phát âm: </Text>
+            <Text style={{ fontSize: 16, fontStyle: "italic", color: "gray" }}>
+              {word.wordResponse.pronunciation}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", marginBottom: 10 }}>
+            <Text style={{ fontSize: 16, fontWeight: "600" }}>Nghĩa: </Text>
+            <Text style={{ fontSize: 16 }}>{word.wordResponse.definition}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ fontSize: 16, fontWeight: "600" }}>Ví dụ: </Text>
+            <Text style={{ fontSize: 16 }}>{word.wordResponse.example}</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.btnView}>
         <TouchableOpacity style={styles.nextButton} onPress={nextPressHandle}>
@@ -54,6 +96,8 @@ const AnswerAlert = ({ isCorrect, visible, close, position, callback, nextPressH
         </TouchableOpacity>
       </View>
     </Animated.View>
+  ) : (
+    <></>
   );
 };
 
@@ -61,19 +105,20 @@ const styles = StyleSheet.create({
   alertText: {
     fontSize: 17,
     fontWeight: "500",
+    fontStyle: "italic",
     color: "white",
   },
   contentView: {
     width: "100%",
     padding: 20,
     height: 250,
-    flex: 1
+    flex: 1,
   },
   btnView: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   nextButton: {
     backgroundColor: "#308AFF",
@@ -86,6 +131,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#FFFFFF",
+  },
+  answerView: {
+    padding: 15,
+  },
+  correctAnswerView: {
+    padding: 15,
+  },
+  descriptionView: {
+    flex: 1,
   },
 });
 

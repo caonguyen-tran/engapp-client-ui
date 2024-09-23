@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 const WordLearnedItem = ({ item }) => {
   const timeAgo = moment(item.learnDate).fromNow();
-  return (
+  return item ? (
     <View style={styles.mainContainer}>
       <View style={styles.itemContainer}>
         <View style={styles.wordLevelContainer}>
@@ -34,11 +34,13 @@ const WordLearnedItem = ({ item }) => {
           </Text>
           <Text style={styles.definition}>{`Học lúc: ${timeAgo}`}</Text>
         </View>
-        <View style={styles.masterLevelContainer}>
-          <Text style={styles.wordLevel}>{item.learnedMaster.name}</Text>
+        <View style={[styles.masterLevelContainer]}>
+          <Text style={styles.wordLevel}>{item.learnedMaster.key}</Text>
         </View>
       </View>
     </View>
+  ) : (
+    <></>
   );
 };
 
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   wordLevel: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 26,
   },
   wordInfoContainer: {
     flex: 1,
