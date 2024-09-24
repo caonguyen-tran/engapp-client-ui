@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../../constants/Instant";
 import { useCount } from "../../../context/CountContext";
 
-const ReminderView = ({custom}) => {
+const ReminderView = ({custom, navHandle}) => {
   const { count } = useCount();
 
   return (
@@ -25,7 +25,7 @@ const ReminderView = ({custom}) => {
                 {count}
               </Text>
             </View>
-            <TouchableOpacity style={styles.learnButton}>
+            <TouchableOpacity style={styles.learnButton} onPress={() => navHandle()}>
               <Text style={{ fontSize: 18, fontWeight: "600", color: "#fff" }}>
                 Ôn tập ngay
               </Text>

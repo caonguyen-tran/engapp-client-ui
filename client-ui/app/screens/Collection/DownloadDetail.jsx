@@ -26,7 +26,6 @@ const DownloadDetail = ({ route }) => {
       );
 
       setData(res.data.data);
-      console.log(res.data.data);
     } catch (ex) {
       console.log(ex);
     }

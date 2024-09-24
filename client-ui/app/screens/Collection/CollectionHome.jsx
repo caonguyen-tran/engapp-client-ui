@@ -1,5 +1,4 @@
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet } from "react-native";
-import { COLORS } from "../../../constants/Instant";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import CollectionItem from "../../../components/screens/Collection/CollectionItem";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
@@ -7,10 +6,8 @@ import FeatureGrid from "../../../components/screens/Collection/FeatureGrid";
 import { View } from "react-native";
 import { useEffect, useState } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
-import * as SecureStore from "expo-secure-store"
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
-import { useCount } from "../../../context/CountContext";
 
 const CollectionHome = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -18,7 +15,7 @@ const CollectionHome = ({ navigation }) => {
   const [page, setPage] = useState(0);
   const {token} = useAuth()
 
-  const fetchData = async (pageNumber) => {
+  const fetchData = async () => {
     setLoading(true);
 
     try {
@@ -55,7 +52,6 @@ const CollectionHome = ({ navigation }) => {
       <HeaderStack />
       <ScrollView contentContainerStyle={styles.container}>
         <View style={{justifyContent: "center", alignItems: "center"}}>
-          <ReminderView />
           <FeatureGrid />
         </View>
         <FlatList

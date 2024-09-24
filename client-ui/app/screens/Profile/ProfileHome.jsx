@@ -24,7 +24,7 @@ const ProfileHome = ({ navigation }) => {
       style={{
         paddingTop: Platform.OS == "android" ? 26 : 0,
         flex: 1,
-        backgroundColor: COLORS.primary,
+        backgroundColor: "white",
       }}
     >
       <View style={styles.headerStyle}>

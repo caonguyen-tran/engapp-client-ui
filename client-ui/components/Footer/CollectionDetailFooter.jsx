@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
@@ -20,9 +20,6 @@ const CollectionDetailFooter = ({ collectionId, label }) => {
       const res = await authApi(token).post(
         endpoints["collection-service"]["download-collection"](collectionId)
       );
-
-      console.log(res.data.code);
-
       navigation.navigate("CollectionHome");
       alert("Tải bộ từ vựng thành công.");
     } catch (ex) {
@@ -40,10 +37,10 @@ const CollectionDetailFooter = ({ collectionId, label }) => {
           style={styles.learnButton}
           onPress={() => downloadCollection()}
         >
-          <Text style={{ fontSize: 16, fontWeight: "600", marginRight: 10 }}>
+          <Text style={{ fontSize: 16, fontWeight: "600", marginRight: 10, color: "white" }}>
             {label}
           </Text>
-          <Feather name="book-open" size={24} color="black" />
+          <AntDesign name="download" size={24} color="white" />
         </TouchableOpacity>
       )}
     </View>
@@ -63,7 +60,7 @@ const styles = StyleSheet.create({
   learnButton: {
     width: 180,
     height: 45,
-    backgroundColor: "gray",
+    backgroundColor: COLORS.itemColor,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",

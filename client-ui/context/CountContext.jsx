@@ -5,7 +5,7 @@ const CountContext = createContext();
 
 export const useCount = () => useContext(CountContext);
 
-export const CountProvider = ({children}) => {
+export const CountProvider = ({ children }) => {
   const [count, setCount] = useState(0);
   const { token } = useAuth();
 
@@ -15,16 +15,19 @@ export const CountProvider = ({children}) => {
         endpoints["word-service"]["get-list-by-review"](false)
       );
 
-      console.log(res.data.data.length);
-      setCount(res.data.data.length);
+      if (res.data.data.length !== count) {
+        setCount(res.data.data.length);
+      }
+      
     } catch (ex) {
       console.log(ex);
     }
   };
 
   useEffect(() => {
-    fetchData()
-  }, []);
+    fetchData();
+    console.log(count);
+  }, [count]);
 
   return (
     <CountContext.Provider

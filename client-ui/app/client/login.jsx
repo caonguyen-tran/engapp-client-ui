@@ -37,7 +37,7 @@ const Login = () => {
     <View style={LoginStyles.container}>
       <View>
         <Text style={LoginStyles.headerText}>Đăng nhập</Text>
-        <Text style={{ fontSize: 16, color: "#818181" }}>
+        <Text style={{ fontSize: 16, color: "#818181", marginBottom: 20 }}>
           Nhập tên đăng nhập và mật khẩu để đăng nhập
         </Text>
       </View>

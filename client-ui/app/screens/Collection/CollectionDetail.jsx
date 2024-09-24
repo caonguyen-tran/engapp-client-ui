@@ -69,7 +69,10 @@ const CollectionDetail = ({ navigation, route }) => {
                 )}
               </>
             ) : (
-              <NoActiveView textAlert="Không có từ vựng nào trong bộ sưu tập này!" visible={false} />
+              <NoActiveView
+                textAlert="Không có từ vựng nào trong bộ sưu tập này!"
+                visible={false}
+              />
             )}
           </>
         )}

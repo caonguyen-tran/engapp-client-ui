@@ -84,7 +84,7 @@ const AnswerAlert = ({
             <Text style={{ fontSize: 16, fontWeight: "600" }}>Nghĩa: </Text>
             <Text style={{ fontSize: 16 }}>{word.wordResponse.definition}</Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", }}>
             <Text style={{ fontSize: 16, fontWeight: "600" }}>Ví dụ: </Text>
             <Text style={{ fontSize: 16 }}>{word.wordResponse.example}</Text>
           </View>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   contentView: {
     width: "100%",
     padding: 20,
-    height: 250,
+    height: 300,
     flex: 1,
   },
   btnView: {

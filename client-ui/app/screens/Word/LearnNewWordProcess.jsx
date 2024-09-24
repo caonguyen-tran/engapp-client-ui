@@ -17,7 +17,7 @@ import AnswerAlert from "../../../components/screens/Word/AnswerAlert";
 const { height } = Dimensions.get("window");
 
 const LearnNewWordProcess = ({ route }) => {
-  const { listWord } = route.params;
+  const { listWord, flag } = route.params;
   const navigation = useNavigation();
   const [progress, setProgress] = useState(new Animated.Value(0));
   const [index, setIndex] = useState(0);
@@ -93,7 +93,12 @@ const LearnNewWordProcess = ({ route }) => {
 
   useEffect(() => {
     if (clone.length === 0) {
-      navigation.navigate("ProcessComplete", { listWord: listWord });
+      if(flag === true){
+        navigation.navigate("ProcessComplete", { listWord: listWord });
+      }
+      else{ 
+        navigation.navigate("PracticeComplete", {listWord : listWord});
+      }
     }
   }, [clone]);
 

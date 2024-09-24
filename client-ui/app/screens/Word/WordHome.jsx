@@ -1,18 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Platform,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import WordLevelView from "../../../components/screens/Word/WordLevelView";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
-import { COLORS } from './../../../constants/Instant';
+import { COLORS } from "./../../../constants/Instant";
 
 const WordHome = () => {
   const navigation = useNavigation();
@@ -44,6 +37,10 @@ const WordHome = () => {
     },
   };
 
+  const navHandle = () => {
+    navigation.navigate("ListWordPractice");
+  };
+
   return (
     <>
       <HeaderStack label="Bộ từ của bạn" />
@@ -56,7 +53,10 @@ const WordHome = () => {
             <Text style={styles.learnedWords}>Đã học 148/302 từ</Text>
             <WordLevelView keyLevel={wordLevel["one"]} color={COLORS.level1} />
             <WordLevelView keyLevel={wordLevel["two"]} color={COLORS.level2} />
-            <WordLevelView keyLevel={wordLevel["three"]} color={COLORS.level3} />
+            <WordLevelView
+              keyLevel={wordLevel["three"]}
+              color={COLORS.level3}
+            />
             <WordLevelView keyLevel={wordLevel["four"]} color={COLORS.level4} />
             <WordLevelView keyLevel={wordLevel["five"]} color={COLORS.level5} />
             <WordLevelView keyLevel={wordLevel["six"]} color={COLORS.level6} />
@@ -71,6 +71,7 @@ const WordHome = () => {
               shadowRadius: 5,
               elevation: 5,
             }}
+            navHandle={navHandle}
           />
         </View>
         <DownloadedView navigation={navigation} />
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
-    alignItems: "center"
+    alignItems: "center",
   },
   subtitle: {
     color: "#000",

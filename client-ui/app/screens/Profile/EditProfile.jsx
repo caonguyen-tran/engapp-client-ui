@@ -190,7 +190,7 @@ export default EditProfile;
 const EditProfileStyle = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: COLORS.primary,
+    backgroundColor: "white",
     height: "100%",
     alignItems: "center",
   },

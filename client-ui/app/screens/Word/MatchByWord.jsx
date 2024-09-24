@@ -20,7 +20,7 @@ const MatchByWord = ({ route }) => {
 
   useEffect(() => {
     if (listWord >= 5) {
-      navigation.navigate("LearnNewWordProcess", { listWord: listWord });
+      navigation.navigate("LearnNewWordProcess", { listWord: listWord, flag: true });
     }
   }, [listWord]);
 

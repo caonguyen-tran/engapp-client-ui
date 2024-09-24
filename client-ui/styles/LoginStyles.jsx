@@ -4,7 +4,7 @@ import { COLORS } from "../constants/Instant";
 
 const LoginStyles = StyleSheet.create({
     container: {
-        paddingTop: 50,
+        paddingTop: 70,
         paddingLeft: 30,
         paddingRight: 30,
         flex: 1,
@@ -14,7 +14,7 @@ const LoginStyles = StyleSheet.create({
     },
     headerText: {
         fontSize: 30,
-        fontWeight: "700"
+        fontWeight: "700",
     },
     inputContainer: {
         padding: 10,

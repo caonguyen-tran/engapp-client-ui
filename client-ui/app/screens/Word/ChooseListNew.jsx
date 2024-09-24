@@ -73,67 +73,82 @@ const ChooseListNew = ({ route }) => {
         <LoadingView />
       ) : listWord ? (
         listWord.length < 5 ? (
-          <NoActiveView textAlert="Nguồn từ vựng không đáp ứng đủ (số lượng từ vựng dưới 5)." visible={true}/>
+          <NoActiveView
+            textAlert="Nguồn từ vựng không đáp ứng đủ (số lượng từ vựng dưới 5)."
+            visible={true}
+          />
         ) : (
           <>
             <HeaderElement
               textHeader={`Chọn từ để học ${wordCount}/5`}
               closeHandle={() => handleClose()}
             />
-            <View style={styles.container}>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.word}>
-                    {listWord[index].wordResponse.word}
-                  </Text>
-                  <Text style={styles.pronunciation}>
-                    {listWord[index].wordResponse.pronunciation}
-                  </Text>
-                  <View style={styles.bottomText}>
-                    <View style={styles.wordLevelView}>
-                      <Text style={styles.wordLevel}>
-                        {listWord[index].wordResponse.wordLevel.level}
+            {listWord[index] ? (
+              <View style={styles.container}>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.word}>
+                      {listWord[index].wordResponse.word}
+                    </Text>
+                    <Text style={styles.pronunciation}>
+                      {listWord[index].wordResponse.pronunciation}
+                    </Text>
+                    <View style={styles.bottomText}>
+                      <View style={styles.wordLevelView}>
+                        <Text style={styles.wordLevel}>
+                          {listWord[index].wordResponse.wordLevel.level}
+                        </Text>
+                      </View>
+                      <Text style={styles.typeWord}>
+                        {listWord[index].wordResponse.pofSpeech.engName}
                       </Text>
                     </View>
-                    <Text style={styles.typeWord}>
-                      {listWord[index].wordResponse.pofSpeech.engName}
+                  </View>
+                  <View style={styles.contentView}>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 18,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Nghĩa:
+                    </Text>
+                    <Text style={styles.definition}>
+                      {listWord[index].wordResponse.definition}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 18,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Ví dụ:
+                    </Text>
+                    <Text style={styles.definition}>
+                      {listWord[index].wordResponse.example}
                     </Text>
                   </View>
-                </View>
-                <View style={styles.contentView}>
-                  <Text
-                    style={{ color: "white", fontSize: 18, fontWeight: "600" }}
-                  >
-                    Nghĩa:
-                  </Text>
-                  <Text style={styles.definition}>
-                    {listWord[index].wordResponse.definition}
-                  </Text>
-                  <Text
-                    style={{ color: "white", fontSize: 18, fontWeight: "600" }}
-                  >
-                    Ví dụ:
-                  </Text>
-                  <Text style={styles.definition}>
-                    {listWord[index].wordResponse.example}
-                  </Text>
-                </View>
-                <View>
-                  <TouchableOpacity
-                    style={styles.skipButton}
-                    onPress={() => handleChoice(false)}
-                  >
-                    <Text style={styles.buttonText}>Bỏ qua</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.learnButton}
-                    onPress={() => handleChoice(true)}
-                  >
-                    <Text style={styles.buttonText}>Học từ này</Text>
-                  </TouchableOpacity>
+                  <View>
+                    <TouchableOpacity
+                      style={styles.skipButton}
+                      onPress={() => handleChoice(false)}
+                    >
+                      <Text style={styles.buttonText}>Bỏ qua</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.learnButton}
+                      onPress={() => handleChoice(true)}
+                    >
+                      <Text style={styles.buttonText}>Học từ này</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              <></>
+            )}
           </>
         )
       ) : (

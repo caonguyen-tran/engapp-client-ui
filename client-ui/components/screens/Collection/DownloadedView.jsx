@@ -16,8 +16,7 @@ const DownloadedView = ({ navigation }) => {
       const res = await authApi(token).get(
         endpoints["collection-service"]["get-downloaded"]
       );
-
-      console.log(res.data.data.length);
+      
       setData(res.data.data);
     } catch (ex) {
       console.log(ex);

@@ -5,11 +5,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../constants/Instant";
 import ProfileStack from "../stack/ProfileStack";
-import HomeStack from "../stack/HomeStack";
-import { styleProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 import CollectionStack from "../stack/CollectionStack";
 import WordStack from "../stack/WordStack";
 import { CountProvider } from "../../context/CountContext";
+import QuizStack from "../stack/QuizStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,10 +30,10 @@ const BottomNavigator = ({ navigation }) => {
               headerShown: false,
               tabBarIcon: ({ focused }) => {
                 return (
-                  <AntDesign
+                  <Entypo
                     name="home"
                     size={30}
-                    color={focused ? COLORS.activeStrength : COLORS.active}
+                    color={focused ? COLORS.active : COLORS.activeStrength}
                   />
                 );
               },
@@ -47,10 +46,10 @@ const BottomNavigator = ({ navigation }) => {
               headerShown: false,
               tabBarIcon: ({ focused }) => {
                 return (
-                  <AntDesign
-                    name="home"
+                  <Entypo
+                    name="folder"
                     size={30}
-                    color={focused ? COLORS.activeStrength : COLORS.active}
+                    color={focused ? COLORS.active : COLORS.activeStrength}
                   />
                 );
               },
@@ -58,16 +57,16 @@ const BottomNavigator = ({ navigation }) => {
           />
 
           <Tab.Screen
-            name="HomeStack"
-            component={HomeStack}
+            name="QuizStack"
+            component={QuizStack}
             options={{
               headerShown: false,
               tabBarIcon: ({ focused }) => {
                 return (
-                  <AntDesign
-                    name="home"
+                  <Entypo
+                    name="news"
                     size={30}
-                    color={focused ? COLORS.activeStrength : COLORS.active}
+                    color={focused ? COLORS.active : COLORS.activeStrength}
                   />
                 );
               },
@@ -83,7 +82,7 @@ const BottomNavigator = ({ navigation }) => {
                   <Ionicons
                     name="person-circle-outline"
                     size={30}
-                    color={focused ? COLORS.activeStrength : COLORS.active}
+                    color={focused ? COLORS.active : COLORS.activeStrength}
                   />
                 );
               },
