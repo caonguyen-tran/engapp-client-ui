@@ -9,18 +9,21 @@ import LoadingView from "../lotties/LoadingView";
 import { useAuth } from "../../context/AuthContext";
 import { authApi, endpoints } from "../../apis/APIs";
 
-const CollectionDetailFooter = ({ collectionId, label }) => {
+const CollectionDetailFooter = ({ collectionId, label, setDownload }) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const {token} = useAuth()
+  const { token } = useAuth();
+
   const downloadCollection = async () => {
     setLoading(true);
     try {
-      console.log(collectionId)
-      const res = await authApi(token).post(
+      console.log(collectionId);
+      await authApi(token).post(
         endpoints["collection-service"]["download-collection"](collectionId)
       );
+      const onwerRes = await authApi(token).get(endpoints['collection-service']['get-my-collection'])
       navigation.navigate("CollectionHome");
+      setDownload(onwerRes.data.data)
       alert("Tải bộ từ vựng thành công.");
     } catch (ex) {
       console.log(ex);
@@ -37,7 +40,14 @@ const CollectionDetailFooter = ({ collectionId, label }) => {
           style={styles.learnButton}
           onPress={() => downloadCollection()}
         >
-          <Text style={{ fontSize: 16, fontWeight: "600", marginRight: 10, color: "white" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              marginRight: 10,
+              color: "white",
+            }}
+          >
             {label}
           </Text>
           <AntDesign name="download" size={24} color="white" />

@@ -1,24 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { authApi, endpoints } from "../apis/APIs";
 import { useAuth } from "./AuthContext";
-const CountContext = createContext();
+const DownloadContext = createContext();
 
-export const useCount = () => useContext(CountContext);
+export const useDownload = () => useContext(DownloadContext);
 
-export const CountProvider = ({ children }) => {
-  const [count, setCount] = useState(0);
+export const DownloadProvider = ({ children }) => {
+  const [download, setDownload] = useState([]);
   const { token } = useAuth();
 
   const fetchData = async () => {
     try {
       const res = await authApi(token).get(
-        endpoints["word-service"]["get-list-by-review"](false)
+        endpoints["collection-service"]["get-downloaded"]
       );
 
-      if (res.data.data.length !== count) {
-        setCount(res.data.data.length);
+      if (res.data.data.length !== download.length) {
+        setDownload(res.data.data);
       }
-      
     } catch (ex) {
       console.log(ex);
     }
@@ -26,16 +25,16 @@ export const CountProvider = ({ children }) => {
 
   useEffect(() => {
     fetchData();
-  }, [count]);
+  }, [download]);
 
   return (
-    <CountContext.Provider
+    <DownloadContext.Provider
       value={{
-        count,
-        setCount,
+        download,
+        setDownload,
       }}
     >
       {children}
-    </CountContext.Provider>
+    </DownloadContext.Provider>
   );
 };

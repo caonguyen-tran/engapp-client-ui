@@ -17,8 +17,16 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Instant";
+import { useEffect } from "react";
+import { useAuth } from "../../../context/AuthContext";
 
 const ProfileHome = ({ navigation }) => {
+  const {info} = useAuth()
+
+  useEffect(() => {
+
+  }, [])
+
   return (
     <SafeAreaView
       style={{
@@ -38,9 +46,9 @@ const ProfileHome = ({ navigation }) => {
           />
         </View>
         <Text style={{ fontSize: 22, fontWeight: "600", paddingVertical: 6 }}>
-          nguyen
+          {info.username}
         </Text>
-        <Text style={{ fontSize: 16, color: "gray" }}>nguyen@email.com</Text>
+        <Text style={{ fontSize: 16, color: "gray" }}>{info.email}</Text>
       </View>
       <ScrollView
         style={styles.optionView}
@@ -202,14 +210,14 @@ const styles = StyleSheet.create({
     width: 110,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#f0f0f0",
     borderRadius: 10,
     elevation: 10,
     marginVertical: 10,
   },
   optionView: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f0f0f0",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     position: "absolute",

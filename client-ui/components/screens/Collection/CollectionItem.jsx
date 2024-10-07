@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 const CollectionItem = ({item, navigation}) => {
   const timeAgo = moment(item.createAt).fromNow();
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate("CollectionDetail", {collectionId: item.id})}>
+    <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate("CollectionDetail", {collectionId: item.id})} activeOpacity={0.6}>
       <Image source={{ uri: item.image }} style={styles.image} resizeMode="contain"/>
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{item.name}</Text>

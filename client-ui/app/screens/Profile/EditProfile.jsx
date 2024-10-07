@@ -18,7 +18,7 @@ import { useAuth } from "../../../context/AuthContext";
 
 const EditProfile = ({ navigation }) => {
   const [edit, setEdit] = useState(false);
-  const {removeToken} = useAuth()
+  const { removeToken } = useAuth();
 
   const [currentUser, setCurrentUser] = useState({
     first_name: "",
@@ -58,9 +58,7 @@ const EditProfile = ({ navigation }) => {
         >
           <View style={EditProfileStyle.avatarView}>
             <Image
-              source={{
-                uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1707039554/vemkgus0ecwhtzwdech2.jpg",
-              }}
+              source={require("../../../assets/images/EngApp.png")}
               style={{ height: 90, width: 90, borderRadius: 5 }}
             />
             <Pressable style={EditProfileStyle.editText}>
@@ -147,7 +145,7 @@ const EditProfile = ({ navigation }) => {
                 alignItems: "center",
               }}
               onPress={() => {
-                removeToken()
+                removeToken();
               }}
             >
               <MaterialIcons
@@ -190,7 +188,7 @@ export default EditProfile;
 const EditProfileStyle = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: "#f0f0f0",
     height: "100%",
     alignItems: "center",
   },

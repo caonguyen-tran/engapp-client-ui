@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import MatchByWordProcess from "./MatchByWordProcess";
 import LearnWordVI from "./LearnWordVI";
 import AnswerAlert from "../../../components/screens/Word/AnswerAlert";
+import { useCount } from "../../../context/CountContext";
 
 const { height } = Dimensions.get("window");
 
@@ -26,6 +27,7 @@ const LearnNewWordProcess = ({ route }) => {
   const position = useState(new Animated.Value(height))[0];
   const [visible, setVisible] = useState(false);
   const [correct, setCorrect] = useState(false);
+  const {setCount} = useCount()
 
   const genElement = () => {
     const ran = Math.floor(Math.random() * clone.length);

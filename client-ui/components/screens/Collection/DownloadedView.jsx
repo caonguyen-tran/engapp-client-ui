@@ -4,29 +4,10 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import DownloadedItem from "./DownloadedItem";
 import LoadingView from "../../lotties/LoadingView";
+import { useDownload } from "../../../context/DownloadContext";
 
 const DownloadedView = ({ navigation }) => {
-  const [data, setData] = useState([]);
-  const { token } = useAuth();
-  const [loading, setLoading] = useState(false);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const res = await authApi(token).get(
-        endpoints["collection-service"]["get-downloaded"]
-      );
-      
-      setData(res.data.data);
-    } catch (ex) {
-      console.log(ex);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { download } = useDownload();
 
   return (
     <View style={styles.collectionView}>
@@ -36,19 +17,15 @@ const DownloadedView = ({ navigation }) => {
         </Text>
       </View>
 
-      {loading ? (
-        <LoadingView />
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <DownloadedItem item={item} navigation={navigation} />
-          )}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContainer}
-          scrollEnabled={false}
-        />
-      )}
+      <FlatList
+        data={download}
+        renderItem={({ item }) => (
+          <DownloadedItem item={item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
+        scrollEnabled={false}
+      />
     </View>
   );
 };

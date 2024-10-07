@@ -23,7 +23,7 @@ const Login = () => {
         password: password,
       };
 
-      const res = await APIs.post(endpoints["user-service"]["user-login"], data);
+      const res = await APIs.post(endpoints["security-service"]["get-token"], data);
       saveToken(res.data.data)
     } catch (ex) {
       setError("Tên đăng nhập hoặc mật khẩu không đúng!");

@@ -33,6 +33,7 @@ const Input = ({
                 onChangeText={onChangeHandle}
                 placeholder={holderText}
                 placeholderTextColor="gray"
+                autoCapitalize={false}
                 />
                 <Pressable
                     onPress={() => {
@@ -56,6 +57,7 @@ const Input = ({
                 placeholder={holderText}
                 placeholderTextColor="gray"
                 multiline={multipleLine}
+                autoCapitalize={false}
                 />
             </View>
           }

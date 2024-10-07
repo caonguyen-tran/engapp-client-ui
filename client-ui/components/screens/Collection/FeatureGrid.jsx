@@ -8,42 +8,66 @@ import {
   StyleSheet,
 } from "react-native";
 import { COLORS } from "../../../constants/Instant";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const FeatureGrid = () => {
-  const navigation = useNavigation()
-  const features = [
-    {
-      key: "ChatGPT",
-      icon: "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658243/collection-service/trn6cwxrhtf4w8obveqq.webp",
-      label: "ChatGPT",
-    },
-    {
-      key: "Ngữ pháp",
-      icon: "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658243/collection-service/trn6cwxrhtf4w8obveqq.webp",
-      label: "Ngữ pháp",
-    },
-    {
-      key: "Đọc sách",
-      icon: "open-book",
-      label: "Đọc sách",
-    },
-    {
-      key: "Bài tập",
-      icon: "https://res.cloudinary.com/dbvrjuzo4/image/upload/v1726658243/collection-service/trn6cwxrhtf4w8obveqq.webp",
-      label: "Bài tập",
-    },
-  ];
+  const navigation = useNavigation();
 
   return (
     <View style={styles.grid}>
-      {features.map((item) => (
-        <TouchableOpacity key={item.key} style={styles.item} onPress={() => navigation.navigate("MyCollection")}>
-          <Entypo name="open-book" size={24} color="black" style={{paddingVertical: 10}}/>
-          <Text style={styles.itemText}>{item.label}</Text>
-        </TouchableOpacity>
-      ))}
+      <TouchableOpacity
+        key="1"
+        style={styles.item}
+        onPress={() => navigation.navigate("MyCollection")}
+      >
+        <FontAwesome5
+          name="newspaper"
+          size={24}
+          color="black"
+          style={{ paddingVertical: 10 }}
+        />
+        <Text style={styles.itemText}>Đọc báo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        key="2"
+        style={styles.item}
+        onPress={() => navigation.navigate("MyCollection")}
+      >
+        <Foundation
+          name="archive"
+          size={24}
+          color="black"
+          style={{ paddingVertical: 10 }}
+        />
+        <Text style={styles.itemText}>Collection</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        key="3"
+        style={styles.item}
+        onPress={() => navigation.navigate("MyCollection")}
+      >
+        <Entypo
+          name="language"
+          size={24}
+          color="black"
+          style={{ paddingVertical: 10 }}
+        />
+        <Text style={styles.itemText}>ChatGPT</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        key="4"
+        style={styles.item}
+        onPress={() => navigation.navigate("MyCollection")}
+      >
+        <Entypo
+          name="open-book"
+          size={24}
+          color="black"
+          style={{ paddingVertical: 10 }}
+        />
+        <Text style={styles.itemText}>Đọc báo</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -58,8 +82,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 15,
     padding: 10,
-    borderRadius: 10, 
-    shadowColor: '#000',
+    borderRadius: 10,
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 5,
@@ -67,7 +91,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     color: "black",
-    fontSize: 12
+    fontSize: 12,
   },
   grid: {
     flexDirection: "row",
@@ -75,6 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 10,
     columnGap: 10,
+    marginTop: 10,
   },
 });
 

@@ -27,30 +27,30 @@ const Register = ({ navigation }) => {
     setError({});
     let valid = true;
     if (!info.email) {
-      handleError("email", "Trường Email không được để trống!");
+      handleError("email", "Email không được để trống!");
       valid = false;
     } else if (!info.email.match(/\S+@\S+\.\S+/)) {
       handleError("email", "Email bạn nhập không phù hợp!");
       valid = false;
     }
     if (!info.username) {
-      handleError("username", "Trường Username không được để trống!");
+      handleError("username", "Username không được để trống!");
       valid = false;
     } else if (info.username.length < 8) {
       handleError("username", "Số lượng kí tự trong username phải lớn hơn 8!");
       valid = false;
     }
     if (!info.password) {
-      handleError("password", "Trường Password không được để trống!");
+      handleError("password", "Password không được để trống!");
       valid = false;
     } else if (info.password.length < 8) {
       handleError("password", "Số lượng kí tự trong password phải lớn hơn 8!");
       valid = false;
     }
     if (!info.confirm_password) {
-      handleError("confirm_password", "Nhập lại password không được để trống!");
+      handleError("confirm_password", "Xác nhận mật khẩu không được để trống!");
       valid = false;
-    } else if (info.confirm_password != info.password) {
+    } else if (info.confirm_password !== info.password) {
       handleError(
         "confirm_password",
         "Password và Confirm Password không trùng nhau!"
@@ -58,6 +58,7 @@ const Register = ({ navigation }) => {
       valid = false;
     }
     if (valid) {
+      console.log("valid")
       commitRegister();
     }
   };
@@ -74,11 +75,10 @@ const Register = ({ navigation }) => {
         password: info.password,
         email: info.email,
       };
-      await APIs.post(endpoints["user-service"]["user-register"], data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      console.log(data)
+      let res = await APIs.post(endpoints["user-service"]["user-register"], data);
+      
+      console.log(res.data)
       navigation.navigate("Login");
       Alert.alert("Register succesfully!");
     } catch (ex) {
@@ -115,6 +115,7 @@ const Register = ({ navigation }) => {
             change("email", t);
           }}
           error={error.email}
+          holderText="Email"
         />
         <Input
           label="Tên đăng nhập"
@@ -123,6 +124,7 @@ const Register = ({ navigation }) => {
             change("username", t);
           }}
           error={error.username}
+          holderText="Tên đăng nhập..."
         />
         <Input
           label="Mật khẩu"
@@ -132,6 +134,7 @@ const Register = ({ navigation }) => {
           }}
           isPassword
           error={error.password}
+          holderText="Mật khẩu..."
         />
         <Input
           label="Xác nhận mật khẩu"
@@ -141,6 +144,7 @@ const Register = ({ navigation }) => {
           }}
           isPassword
           error={error.confirm_password}
+          holderText="Nhập lại mật khẩu..."
         />
         {loading ? (
           <LoadingView />

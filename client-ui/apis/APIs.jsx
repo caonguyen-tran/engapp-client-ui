@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.1.31:8088/api";
+const BASE_URL = "http://192.168.1.29:8088/api";
 const user_service = "/user-service";
 const collection_service = "/collection-service";
 const word_service = "/word-service";
@@ -9,8 +9,9 @@ const security_service = "/security-service";
 
 export const endpoints = {
   "user-service": {
-    "user-login": `${user_service}/user/login`,
+    // "user-login": `${user_service}/user/login`,
     "user-register": `${user_service}/user/register-user`,
+    "information": `${user_service}/user/information`
   },
   "collection-service": {
     "get-all": (pageNo) =>
@@ -36,6 +37,7 @@ export const endpoints = {
     "update-list-word": `${word_service}/learned-word/update-list-word`,
   },
   "security-service": {
+    "get-token": `${security_service}/auth/token`,
     "validate-token": `${security_service}/auth/introspect`,
   },
   "quiz-service": {
@@ -48,6 +50,9 @@ export const endpoints = {
       `${quiz_service}/question-set/re-do-quiz-result/${resultId}`,
     "list-by-question-set": (questionSetId) =>
       `${quiz_service}/question/list-by-question-set/${questionSetId}`,
+    "list-by-owner": `${quiz_service}/quiz-result/get-list-by-owner`,
+    "list-exam-by-result": (resultId) => `${quiz_service}/exam-responses/get-result/${resultId}`,
+    "submit-quiz": `${quiz_service}/exam-responses/submit-quiz`
   },
 };
 

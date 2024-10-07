@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { useAuth } from "./../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { TouchableOpacity } from "react-native";
+import ResultStats from "../../../components/Quiz/ResultStats";
+import { useNavigation } from "@react-navigation/native";
 
 const QuizHome = () => {
   const [listQuestionSet, setListQuestionSet] = useState([]);
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +40,24 @@ const QuizHome = () => {
     fetchData();
   }, []);
 
-  const alertConfirmDoQuiz = () => {};
+  const alertConfirmDoQuiz = (questionSetId) => {
+    Alert.alert(
+      "Thông báo",
+      "Bạn có 15 phút cho đề này, bạn có muốn bắt đầu không ?",
+      [
+        {
+          text: "Bắt đầu",
+          onPress: () =>
+            navigation.navigate("DoExamProcess", {
+              questionSetId: questionSetId,
+            }),
+        },
+        { text: "Cancel", onPress: () => {}, style: "cancel" },
+      ],
+      { cancelable: true }
+    );
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.questionSetView}>
       <View style={styles.itemContainer}>
@@ -46,9 +73,16 @@ const QuizHome = () => {
           Trạng thái: {item.isActive ? "Hoạt động" : "Không hoạt động"}
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Làm bài</Text>
-      </TouchableOpacity>
+      {item.isActive ? (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => alertConfirmDoQuiz(item.id)}
+        >
+          <Text style={styles.buttonText}>Làm bài</Text>
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
     </View>
   );
 
@@ -63,11 +97,17 @@ const QuizHome = () => {
           visible={false}
         />
       ) : (
-        <FlatList
-          data={listQuestionSet}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        <>
+          <ScrollView>
+            <ResultStats detailPress={() => navigation.navigate("QuizResult")}/>
+            <FlatList
+              data={listQuestionSet}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.toString()}
+              scrollEnabled={false}
+            />
+          </ScrollView>
+        </>
       )}
     </>
   );
@@ -78,10 +118,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
     shadowRadius: 3,
     marginTop: 20,
     padding: 15,
@@ -118,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
   },
