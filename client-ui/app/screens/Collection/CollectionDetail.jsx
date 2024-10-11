@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
-import EmptyView from "../../../components/lotties/EmptyView";
 import ListWordView from "../Word/ListWordView";
 import CreateNewWord from "../../../components/screens/Word/CreateNewWord";
 import NoActiveView from "../../../components/lotties/NoActiveView";
@@ -18,7 +17,7 @@ const CollectionDetail = ({ navigation, route }) => {
   const { collectionId } = route.params;
   const [isOwner, setIsOwner] = useState(false);
   const [eventChange, setEventChange] = useState(0);
-  const {setDownload} = useDownload()
+  const { setDownload } = useDownload();
 
   useEffect(() => {
     const fetch = async () => {
@@ -38,7 +37,6 @@ const CollectionDetail = ({ navigation, route }) => {
       }
       setLoading(false);
     };
-    console.log(eventChange);
     fetch();
   }, [eventChange]);
 
@@ -46,37 +44,40 @@ const CollectionDetail = ({ navigation, route }) => {
     setEventChange(eventChange + 1);
   };
 
-
   return (
     <>
       <HeaderScreen label="Từ vựng" callback={() => navigation.goBack()} />
-
-      {loading ? (
-        <LoadingView />
-      ) : (
-        <>
-          {data.length !== 0 ? (
-            <>
-              <ScrollView>
-                <ListWordView data={data} />
-              </ScrollView>
-              <CollectionDetailFooter
-                label="Tải bộ từ"
-                navigation={navigation}
-                collectionId={collectionId}
-                setDownload={setDownload}
+      <ScrollView>
+        {loading ? (
+          <LoadingView />
+        ) : (
+          <>
+            {data.length !== 0 ? (
+              <ListWordView data={data} />
+            ) : (
+              <NoActiveView
+                textAlert="Không có từ vựng nào trong bộ sưu tập này!"
+                visible={false}
               />
-            </>
-          ) : (
-            <NoActiveView
-              textAlert="Không có từ vựng nào trong bộ sưu tập này!"
-              visible={false}
-            />
-          )}
-        </>
-      )}
-      {isOwner ? (
-        <CreateNewWord collectionId={collectionId} onRefresh={refreshData} />
+            )}
+            {isOwner ? (
+              <CreateNewWord
+                collectionId={collectionId}
+                onRefresh={refreshData}
+              />
+            ) : (
+              <></>
+            )}
+          </>
+        )}
+      </ScrollView>
+      {data.length !== 0 ? (
+        <CollectionDetailFooter
+          label="Tải bộ từ"
+          navigation={navigation}
+          collectionId={collectionId}
+          setDownload={setDownload}
+        />
       ) : (
         <></>
       )}

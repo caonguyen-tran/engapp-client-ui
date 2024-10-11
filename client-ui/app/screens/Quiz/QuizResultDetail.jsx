@@ -6,13 +6,15 @@ import LoadingView from "../../../components/lotties/LoadingView";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import HeaderElement from "../../../components/Header/HeaderElement";
 import { useNavigation } from "@react-navigation/native";
+import ExamStats from "../../../components/Quiz/ExamStats";
 
 const QuizResultDetail = ({ route }) => {
   const { resultId } = route.params;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [detail, setDetail] = useState();
   const { token } = useAuth();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +23,10 @@ const QuizResultDetail = ({ route }) => {
         let res = await authApi(token).get(
           endpoints["quiz-service"]["list-exam-by-result"](resultId)
         );
-
+        let resDetail = await authApi(token).get(
+          endpoints["quiz-service"]["get-quiz-result"](resultId)
+        );
+        setDetail(resDetail.data.data);
         setData(res.data.data);
       } catch (ex) {
         console.log(ex);
@@ -51,7 +56,7 @@ const QuizResultDetail = ({ route }) => {
             } else {
               if (answer.answerKey === question.correctAnswer) {
                 answerStyle = styles.correctAnswer;
-              }else if (answer.answerKey === userAnswer.answerKey) {
+              } else if (answer.answerKey === userAnswer.answerKey) {
                 answerStyle = styles.wrongAnswer;
               }
             }
@@ -74,6 +79,17 @@ const QuizResultDetail = ({ route }) => {
   const QuestionList = () => {
     return (
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {detail ? (
+          <ExamStats
+            startTime={detail.startTime}
+            endTime={detail.endTime}
+            correctAnswers={detail.correctAnswers}
+            overallPoint={detail.overallPoint}
+            totalQuestions={data.length}
+          />
+        ) : (
+          <></>
+        )}
         {data.map((item) => (
           <QuestionItem
             key={item.id}
@@ -87,7 +103,10 @@ const QuizResultDetail = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <HeaderScreen label="Kết quả làm bài" callback={() => navigation.navigate("QuizHome")}/>
+      <HeaderScreen
+        label="Kết quả làm bài"
+        callback={() => navigation.navigate("QuizHome")}
+      />
       {loading ? (
         <LoadingView />
       ) : (

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Image,
   StyleSheet,
@@ -11,7 +10,6 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import Input from "../../../components/Input/Input";
 import { useNavigation } from "@react-navigation/native";
-import InputComponent from "../../../components/Input/InputComponent";
 
 const CreateCollection = () => {
   const [info, setInfo] = useState({

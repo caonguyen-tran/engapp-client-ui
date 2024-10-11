@@ -29,13 +29,14 @@ const LoginStyles = StyleSheet.create({
         paddingHorizontal: 20, 
         backgroundColor: COLORS.textColor,
         fontSize: 16,
-        borderRadius: 12,
+        borderRadius: 5,
         color: "#000",
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: "#000"
     },
     textInput: {
         fontSize: 18,

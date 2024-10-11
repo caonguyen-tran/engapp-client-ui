@@ -8,7 +8,7 @@ import { useDownload } from "../../../context/DownloadContext";
 
 const DownloadedView = ({ navigation }) => {
   const { download } = useDownload();
-
+  
   return (
     <View style={styles.collectionView}>
       <View style={styles.collectionHeaderView}>

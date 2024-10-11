@@ -16,6 +16,9 @@ const DoExamProcess = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
   const { questionSetId } = route.params;
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(true);
+
 
   const handleNextQuestion = () => {
     if (index < questionData.length - 1) {
@@ -107,9 +110,29 @@ const DoExamProcess = ({ route }) => {
     );
   };
 
+  useEffect(() => {
+    let interval = null;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setSeconds(prevSeconds => prevSeconds + 1);
+      }, 1000);
+    } else if (!isRunning && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning, seconds]);
+
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const remainingSeconds = totalSeconds % 60;
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
+
   return (
     <>
-      <HeaderElement textHeader="Trả lời câu hỏi" closeHandle={handleClose} />
+      <HeaderElement textHeader={formatTime(seconds)} closeHandle={handleClose} />
       {loading ? (
         <LoadingView />
       ) : questionData.length <= 0 ? (

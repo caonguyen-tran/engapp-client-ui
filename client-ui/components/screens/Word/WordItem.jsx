@@ -1,9 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
 
 const WordItem = ({ item }) => {
+  const aLevel = ["A1", "A2"];
+  const bLevel = ["B1", "B2"];
+
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.wordLevelContainer}>
+      <View
+        style={[
+          styles.wordLevelContainer,
+          {
+            backgroundColor: aLevel.includes(item.wordLevel.level)
+              ? "#4CAF50"
+              : bLevel.includes(item.wordLevel.level)
+              ? "#fca02b"
+              : "#f3521e",
+          },
+        ]}
+      >
         <Text style={styles.wordLevel}>{item.wordLevel.level}</Text>
       </View>
       <View style={styles.wordInfoContainer}>
@@ -33,7 +47,6 @@ const styles = StyleSheet.create({
     marginRight: 16,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#4CAF50",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,

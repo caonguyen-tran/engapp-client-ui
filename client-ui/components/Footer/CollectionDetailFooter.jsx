@@ -17,13 +17,12 @@ const CollectionDetailFooter = ({ collectionId, label, setDownload }) => {
   const downloadCollection = async () => {
     setLoading(true);
     try {
-      console.log(collectionId);
       await authApi(token).post(
         endpoints["collection-service"]["download-collection"](collectionId)
       );
-      const onwerRes = await authApi(token).get(endpoints['collection-service']['get-my-collection'])
-      navigation.navigate("CollectionHome");
+      const onwerRes = await authApi(token).get(endpoints['collection-service']['get-downloaded'])
       setDownload(onwerRes.data.data)
+      navigation.navigate("CollectionHome");
       alert("Tải bộ từ vựng thành công.");
     } catch (ex) {
       console.log(ex);
@@ -59,9 +58,9 @@ const CollectionDetailFooter = ({ collectionId, label, setDownload }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 64,
-    backgroundColor: COLORS.primary,
+    height: 74,
     justifyContent: "flex-end",
+    backgroundColor: COLORS.primary,
     flexDirection: "row",
     alignItems: "center",
     width: "100%",

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.1.29:8088/api";
+const BASE_URL = "http://192.168.1.22:8088/api";
 const user_service = "/user-service";
 const collection_service = "/collection-service";
 const word_service = "/word-service";
@@ -22,6 +22,7 @@ export const endpoints = {
     "download-collection": (collectionId) =>
       `${collection_service}/download/create?collectionId=${collectionId}`,
     "get-downloaded": `${collection_service}/download/get-list-owner`,
+    "remove-downloaded": (downloadId) => `${collection_service}/download/remove/${downloadId}`
   },
   "word-service": {
     "get-words-by-collection": (collectionId) =>
@@ -52,7 +53,8 @@ export const endpoints = {
       `${quiz_service}/question/list-by-question-set/${questionSetId}`,
     "list-by-owner": `${quiz_service}/quiz-result/get-list-by-owner`,
     "list-exam-by-result": (resultId) => `${quiz_service}/exam-responses/get-result/${resultId}`,
-    "submit-quiz": `${quiz_service}/exam-responses/submit-quiz`
+    "submit-quiz": `${quiz_service}/exam-responses/submit-quiz`,
+    "get-quiz-result": (resultId) => `${quiz_service}/quiz-result/get-result/${resultId}`
   },
 };
 

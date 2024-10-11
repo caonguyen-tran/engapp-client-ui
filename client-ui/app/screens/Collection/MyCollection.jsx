@@ -30,6 +30,7 @@ const MyCollection = () => {
 
     fetch();
   }, []);
+
   return (
     <>
       <HeaderScreen label="Bộ sưu tập của tôi" callback={() => navigation.goBack()}/>
