@@ -6,7 +6,6 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import ListWordView from "../Word/ListWordView";
-import CreateNewWord from "../../../components/screens/Word/CreateNewWord";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { useDownload } from "../../../context/DownloadContext";
 
@@ -16,11 +15,10 @@ const CollectionDetail = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const { collectionId } = route.params;
   const [isOwner, setIsOwner] = useState(false);
-  const [eventChange, setEventChange] = useState(0);
   const { setDownload } = useDownload();
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetch = async () => { 
       setLoading(true);
       try {
         const ownerRes = await authApi(token).get(
@@ -38,15 +36,25 @@ const CollectionDetail = ({ navigation, route }) => {
       setLoading(false);
     };
     fetch();
-  }, [eventChange]);
-
-  const refreshData = () => {
-    setEventChange(eventChange + 1);
-  };
+  }, []);
 
   return (
     <>
-      <HeaderScreen label="Từ vựng" callback={() => navigation.goBack()} />
+      {isOwner ? (
+        <HeaderScreen
+          label="Từ vựng"
+          callback={() => navigation.goBack()}
+          nameIcon="add"
+          handlePress={() =>
+            navigation.navigate("CreateNewWord", { collectionId: collectionId })
+          }
+        />
+      ) : (
+        <HeaderScreen
+          label="Từ vựng"
+          callback={() => navigation.goBack()}
+        />
+      )}
       <ScrollView>
         {loading ? (
           <LoadingView />
@@ -59,14 +67,6 @@ const CollectionDetail = ({ navigation, route }) => {
                 textAlert="Không có từ vựng nào trong bộ sưu tập này!"
                 visible={false}
               />
-            )}
-            {isOwner ? (
-              <CreateNewWord
-                collectionId={collectionId}
-                onRefresh={refreshData}
-              />
-            ) : (
-              <></>
             )}
           </>
         )}

@@ -23,7 +23,7 @@ export const CountProvider = ({ children }) => {
       console.log(ex);
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, [count]);

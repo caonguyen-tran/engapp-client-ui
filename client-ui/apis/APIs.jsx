@@ -6,6 +6,7 @@ const collection_service = "/collection-service";
 const word_service = "/word-service";
 const quiz_service = "/quiz-service";
 const security_service = "/security-service";
+const blog_service = "/blog-service"
 
 export const endpoints = {
   "user-service": {
@@ -56,6 +57,10 @@ export const endpoints = {
     "submit-quiz": `${quiz_service}/exam-responses/submit-quiz`,
     "get-quiz-result": (resultId) => `${quiz_service}/quiz-result/get-result/${resultId}`
   },
+  "blog-service": {
+    "get-all": `${blog_service}/blog/get-blogs`,
+    "get-by-id": (id) => `${blog_service}/blog/get-blog/${id}`
+  }
 };
 
 export const authApi = (accessToken) =>

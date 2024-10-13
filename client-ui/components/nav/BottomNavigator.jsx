@@ -10,6 +10,7 @@ import { CountProvider } from "../../context/CountContext";
 import QuizStack from "../stack/QuizStack";
 import { DownloadProvider } from "../../context/DownloadContext";
 import NewsStack from "../stack/NewsStack";
+import BlogStack from "../stack/BlogStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -91,6 +92,22 @@ const BottomNavigator = () => {
             <Tab.Screen
               name="ProfileStack"
               component={ProfileStack}
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ focused }) => {
+                  return (
+                    <Ionicons
+                      name="person-circle-outline"
+                      size={30}
+                      color={focused ? COLORS.active : COLORS.activeStrength}
+                    />
+                  );
+                },
+              }}
+            />
+            <Tab.Screen
+              name="BlogStack"
+              component={BlogStack}
               options={{
                 headerShown: false,
                 tabBarIcon: ({ focused }) => {

@@ -7,6 +7,7 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import CompletedView from "../../../components/lotties/CompletedView";
 import LoadingView from "../../../components/lotties/LoadingView";
+import { useCount } from "../../../context/CountContext";
 
 const PracticeComplete = ({ route }) => {
   const navigation = useNavigation();
@@ -15,6 +16,7 @@ const PracticeComplete = ({ route }) => {
   const [learnedResponse, setLearnedResponse] = useState([]);
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
+  const {setCount} = useCount()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +28,7 @@ const PracticeComplete = ({ route }) => {
         );
 
         setLearnedResponse(response.data.data);
-        console.log(response.data);
+        setCount(0)
       } catch (ex) {
         console.log(ex);
       }
@@ -34,7 +36,6 @@ const PracticeComplete = ({ route }) => {
     };
 
     fetchData();
-    console.log(listLearnedRequest);
   }, []);
 
   const renderItem = ({ item }) => (

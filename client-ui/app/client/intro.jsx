@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../constants/Instant";
 import IntroLotties from "../../components/lotties/IntroLotties";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Intro = ({ navigation }) => {
   return (
