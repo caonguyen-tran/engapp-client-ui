@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS } from "../../constants/Instant";
 import ProfileStack from "../stack/ProfileStack";
 import CollectionStack from "../stack/CollectionStack";
@@ -48,8 +48,8 @@ const BottomNavigator = () => {
                 headerShown: false,
                 tabBarIcon: ({ focused }) => {
                   return (
-                    <Entypo
-                      name="folder"
+                    <FontAwesome5
+                      name="language"
                       size={30}
                       color={focused ? COLORS.active : COLORS.activeStrength}
                     />
@@ -90,14 +90,14 @@ const BottomNavigator = () => {
               }}
             />
             <Tab.Screen
-              name="ProfileStack"
-              component={ProfileStack}
+              name="BlogStack"
+              component={BlogStack}
               options={{
                 headerShown: false,
                 tabBarIcon: ({ focused }) => {
                   return (
-                    <Ionicons
-                      name="person-circle-outline"
+                    <MaterialCommunityIcons
+                      name="language-python"
                       size={30}
                       color={focused ? COLORS.active : COLORS.activeStrength}
                     />
@@ -106,8 +106,8 @@ const BottomNavigator = () => {
               }}
             />
             <Tab.Screen
-              name="BlogStack"
-              component={BlogStack}
+              name="ProfileStack"
+              component={ProfileStack}
               options={{
                 headerShown: false,
                 tabBarIcon: ({ focused }) => {
