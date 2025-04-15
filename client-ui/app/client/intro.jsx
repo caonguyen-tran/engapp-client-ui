@@ -4,64 +4,68 @@ import IntroLotties from "../../components/lotties/IntroLotties";
 
 const Intro = ({ navigation }) => {
   return (
-    <View style={IntroStyle.container}>
-      <Text
-        style={{
-          color: "black",
-          fontSize: 32,
-          fontFamily: "arial",
-          fontWeight: 600,
-          marginTop: 60,
-        }}
-      >
-        ENGAPP
-      </Text>
-      <Text
-        style={{
-          color: "black",
-          fontSize: 24,
-          fontFamily: "arial",
-          fontWeight: 600,
-        }}
-      >
-        WITH FRIENDS
-      </Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.appName}>ENGAPP</Text>
+        <Text style={styles.slogan}>Học tiếng Anh cùng bạn bè</Text>
+      </View>
+
       <IntroLotties />
+
       <TouchableOpacity
-        style={IntroStyle.btnStyle}
+        style={styles.btnStyle}
         onPress={() => navigation.navigate("Login")}
       >
-        <Text style={IntroStyle.textStyle}>Bắt đầu</Text>
+        <Text style={styles.textStyle}>Bắt đầu</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const IntroStyle = StyleSheet.create({
+export default Intro;
+
+const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    justifyContent: "space-between",
+    flex: 1,
+    backgroundColor: "#F9FAFB",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 30,
+  },
+  header: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  appName: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: COLORS.active,
+    letterSpacing: 1,
+  },
+  slogan: {
+    fontSize: 18,
+    color: "#4B5563",
+    marginTop: 6,
+    fontWeight: "500",
   },
   btnStyle: {
     backgroundColor: COLORS.active,
-    width: "92%",
+    width: "100%",
     height: 56,
-    borderRadius: 7,
-    marginBottom: 24,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: COLORS.active,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 6,
   },
   textStyle: {
     fontSize: 20,
-    color: "#fff",
-    textAlign: "center",
-    lineHeight: 56,
+    color: "#FFFFFF",
     fontWeight: "600",
   },
-  imageStyle: {
-    width: 400,
-    height: 400,
-    marginTop: 100,
-  },
 });
-export default Intro;

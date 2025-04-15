@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.1.22:8088/api";
+const BASE_URL = "http://34.29.166.181:8088/api";
 const user_service = "/user-service";
 const collection_service = "/collection-service";
 const word_service = "/word-service";

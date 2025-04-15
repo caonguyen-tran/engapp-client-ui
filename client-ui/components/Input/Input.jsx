@@ -27,13 +27,13 @@ const Input = ({
           {isPassword ? 
             <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"},]}>
                 <TextInput
-                value={value}
+                value={value !== null && value !== undefined ? String(value) : ""}
                 secureTextEntry={!visible}
                 style={LoginStyles.textInput}
                 onChangeText={onChangeHandle}
                 placeholder={holderText}
                 placeholderTextColor="gray"
-                autoCapitalize={false}
+                autoCapitalize="none"
                 />
                 <Pressable
                     onPress={() => {
@@ -50,14 +50,14 @@ const Input = ({
             </View>:
             <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"}]}>
                 <TextInput
-                value={value}
+                value={value !== null && value !== undefined ? String(value) : ""}
                 style={[LoginStyles.textInput, custom]}
                 onChangeText={onChangeHandle}
                 keyboardType={type}
                 placeholder={holderText}
                 placeholderTextColor="gray"
                 multiline={multipleLine}
-                autoCapitalize={false}
+                autoCapitalize="none"
                 />
             </View>
           }
