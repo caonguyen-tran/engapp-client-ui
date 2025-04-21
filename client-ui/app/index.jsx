@@ -1,19 +1,29 @@
-
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { View, StyleSheet, StatusBar } from "react-native";
 import { AuthProvider } from "../context/AuthContext";
 import MainNavigation from "./navigation/MainNavigation";
-import { NavigationContainer } from "@react-navigation/native";
+import { COLORS } from "../constants/Instant";
 
 const Index = () => {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer independent={true}>
-        <AuthProvider>
-          <MainNavigation />
-        </AuthProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <View style={styles.container}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={COLORS.primary}
+        translucent={true}
+      />
+      <AuthProvider>
+        <MainNavigation />
+      </AuthProvider>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingTop: 0,
+  }
+});
 
 export default Index;

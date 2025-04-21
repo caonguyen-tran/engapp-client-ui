@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import QuizHome from "../../app/screens/Quiz/QuizHome";
 import DoExamProcess from "../../app/screens/Quiz/DoExamProcess";
@@ -8,10 +8,11 @@ import QuizResultDetail from "../../app/screens/Quiz/QuizResultDetail";
 const Stack = createNativeStackNavigator();
 const QuizStack = () => {
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="QuizHome"
+    <NavigationIndependentTree>
+      <NavigationContainer independent={true}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="QuizHome"
           component={QuizHome}
           options={{ headerShown: false }}
         />
@@ -30,8 +31,9 @@ const QuizStack = () => {
           component={QuizResultDetail}
           options={{ headerShown: false, gestureEnabled: false}}
         />
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   );
 };
 

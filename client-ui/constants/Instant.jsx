@@ -16,5 +16,13 @@ export const COLORS = {
     level4: "#FFA726",
     level5: "#FF9800",
     level6: "#FB8C00",
-    noActive: "#616161"
+    noActive: "#616161",
+    aLevel: "#4CAF50",
+    bLevel: "#fca02b",
+    cLevel: "#f3521e"
+}
+
+export const wordLevel = {
+    aLevel: ["A1", "A2"],
+    bLevel: ["B1", "B2"]
 }

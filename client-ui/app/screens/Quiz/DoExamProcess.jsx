@@ -19,7 +19,6 @@ const DoExamProcess = ({ route }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
 
-
   const handleNextQuestion = () => {
     if (index < questionData.length - 1) {
       setIndex(index + 1);

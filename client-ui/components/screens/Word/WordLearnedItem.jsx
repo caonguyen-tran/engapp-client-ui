@@ -1,12 +1,20 @@
 import moment from "moment";
 import { StyleSheet, Text, View } from "react-native";
+import { COLORS, wordLevel } from "../../../constants/Instant";
 
 const WordLearnedItem = ({ item }) => {
   const timeAgo = moment(item.learnDate).fromNow();
   return item ? (
     <View style={styles.mainContainer}>
       <View style={styles.itemContainer}>
-        <View style={styles.wordLevelContainer}>
+        <View style={[styles.wordLevelContainer, 
+          {
+            backgroundColor: wordLevel.aLevel.includes(item.wordResponse.wordLevel.level)
+              ? COLORS.aLevel
+              : wordLevel.bLevel.includes(item.wordResponse.wordLevel.level)
+              ? COLORS.bLevel
+              : COLORS.cLevel,
+          }]}>
           <Text style={styles.wordLevel}>
             {item.wordResponse.wordLevel.level}
           </Text>

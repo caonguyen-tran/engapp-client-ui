@@ -1,85 +1,189 @@
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text, View, Animated } from "react-native";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import CollectionItem from "../../../components/screens/Collection/CollectionItem";
-import ReminderView from "../../../components/screens/Collection/ReminderView";
 import FeatureGrid from "../../../components/screens/Collection/FeatureGrid";
-import { View } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
+import { COLORS } from "../../../constants/Instant";
+import { MaterialIcons } from '@expo/vector-icons';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+const HEADER_HEIGHT = 56; // Height of your HeaderStack component
 
 const CollectionHome = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(0);
-  const {token} = useAuth()
+  const { token } = useAuth();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
-  const fetchData = async () => {
-    setLoading(true);
-
-    try {
-      const response = await authApi(token).get(endpoints['collection-service']['get-all'](page))
-      
-      const newData = response.data.data
-      setData((prevData) => [...prevData, ...newData]);
-    } catch (ex) {
-      console.log(ex);
+  const fetchData = async (pageNumber = 0, isRefreshing = false) => {
+    if (isRefreshing) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
     }
 
-    setLoading(false);
+    try {
+      const response = await authApi(token).get(endpoints['collection-service']['get-all'](pageNumber));
+      const newData = response.data.data;
+      
+      if (isRefreshing) {
+        setData(newData);
+        setPage(0);
+      } else {
+        setData((prevData) => [...prevData, ...newData]);
+      }
+    } catch (ex) {
+      console.log(ex);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   useEffect(() => {
-    fetchData(page);
+    fetchData();
   }, []);
 
-  const loadMoreData = () => {
-    setPage((prevPage) => prevPage + 1);
+  const onRefresh = () => {
+    fetchData(0, true);
   };
 
+  const loadMoreData = () => {
+    if (!loading) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchData(nextPage);
+    }
+  };
+
+  const renderHeader = () => (
+    <View style={styles.headerSection}>
+      <Text style={styles.sectionTitle}>Bộ sưu tập</Text>
+      <Text style={styles.sectionSubtitle}>Khám phá các bộ sưu tập từ vựng</Text>
+    </View>
+  );
+
+  const renderEmpty = () => (
+    <View style={styles.emptyContainer}>
+      <MaterialIcons name="collections-bookmark" size={64} color={COLORS.primary} />
+      <Text style={styles.emptyText}>Chưa có bộ sưu tập nào</Text>
+      <Text style={styles.emptySubText}>Hãy tạo bộ sưu tập đầu tiên của bạn</Text>
+    </View>
+  );
+
   const renderFooter = () => {
+    if (!loading) return null;
     return (
-      loading ? 
-      <View style={{ padding: 10 }}>
+      <View style={styles.footerLoader}>
         <LoadingView />
-      </View> : null
+      </View>
     );
   };
 
   return (
-    <>
-      <HeaderStack />
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={{justifyContent: "center", alignItems: "center"}}>
-          <FeatureGrid />
-        </View>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <CollectionItem item={item} navigation={navigation}/>
-          )}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContainer}
-          scrollEnabled={false}
-          onEndReached={loadMoreData}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={renderFooter}
-        />
-      </ScrollView>
-    </>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <HeaderStack />
+      </View>
+      <AnimatedFlatList
+        ListHeaderComponent={
+          <>
+            {renderHeader()}
+            <FeatureGrid />
+          </>
+        }
+        data={data}
+        renderItem={({ item }) => (
+          <CollectionItem item={item} navigation={navigation} />
+        )}
+        keyExtractor={(item, index) => `collection-${item.id}-${index}`}
+        contentContainerStyle={[
+          styles.listContainer,
+          { paddingTop: HEADER_HEIGHT } // Add padding for header
+        ]}
+        onEndReached={loadMoreData}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmpty}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.primary]}
+            tintColor={COLORS.primary}
+          />
+        }
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
-  content: {
+  container: {
     flex: 1,
-    width: "100%",
+    backgroundColor: '#FFFFFF',
+  },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    backgroundColor: '#FFFFFF',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  headerSection: {
+    marginTop: 50,
+    paddingHorizontal: 20,
+    backgroundColor: '#FFFFFF',
+  },
+  sectionTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1F2937',
+    marginBottom: 4,
+  },
+  sectionSubtitle: {
+    fontSize: 16,
+    color: '#6B7280',
   },
   listContainer: {
-    padding: 16,
-    width: "100%",
+    paddingHorizontal: 16,
+    paddingBottom: 20,
+  },
+  footerLoader: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  emptyContainer: {
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#374151',
+    marginTop: 16,
+  },
+  emptySubText: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginTop: 8,
   },
 });
 

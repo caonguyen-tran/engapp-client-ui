@@ -1,17 +1,15 @@
-
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CollectionHome from "../../app/screens/Collection/CollectionHome";
 import CollectionDetail from "../../app/screens/Collection/CollectionDetail";
 import MyCollection from "../../app/screens/Collection/MyCollection";
 import CreateCollection from "../../app/screens/Collection/CreateCollection";
-import DownloadDetail from "../../app/screens/Collection/DownloadDetail";
 import CreateNewWord from "../../app/screens/Collection/CreateNewWord";
 
 const Stack = createNativeStackNavigator();
 const CollectionStack = () => {
   return (
-    <>
+    <NavigationIndependentTree>
       <NavigationContainer independent={true}>
         <Stack.Navigator>
           <Stack.Screen
@@ -41,7 +39,7 @@ const CollectionStack = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </NavigationIndependentTree>
   );
 };
 

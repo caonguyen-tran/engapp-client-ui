@@ -1,18 +1,25 @@
-import { AntDesign, Feather } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Text, View, Animated, ActivityIndicator } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import { COLORS } from "../../constants/Instant";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import LoadingView from "../lotties/LoadingView";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { authApi, endpoints } from "../../apis/APIs";
 
 const CollectionDetailFooter = ({ collectionId, label, setDownload }) => {
   const [loading, setLoading] = useState(false);
+  const [buttonScale] = useState(new Animated.Value(1));
   const navigation = useNavigation();
   const { token } = useAuth();
+
+  const animateButton = (pressed) => {
+    Animated.spring(buttonScale, {
+      toValue: pressed ? 0.95 : 1,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const downloadCollection = async () => {
     setLoading(true);
@@ -20,61 +27,132 @@ const CollectionDetailFooter = ({ collectionId, label, setDownload }) => {
       await authApi(token).post(
         endpoints["collection-service"]["download-collection"](collectionId)
       );
-      const onwerRes = await authApi(token).get(endpoints['collection-service']['get-downloaded'])
-      setDownload(onwerRes.data.data)
+      const ownerRes = await authApi(token).get(endpoints['collection-service']['get-downloaded']);
+      setDownload(ownerRes.data.data);
       navigation.navigate("CollectionHome");
-      alert("Tải bộ từ vựng thành công.");
-    } catch (ex) {
-      console.log(ex);
+      
+      // Show success message with animation
+      const successMessage = "Tải bộ từ vựng thành công";
+      alert(successMessage);
+    } catch (error) {
+      console.log(error);
+      alert("Có lỗi xảy ra khi tải bộ từ vựng");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
+
+  // Add subtle bounce animation on mount
+  useEffect(() => {
+    Animated.sequence([
+      Animated.timing(buttonScale, {
+        toValue: 1.05,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.spring(buttonScale, {
+        toValue: 1,
+        friction: 4,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <LoadingView />
-      ) : (
-        <TouchableOpacity
-          style={styles.learnButton}
-          onPress={() => downloadCollection()}
+      <View style={styles.contentContainer}>
+        <View style={styles.infoContainer}>
+          <MaterialIcons name="collections-bookmark" size={24} color="black" />
+          <Text style={styles.infoText}>Bộ sưu tập từ vựng</Text>
+        </View>
+        
+        <Animated.View
+          style={[
+            styles.buttonContainer,
+            {
+              transform: [{ scale: buttonScale }],
+            },
+          ]}
         >
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              marginRight: 10,
-              color: "white",
-            }}
+          <TouchableOpacity
+            style={[styles.downloadButton, loading && styles.downloadButtonDisabled]}
+            onPress={downloadCollection}
+            disabled={loading}
+            onPressIn={() => animateButton(true)}
+            onPressOut={() => animateButton(false)}
+            activeOpacity={0.8}
           >
-            {label}
-          </Text>
-          <AntDesign name="download" size={24} color="white" />
-        </TouchableOpacity>
-      )}
+            {loading ? (
+              <ActivityIndicator color="#FFF" style={styles.loadingIndicator} />
+            ) : (
+              <>
+                <Text style={styles.buttonText}>{label}</Text>
+                <MaterialIcons name="file-download" size={24} color="#FFF" style={styles.downloadIcon} />
+              </>
+            )}
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: 74,
-    justifyContent: "flex-end",
     backgroundColor: COLORS.primary,
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    paddingHorizontal: 20,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
-  learnButton: {
-    width: 180,
-    height: 45,
+  contentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  infoText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: '500',
+    marginLeft: 12,
+  },
+  buttonContainer: {
+    marginLeft: 16,
+  },
+  downloadButton: {
     backgroundColor: COLORS.itemColor,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    minWidth: 160,
+  },
+  downloadButtonDisabled: {
+    opacity: 0.8,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
+    marginRight: 8,
+  },
+  downloadIcon: {
+    marginLeft: 4,
+  },
+  loadingIndicator: {
+    marginHorizontal: 8,
   },
 });
 

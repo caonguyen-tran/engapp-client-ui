@@ -1,58 +1,126 @@
 import moment from "moment";
-import { TouchableOpacity } from "react-native";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, Image, StyleSheet, Text, View, Platform } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from "../../../constants/Instant";
 
 const CollectionItem = ({item, navigation}) => {
   const timeAgo = moment(item.createAt).fromNow();
+  
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate("CollectionDetail", {collectionId: item.id})} activeOpacity={0.6}>
-      <Image source={{ uri: item.image }} style={styles.image} resizeMode="contain"/>
-      <View style={styles.infoContainer}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.time}>{timeAgo}</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.shadowContainer}>
+      <TouchableOpacity 
+        style={styles.itemContainer} 
+        onPress={() => navigation.navigate("CollectionDetail", {collectionId: item.id})} 
+        activeOpacity={0.7}
+      >
+        <Image 
+          source={{ uri: item.image }} 
+          style={styles.image} 
+          resizeMode="cover"
+        />
+        <View style={styles.infoContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.name} numberOfLines={1}>{item.name}</Text>
+            <MaterialIcons name="chevron-right" size={24} color={COLORS.primary} />
+          </View>
+          <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
+          <View style={styles.footer}>
+            <View style={styles.statsContainer}>
+              <MaterialIcons name="folder" size={16} color="#6B7280" />
+              <Text style={styles.statsText}>20 từ</Text>
+            </View>
+            <View style={styles.timeContainer}>
+              <MaterialIcons name="access-time" size={16} color="#6B7280" />
+              <Text style={styles.time}>{timeAgo}</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#f9f9f9',
-    padding: 20, 
+  shadowContainer: {
     marginBottom: 16,
-    borderRadius: 10, 
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
-    elevation: 5,
-    width: "100%"
+    borderRadius: 12,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  itemContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.05)',
+      },
+    }),
   },
   image: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
-    marginRight: 20,
+    width: '100%',
+    height: 160,
+    backgroundColor: '#F3F4F6',
   },
   infoContainer: {
-    flex: 1,
+    padding: 16,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   name: {
-    fontSize: 20, 
-    fontWeight: 'bold',
-    color: '#333',
+    flex: 1,
+    fontSize: Platform.OS === 'ios' ? 17 : 18,
+    fontWeight: '600',
+    color: '#1F2937',
+    marginRight: 8,
   },
   description: {
-    fontSize: 16,
-    color: '#555',
-    marginTop: 4,
+    fontSize: 14,
+    color: '#6B7280',
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statsText: {
+    marginLeft: 6,
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   time: {
-    fontSize: 14, 
-    color: '#888',
-    marginTop: 10,
+    marginLeft: 6,
+    fontSize: 14,
+    color: '#6B7280',
   },
 });
 

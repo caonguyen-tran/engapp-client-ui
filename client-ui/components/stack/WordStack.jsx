@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChooseListNew from "../../app/screens/Word/ChooseListNew";
 import WordHome from "./../../app/screens/Word/WordHome";
@@ -12,12 +12,13 @@ import ListWordPractice from "../../app/screens/Word/ListWordPractice";
 const Stack = createNativeStackNavigator();
 const WordStack = () => {
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="WordHome"
+    <NavigationIndependentTree>
+      <NavigationContainer independent={true}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="WordHome"
           component={WordHome}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
           name="ProcessComplete"
@@ -54,8 +55,9 @@ const WordStack = () => {
           component={ListWordPractice}
           options={{ headerShown: false , gestureEnabled: false}}
         />
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   );
 };
 

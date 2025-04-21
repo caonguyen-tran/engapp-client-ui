@@ -5,11 +5,9 @@ import { useEffect, useState } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import WordLearnedItem from "../../../components/screens/Word/WordLearnedItem";
-import { Feather } from "@expo/vector-icons";
-import { COLORS } from "../../../constants/Instant";
-import { TouchableOpacity } from "react-native";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import LoadingView from "../../../components/lotties/LoadingView";
+import LearnWordFooter from "../../../components/Footer/LearnWordFooter";
 
 const DownloadDetail = ({ route }) => {
   const { collectionId } = route.params;
@@ -60,28 +58,7 @@ const DownloadDetail = ({ route }) => {
               scrollEnabled={false}
             />
           </ScrollView>
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.learnButton}
-              onPress={() =>
-                navigation.navigate("ChooseListNew", {
-                  collectionId: collectionId,
-                })
-              }
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  marginRight: 10,
-                  color: "#fff",
-                }}
-              >
-                Bắt đầu học
-              </Text>
-              <Feather name="book-open" size={24} color="#fff" />
-            </TouchableOpacity>
-          </View>
+          <LearnWordFooter collectionId={collectionId} />
         </>
       )}
     </>
@@ -93,26 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginBottom: 40,
-  },
-  container: {
-    height: 64,
-    backgroundColor: COLORS.primary,
-    justifyContent: "flex-end",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    paddingHorizontal: 20,
-  },
-  learnButton: {
-    width: 180,
-    height: 45,
-    backgroundColor: COLORS.itemColor,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 6,
-  },
+  }
 });
 
 export default DownloadDetail;

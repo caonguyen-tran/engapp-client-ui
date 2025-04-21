@@ -1,13 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BlogHome from "../screens/Blog/BlogHome";
-import { NavigationContainer } from "@react-navigation/native";
-import BlogDetail from "../screens/Blog/BlogDetail";
-import App from "../screens/Blog/TestView";
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
+import BlogDetail from "../../app/screens/Blog/BlogDetail";
+import BlogHome from "../../app/screens/Blog/BlogHome";
+import App from "../../app/screens/Blog/TestView";
 
 const Stack = createNativeStackNavigator();
 const BlogStack = () => {
   return (
-    <>
+    <NavigationIndependentTree>
       <NavigationContainer independent={true}>
         <Stack.Navigator>
           <Stack.Screen
@@ -27,7 +27,7 @@ const BlogStack = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </NavigationIndependentTree>
   );
 };
 

@@ -15,6 +15,7 @@ const LoginStyles = StyleSheet.create({
     headerText: {
         fontSize: 30,
         fontWeight: "700",
+        color: COLORS.active
     },
     inputContainer: {
         padding: 10,

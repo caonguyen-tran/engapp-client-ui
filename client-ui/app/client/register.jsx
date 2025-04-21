@@ -79,7 +79,7 @@ const Register = ({ navigation }) => {
         password: info.password,
         email: info.email,
       };
-      const res = await APIs.post(
+      await APIs.post(
         endpoints["user-service"]["user-register"],
         data
       );
