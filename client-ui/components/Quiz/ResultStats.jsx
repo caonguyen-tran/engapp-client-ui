@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   detailButton: {
-    backgroundColor: COLORS.active,
+    backgroundColor: COLORS.btnColor,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     gap: 8,
     ...Platform.select({
       ios: {
-        shadowColor: COLORS.active,
+        shadowColor: COLORS.btnColor,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 8,

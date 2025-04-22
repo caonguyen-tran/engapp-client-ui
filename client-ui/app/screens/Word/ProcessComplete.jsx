@@ -8,6 +8,7 @@ import { useAuth } from "../../../context/AuthContext";
 import HeaderElement from "../../../components/Header/HeaderElement";
 import CompletedView from "../../../components/lotties/CompletedView";
 import LoadingView from "../../../components/lotties/LoadingView";
+import { COLORS } from "../../../constants/Constant";
 
 const ProcessComplete = ({ route }) => {
   const navigation = useNavigation();
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS.backgroundColor,
   },
   header: {
     fontSize: 24,
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 10,
     marginBottom: 10,
   },
@@ -121,19 +122,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   completeButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS.succcess,
     padding: 10,
     borderRadius: 5,
   },
   completeButtonText: {
-    color: "#FFFFFF",
+    color: COLORS.whiteTextColor,
     fontWeight: "bold",
   },
   backBtn: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#308AFF",
+    backgroundColor: COLORS.btnColor,
     borderRadius: 10,
     padding: 15,
     alignItems: "center",

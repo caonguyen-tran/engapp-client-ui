@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(true);
         const tokenValue = await SecureStore.getItemAsync("access-token");
 
-        console.log(tokenValue);
         if (tokenValue) {
           const validate = await authApi(tokenValue).post(
             endpoints["security-service"]["validate-token"]
@@ -46,7 +45,8 @@ export const AuthProvider = ({ children }) => {
             let res = await authApi(tokenValue).get(
               endpoints["user-service"]["information"]
             );
-      
+            
+            console.log(res.data.data);
             setInfo({
               username: res.data.data.username,
               email: res.data.data.email,

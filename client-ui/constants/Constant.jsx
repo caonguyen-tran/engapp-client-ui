@@ -41,7 +41,8 @@ export const COLORS = {
     doExamAnswerBorderColor: "#00796b",
     lightTextColor: "#333333",
     chooseListNewCardBackgroundColor: "#1e1e1e",
-    quizResultBlueColor: "#1976D2",
+    blueColor: "#1976D2",
+    progressBarColor: "#E0E0E0",
 }
 
 export const wordLevel = {

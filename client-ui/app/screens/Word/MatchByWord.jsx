@@ -4,6 +4,7 @@ import { Alert, TouchableOpacity } from "react-native";
 import { StyleSheet, Text, TextInput, View, SafeAreaView } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderElement from "../../../components/Header/HeaderElement";
+import { COLORS } from "../../../constants/Constant";
 
 const MatchByWord = ({ route }) => {
   const { listNew } = route.params;
@@ -68,7 +69,7 @@ const MatchByWord = ({ route }) => {
           <MaterialIcons 
             name={correct ? "check-circle" : "error"} 
             size={40} 
-            color={correct ? "#4CAF50" : "#F44336"} 
+            color={correct ? COLORS.succcess : COLORS.dangerColor} 
           />
           <Text style={styles.resultText}>
             {correct ? "Chính xác!" : "Chưa đúng"}
@@ -145,7 +146,7 @@ const MatchByWord = ({ route }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.backgroundColor,
   },
   container: {
     flex: 1,
@@ -153,20 +154,20 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 4,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: COLORS.progressBarColor,
     borderRadius: 2,
     marginBottom: 20,
   },
   progress: {
     height: '100%',
-    backgroundColor: '#308AFF',
+    backgroundColor: COLORS.blueColor,
     borderRadius: 2,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 12,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   wordText: {
     fontSize: 32,
     fontWeight: '600',
-    color: '#212121',
+    color: COLORS.blackTextColor,
     marginBottom: 8,
   },
   pronunciationText: {
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   submitButton: {
-    backgroundColor: '#308AFF',
+    backgroundColor: COLORS.buttonColor,
     height: 56,
     borderRadius: 8,
     justifyContent: 'center',
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BDBDBD',
   },
   submitButtonText: {
-    color: '#FFFFFF',
+    color: COLORS.whiteTextColor,
     fontSize: 18,
     fontWeight: '600',
   },
@@ -234,11 +235,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.sectionBackground,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     marginLeft: 12,
-    color: '#212121',
+    color: COLORS.blackTextColor,
   },
   correctAnswer: {
     fontSize: 18,
@@ -263,14 +264,14 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   nextButton: {
-    backgroundColor: '#308AFF',
+    backgroundColor: COLORS.blueColor,
     height: 56,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   nextButtonText: {
-    color: '#FFFFFF',
+    color: COLORS.whiteTextColor,
     fontSize: 18,
     fontWeight: '600',
   },

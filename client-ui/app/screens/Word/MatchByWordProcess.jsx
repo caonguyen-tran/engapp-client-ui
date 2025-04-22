@@ -4,9 +4,9 @@ import { StyleSheet, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from
 import { Text, TextInput, View, Animated } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from "../../../constants/Constant";
 
 const MatchByWordProcess = ({word, handleChoice, visibleCallback, correctCallback}) => {
-  const navigation = useNavigation();
   const [input, setInput] = useState("");
   const [fadeAnim] = useState(new Animated.Value(0));
   const [shakeAnim] = useState(new Animated.Value(0));
@@ -122,14 +122,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     width: "100%",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS.backgroundColor,
   },
   card: {
     width: "100%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 16,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: COLORS.whiteTextColor,
     marginRight: 8,
   },
 });

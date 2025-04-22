@@ -7,6 +7,7 @@ import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { TouchableOpacity } from "react-native";
+import { COLORS } from "../../../constants/Constant";
 
 const ListWordPractice = () => {
   const [listWord, setListWord] = useState([]);
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f0f4f8",
+    backgroundColor: COLORS.backgroundColor,
     paddingBottom: 100,
   },
   headerText: {
@@ -120,11 +121,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 10,
     padding: 20,
     width: "100%",
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
@@ -134,11 +135,11 @@ const styles = StyleSheet.create({
   wordText: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    color: COLORS.subTextColor,
   },
   pronunciationText: {
     fontSize: 18,
-    color: "#777",
+    color: COLORS.subTextColor,
     marginBottom: 15,
   },
   section: {
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: COLORS.whiteTextColor,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#4caf50",
+    backgroundColor: COLORS.succcess,
     padding: 15,
     alignItems: "center",
     justifyContent: "center",
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   buttonText: {
-    color: "#fff",
+    color: COLORS.whiteTextColor,
     fontSize: 16,
     fontWeight: "bold",
   },

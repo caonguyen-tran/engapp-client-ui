@@ -39,11 +39,7 @@ const ProfileOption = ({ icon, title, onPress }) => {
   };
 
   return (
-    <Pressable
-      onPress={onPress}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
-    >
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
       <Animated.View
         style={[
           styles.optionItem,
@@ -67,23 +63,6 @@ const ProfileOption = ({ icon, title, onPress }) => {
 
 const ProfileHome = ({ navigation }) => {
   const { info } = useAuth();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(50)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 600,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 600,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
 
   const options = [
     {
@@ -132,23 +111,15 @@ const ProfileHome = ({ navigation }) => {
         <Text style={styles.textHeader}>Profile</Text>
       </View>
 
-      <Animated.View
-        style={[
-          styles.profileView,
-          {
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          },
-        ]}
-      >
+      <Animated.View style={styles.profileView}>
         <View style={styles.avatarFrame}>
           <Image
             source={require("../../../assets/images/EngApp.png")}
             style={styles.avatar}
           />
         </View>
-        <Text style={styles.username}>{info.username}</Text>
-        <Text style={styles.email}>{info.email}</Text>
+        <Text style={styles.username}>{info ? info.username : "Loading..."}</Text>
+        <Text style={styles.email}>{info ? info.email : "Loading..."}</Text>
       </Animated.View>
 
       <ScrollView

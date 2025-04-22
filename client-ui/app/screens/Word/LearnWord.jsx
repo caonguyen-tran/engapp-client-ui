@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { COLORS } from "../../../constants/Constant";
 
 const LearnWord = ({ word, handleChoice, listWord, visibleCallback, correctCallback }) => {
   const [options, setOptions] = useState([]);
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   progressBar: {
     alignSelf: "stretch",
     height: 20,
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS.succcess,
     marginHorizontal: 20,
     borderRadius: 10,
     marginTop: 40,
@@ -88,13 +89,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#f7f7f7",
+    backgroundColor: COLORS.backgroundColor,
     paddingTop: 50,
   },
   question: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    color: COLORS.text,
     textAlign: "center",
     marginHorizontal: 20,
     marginBottom: 20,
@@ -107,27 +108,27 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     marginHorizontal: 20,
-    borderColor: "#ccc",
+    borderColor: COLORS.border,
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
     width: "90%",
     paddingHorizontal: 15,
     fontSize: 18,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
   },
   option: {
     height: 100,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.sectionBackground,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "stretch",
     marginHorizontal: 20,
     marginBottom: 10,
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -136,11 +137,11 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 18,
     textAlign: "center",
-    color: "#333",
+    color: COLORS.subTextColor,
   },
   feedback: {
     fontSize: 18,
-    color: "#E53935",
+    color: COLORS.dangerColor,
     margin: 20,
   },
   bottomText: {
@@ -152,12 +153,11 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 10,
-    backgroundColor: "red",
+    backgroundColor: COLORS.sectionBackground,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 5,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,

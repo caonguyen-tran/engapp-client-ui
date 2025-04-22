@@ -44,7 +44,7 @@ const QuizResult = ({ navigation }) => {
       >
         <View style={styles.itemHeader}>
           <View style={styles.titleContainer}>
-            <MaterialIcons name="assignment" size={24} color={COLORS.quizResultBlueColor} />
+            <MaterialIcons name="assignment" size={24} color={COLORS.blueColor} />
             <Text style={styles.title}>{result.questionSet.name}</Text>
           </View>
         </View>
@@ -89,7 +89,7 @@ const QuizResult = ({ navigation }) => {
       ) : (
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
-            <MaterialIcons name="history" size={24} color={COLORS.quizResultBlueColor} />
+            <MaterialIcons name="history" size={24} color={COLORS.blueColor} />
             <Text style={styles.headerText}>Danh sách bài test đã làm</Text>
           </View>
           <FlatList
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: '600',
-    color: COLORS.quizResultBlueColor,
+    color: COLORS.blueColor,
   },
   listContainer: {
     paddingBottom: 16,
