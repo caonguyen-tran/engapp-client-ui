@@ -47,7 +47,7 @@ const WordTypeItem = ({ data, label, icon }) => {
         <Text style={styles.wordText}>
           {loading ? "Đang dịch..." : word}
         </Text>
-        <MaterialIcons name="translate" size={16} color={COLORS.primary} style={styles.translateIcon} />
+        <MaterialIcons name="translate" size={16} color={COLORS.active} style={styles.translateIcon} />
       </TouchableOpacity>
     );
   };
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   wordCard: {
     flex: 1,
     minWidth: '45%',
-    backgroundColor: COLORS.backgroundColor,
+    backgroundColor: COLORS.lightGrayColor,
     borderRadius: 8,
     padding: 12,
     flexDirection: 'row',

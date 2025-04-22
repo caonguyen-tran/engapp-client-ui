@@ -44,19 +44,19 @@ const ResultStats = ({ detailPress }) => {
           icon="check-circle"
           label="Tỉ lệ trả lời đúng"
           value="85%"
-          color={COLORS.correctRate}
+          color={COLORS.greenIconColor}
         />
         <StatItem
           icon="timer"
           label="Thời gian trung bình"
           value="30 phút"
-          color={COLORS.averageTime}
+          color={COLORS.blueIconColor}
         />
         <StatItem
           icon="star"
           label="Điểm trung bình"
           value="7.5"
-          color={COLORS.averageScore}
+          color={COLORS.yellowIconColor}
         />
       </View>
 

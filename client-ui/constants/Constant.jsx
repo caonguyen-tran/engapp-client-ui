@@ -43,6 +43,11 @@ export const COLORS = {
     chooseListNewCardBackgroundColor: "#1e1e1e",
     blueColor: "#1976D2",
     progressBarColor: "#E0E0E0",
+    lightGrayColor: "#E0E0E0",
+    greenIconColor: "#4CAF50",
+    blueIconColor: "#2196F3",
+    yellowIconColor: "#FF9800",
+    titleColor: "#1a237e",
 }
 
 export const wordLevel = {

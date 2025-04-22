@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: COLORS.lightColor,
     borderRadius: 6,
-    marginTop: 30,
   },
   viewImage: {
     height: 60,

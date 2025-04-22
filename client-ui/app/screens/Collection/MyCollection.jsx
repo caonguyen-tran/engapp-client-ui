@@ -9,6 +9,7 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import CollectionItem from "../../../components/screens/Collection/CollectionItem";
 import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from "../../../constants/Constant";
 
 const MyCollection = () => {
   const [data, setData] = useState([]);
@@ -39,21 +40,21 @@ const MyCollection = () => {
       id: 1,
       title: "Tạo bộ sưu tập",
       icon: "add-circle-outline",
-      color: "#4CAF50",
+      color: COLORS.greenIconColor,
       onPress: () => navigation.navigate("CreateCollection"),
     },
     {
       id: 2,
       title: "Tìm kiếm",
       icon: "search",
-      color: "#2196F3",
+      color: COLORS.blueIconColor,
       onPress: () => {},
     },
     {
       id: 3,
       title: "Sắp xếp",
       icon: "sort",
-      color: "#FF9800",
+      color: COLORS.yellowIconColor,
       onPress: () => {},
     },
   ];
@@ -143,7 +144,7 @@ const MyCollection = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: COLORS.backgroundColor,
   },
   scrollView: {
     flex: 1,
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#1a237e",
+    color: COLORS.titleColor,
     marginBottom: 8,
     textAlign: "center",
   },
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   createButtonText: {
-    color: "#ffffff",
+    color: COLORS.whiteColor,
     fontSize: 16,
     fontWeight: "600",
   },

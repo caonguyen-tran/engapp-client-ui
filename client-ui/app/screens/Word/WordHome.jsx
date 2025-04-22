@@ -1,140 +1,312 @@
 import { useNavigation } from "@react-navigation/native";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import React from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
-import WordLevelView from "../../../components/screens/Word/WordLevelView";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
 import { COLORS } from "./../../../constants/Constant";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Camera } from "expo-camera";
 
 const WordHome = () => {
   const navigation = useNavigation();
+  const [hasPermission, setHasPermission] = React.useState(null);
 
-  const wordLevel = {
-    one: {
-      key: 1,
-      value: 12,
-    },
-    two: {
-      key: 2,
-      value: 51,
-    },
-    three: {
-      key: 3,
-      value: 6,
-    },
-    four: {
-      key: 4,
-      value: 32,
-    },
-    five: {
-      key: 5,
-      value: 77,
-    },
-    six: {
-      key: 6,
-      value: 42,
-    },
-  };
+  React.useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
-  const navHandle = () => {
-    navigation.navigate("ListWordPractice");
-  };
+  const quickActions = [
+    {
+      id: 1,
+      title: "Chụp ảnh",
+      icon: "camera-alt",
+      color: COLORS.greenIconColor,
+      onPress: () => navigation.navigate("CameraScan"),
+    },
+    {
+      id: 2,
+      title: "Thư viện",
+      icon: "photo-library",
+      color: COLORS.blueIconColor,
+      onPress: () => navigation.navigate("ImageLibrary"),
+    },
+    {
+      id: 3,
+      title: "Lịch sử",
+      icon: "history",
+      color: COLORS.yellowIconColor,
+      onPress: () => navigation.navigate("ScanHistory"),
+    },
+  ];
 
   return (
-    <>
-      <HeaderStack label="Bộ từ của bạn" />
-      <ScrollView>
-        <View style={styles.content}>
+    <View style={styles.container}>
+      <HeaderStack label="Học từ vựng thông minh" />
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.headerSection}>
+          <Text style={styles.title}>Học từ vựng với AI</Text>
           <Text style={styles.subtitle}>
-            Learn less, remember more with scientific method Spaced Repetition
+            Chụp ảnh hoặc chọn từ thư viện để học từ vựng mới
           </Text>
-          <View style={styles.statisticView}>
-            <Text style={styles.learnedWords}>Đã học 148/302 từ</Text>
-            <WordLevelView keyLevel={wordLevel["one"]} color={COLORS.level1} />
-            <WordLevelView keyLevel={wordLevel["two"]} color={COLORS.level2} />
-            <WordLevelView
-              keyLevel={wordLevel["three"]}
-              color={COLORS.level3}
-            />
-            <WordLevelView keyLevel={wordLevel["four"]} color={COLORS.level4} />
-            <WordLevelView keyLevel={wordLevel["five"]} color={COLORS.level5} />
-            <WordLevelView keyLevel={wordLevel["six"]} color={COLORS.level6} />
+        </View>
+
+        <View style={styles.quickActions}>
+          {quickActions.map((action) => (
+            <TouchableOpacity
+              key={action.id}
+              style={styles.actionButton}
+              onPress={action.onPress}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[
+                  styles.iconContainer,
+                  { backgroundColor: action.color + "20" },
+                ]}
+              >
+                <MaterialIcons
+                  name={action.icon}
+                  size={32}
+                  color={action.color}
+                />
+              </View>
+              <Text style={styles.actionTitle}>{action.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <View style={styles.statsCard}>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>148</Text>
+            <Text style={styles.statLabel}>Từ đã học</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>85%</Text>
+            <Text style={styles.statLabel}>Tỷ lệ nhớ</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>24</Text>
+            <Text style={styles.statLabel}>Lần quét</Text>
+          </View>
+        </View>
+
+        <View style={styles.recentScans}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Lần quét gần đây</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ScanHistory")}
+            >
+            </TouchableOpacity>
+          </View>
+          <View style={styles.scanList}>
+            <View style={styles.scanItem}>
+              <MaterialIcons name="photo-camera" size={24} color="#666666" />
+              <View style={styles.scanInfo}>
+                <Text style={styles.scanTitle}>Quét hình ảnh</Text>
+                <Text style={styles.scanTime}>2 phút trước</Text>
+              </View>
+              <MaterialIcons name="chevron-right" size={24} color="#666666" />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.recentScans}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Nhắc nhở ôn tập</Text>
           </View>
           <ReminderView
             custom={{
-              width: "90%",
-              borderRadius: 20,
+              width: "100%",
+              borderRadius: 16,
+              backgroundColor: COLORS.sectionBackground,
               shadowColor: "#000",
-              shadowOpacity: 0.2,
-              shadowOffset: { width: 0, height: 3 },
-              shadowRadius: 5,
-              elevation: 5,
+              shadowOpacity: 0.1,
+              shadowOffset: { width: 0, height: 2 },
+              shadowRadius: 8,
+              elevation: 3
             }}
-            navHandle={navHandle}
+            navHandle={() => navigation.navigate("ListWordPractice")}
           />
         </View>
-        <DownloadedView navigation={navigation} />
+
+        <View style={styles.downloadedSection}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Bộ sưu tập đã tải</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("MyCollection")}
+            >
+              <Text style={styles.seeAll}>Xem tất cả</Text>
+            </TouchableOpacity>
+          </View>
+          <DownloadedView navigation={navigation} />
+        </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerText: {
-    color: "#FFF",
-    fontSize: 24,
-    fontWeight: "bold",
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 24,
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 24,
+  },
+  headerSection: {
+    marginBottom: 32,
     alignItems: "center",
+    paddingHorizontal: 24,
+    paddingTop: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: COLORS.titleColor,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  reminderSection: {
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: 30,
   },
   subtitle: {
-    color: "#000",
     fontSize: 16,
-    marginBottom: 10,
+    color: "#666666",
+    textAlign: "center",
+    lineHeight: 24,
   },
-  learnedWords: {
-    color: "#000",
-    fontSize: 18,
-    fontWeight: "bold",
+  quickActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 32,
+    paddingHorizontal: 24,
   },
-  button: {
-    backgroundColor: "#6200EA",
-    borderRadius: 10,
-    padding: 15,
-    marginTop: 20,
+  actionButton: {
     alignItems: "center",
+    width: "30%",
   },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 18,
-    fontWeight: "bold",
+  iconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 8,
   },
-  footer: {
+  actionTitle: {
+    fontSize: 14,
+    color: "#333333",
+    textAlign: "center",
+  },
+  statsCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
     padding: 20,
-    backgroundColor: "#212121",
-  },
-  footerText: {
-    color: "#FFF",
-    fontSize: 16,
-  },
-  statisticView: {
-    width: "98%",
-    height: 380,
-    borderRadius: 12,
-    backgroundColor: "#FFF",
-    marginTop: 15,
-    elevation: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 20,
+    marginBottom: 24,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
-    elevation: 5,
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 2,
+    marginHorizontal: 24,
+  },
+  statItem: {
+    alignItems: "center",
+    flex: 1,
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#1a237e",
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: "#666666",
+  },
+  statDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: "#E0E0E0",
+  },
+  recentScans: {
+    marginBottom: 24,
+    paddingHorizontal: 24,
+    width: "100%",
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#333333",
+  },
+  seeAll: {
+    fontSize: 14,
+    color: COLORS.primary,
+  },
+  scanList: {
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 16,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  scanItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+  },
+  scanInfo: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  scanTitle: {
+    fontSize: 16,
+    color: "#333333",
+    marginBottom: 4,
+  },
+  scanTime: {
+    fontSize: 14,
+    color: "#666666",
+  },
+  downloadedSection: {
+    paddingHorizontal: 24,
   },
 });
 
