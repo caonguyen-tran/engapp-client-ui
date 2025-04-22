@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     await SecureStore.deleteItemAsync("access-token");
     setToken(null);
+    setInfo(null);
     setIsLoading(false);
   };
 
@@ -65,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
     loadToken();
-  }, []);
+  }, [token]);
 
   return (
     <AuthContext.Provider

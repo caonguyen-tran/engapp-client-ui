@@ -39,10 +39,7 @@ const EditProfile = ({ navigation }) => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={onPress}
-      style={[
-        styles.actionButton,
-        danger && styles.dangerButton
-      ]}
+      style={[styles.actionButton, danger && styles.dangerButton]}
     >
       <MaterialIcons
         name={icon}
@@ -50,19 +47,14 @@ const EditProfile = ({ navigation }) => {
         color={danger ? COLORS.dangerColor : COLORS.blackTextColor}
         style={styles.actionIcon}
       />
-      <Text style={[
-        styles.actionText,
-        danger && styles.dangerText
-      ]}>
+      <Text style={[styles.actionText, danger && styles.dangerText]}>
         {title}
       </Text>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundColor} />
-      
+    <>
       <HeaderScreen
         nameIcon="edit"
         label="Chỉnh sửa thông tin"
@@ -70,7 +62,7 @@ const EditProfile = ({ navigation }) => {
         handlePress={() => setEdit(!edit)}
       />
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
@@ -81,7 +73,11 @@ const EditProfile = ({ navigation }) => {
               style={styles.avatar}
             />
             <Pressable style={styles.editAvatarButton}>
-              <MaterialIcons name="photo-camera" size={20} color={COLORS.whiteTextColor} />
+              <MaterialIcons
+                name="photo-camera"
+                size={20}
+                color={COLORS.whiteTextColor}
+              />
             </Pressable>
           </View>
         </View>
@@ -128,7 +124,9 @@ const EditProfile = ({ navigation }) => {
           <ActionButton
             icon="logout"
             title="Đăng xuất"
-            onPress={removeToken}
+            onPress={() => {
+              removeToken();
+            }}
             danger
           />
         </View>
@@ -141,7 +139,7 @@ const EditProfile = ({ navigation }) => {
           <Text style={styles.saveButtonText}>Lưu thay đổi</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileSection: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 24,
     backgroundColor: COLORS.sectionBackground,
     borderBottomLeftRadius: 24,
@@ -175,7 +173,7 @@ const styles = StyleSheet.create({
     }),
   },
   avatarContainer: {
-    position: 'relative',
+    position: "relative",
     padding: 4,
     backgroundColor: COLORS.sectionBackground,
     borderRadius: 70,
@@ -197,15 +195,15 @@ const styles = StyleSheet.create({
     borderRadius: 60,
   },
   editAvatarButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     bottom: 0,
     backgroundColor: COLORS.active,
     width: 36,
     height: 36,
     borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 3,
     borderColor: COLORS.sectionBackground,
     ...Platform.select({
@@ -240,13 +238,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.blackTextColor,
     marginBottom: 16,
   },
   actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
     backgroundColor: COLORS.sectionBackground,
     borderRadius: 12,
@@ -257,11 +255,11 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.blackTextColor,
   },
   dangerButton: {
-    backgroundColor: 'rgba(255, 59, 48, 0.1)',
+    backgroundColor: "rgba(255, 59, 48, 0.1)",
   },
   dangerText: {
     color: COLORS.dangerColor,
@@ -272,8 +270,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     height: 56,
     borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     ...Platform.select({
       ios: {
         shadowColor: COLORS.active,
@@ -288,7 +286,7 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.whiteTextColor,
   },
 });
