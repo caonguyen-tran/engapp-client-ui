@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Animated, Image } from "react-native";
 import { useEffect, useRef } from "react";
+import { COLORS } from "../../../constants/Constant";
 
 const LoadingScreen = () => {
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -59,7 +60,7 @@ const LoadingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.backgroundColor,
     justifyContent: "center",
     alignItems: "center",
   },

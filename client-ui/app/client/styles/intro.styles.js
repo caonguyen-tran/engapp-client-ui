@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 
 export const introStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.backgroundColor,
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
@@ -23,7 +23,7 @@ export const introStyles = StyleSheet.create({
   },
   slogan: {
     fontSize: 18,
-    color: "#4B5563",
+    color: COLORS.subTextColor,
     marginTop: 6,
     fontWeight: "500",
   },
@@ -42,7 +42,7 @@ export const introStyles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 20,
-    color: "#FFFFFF",
+    color: COLORS.whiteTextColor,
     fontWeight: "600",
   },
 }); 

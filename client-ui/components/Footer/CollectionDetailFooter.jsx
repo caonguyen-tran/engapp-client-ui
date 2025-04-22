@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Text, View, Animated, ActivityIndicator } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/Instant";
+import { COLORS } from "../../constants/Constant";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";

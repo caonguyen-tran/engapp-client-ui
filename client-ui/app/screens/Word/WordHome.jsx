@@ -5,7 +5,7 @@ import { StyleSheet, View, Text, ScrollView } from "react-native";
 import WordLevelView from "../../../components/screens/Word/WordLevelView";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
-import { COLORS } from "./../../../constants/Instant";
+import { COLORS } from "./../../../constants/Constant";
 
 const WordHome = () => {
   const navigation = useNavigation();

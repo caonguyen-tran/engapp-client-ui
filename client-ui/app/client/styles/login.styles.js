@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 
 export const loginStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.backgroundColor,
     paddingHorizontal: 24,
     paddingTop: 80,
   },
@@ -16,7 +16,7 @@ export const loginStyles = StyleSheet.create({
   },
   subText: {
     fontSize: 16,
-    color: "#6B7280",
+    color: COLORS.subTextColor,
     marginBottom: 30,
   },
   inputContainer: {
@@ -45,7 +45,7 @@ export const loginStyles = StyleSheet.create({
   },
   loginText: {
     fontSize: 18,
-    color: "#fff",
+    color: COLORS.whiteTextColor,
     fontWeight: "700",
   },
   registerContainer: {
@@ -55,7 +55,7 @@ export const loginStyles = StyleSheet.create({
   },
   registerText: {
     fontSize: 15,
-    color: "#6B7280",
+    color: COLORS.subTextColor,
   },
   registerLink: {
     fontSize: 15,

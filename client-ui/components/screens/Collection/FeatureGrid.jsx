@@ -1,13 +1,10 @@
 import React from "react";
 import {
   View,
-  FlatList,
   TouchableOpacity,
-  Image,
   Text,
   StyleSheet,
 } from "react-native";
-import { COLORS } from "../../../constants/Instant";
 import { Entypo, FontAwesome5, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 

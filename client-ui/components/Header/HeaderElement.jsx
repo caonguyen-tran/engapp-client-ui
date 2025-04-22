@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/Instant";
-import { AntDesign, Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { COLORS } from "../../constants/Constant";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 const HeaderElement = ({closeHandle, handlePress, textHeader}) => {
   return (

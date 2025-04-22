@@ -14,7 +14,7 @@ const QuizStack = () => {
           <Stack.Screen
             name="QuizHome"
           component={QuizHome}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
           name="DoExamProcess"

@@ -7,6 +7,7 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
+import { COLORS } from "../../../constants/Constant";
 
 const ChooseListNew = ({ route }) => {
   const [index, setIndex] = useState(0);
@@ -69,6 +70,10 @@ const ChooseListNew = ({ route }) => {
 
   return (
     <>
+      <HeaderElement
+        textHeader={`Chọn từ để học ${wordCount}/5`}
+        closeHandle={() => handleClose()}
+      />
       {loading ? (
         <LoadingView />
       ) : listWord ? (
@@ -79,10 +84,6 @@ const ChooseListNew = ({ route }) => {
           />
         ) : (
           <>
-            <HeaderElement
-              textHeader={`Chọn từ để học ${wordCount}/5`}
-              closeHandle={() => handleClose()}
-            />
             {listWord[index] ? (
               <View style={styles.container}>
                 <View style={styles.card}>
@@ -161,11 +162,11 @@ const ChooseListNew = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLORS.backgroundColor,
     padding: 10,
   },
   card: {
-    backgroundColor: "#1e1e1e",
+    backgroundColor: COLORS.chooseListNewCardBackgroundColor,
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   word: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: COLORS.whiteTextColor,
     textAlign: "center",
     marginBottom: 10,
   },
@@ -199,13 +200,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   learnButton: {
-    backgroundColor: "#308AFF",
+    backgroundColor: COLORS.btnColor,
     borderRadius: 10,
     padding: 15,
     alignItems: "center",
   },
   skipButton: {
-    backgroundColor: "gray",
+    backgroundColor: COLORS.lightTextColor,
     borderRadius: 10,
     padding: 15,
     alignItems: "center",
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: COLORS.whiteTextColor,
   },
   bottomText: {
     flexDirection: "row",
@@ -225,12 +226,12 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 10,
-    backgroundColor: "red",
+    backgroundColor: COLORS.dangerColor,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 5,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: COLORS.sectionBackground,
+    shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,

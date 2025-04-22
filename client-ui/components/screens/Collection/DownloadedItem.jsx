@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import {
   ActionSheetIOS,
@@ -10,7 +9,6 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { useDownload } from "../../../context/DownloadContext";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
-import { useEffect } from "react";
 
 const DownloadedItem = ({ item, navigation }) => {
   const timeAgo = moment(item.downloadAt).fromNow();

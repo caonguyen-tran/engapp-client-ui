@@ -1,7 +1,7 @@
 import moment from "moment";
 import { TouchableOpacity, Image, StyleSheet, Text, View, Platform } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 
 const CollectionItem = ({item, navigation}) => {
   const timeAgo = moment(item.createAt).fromNow();

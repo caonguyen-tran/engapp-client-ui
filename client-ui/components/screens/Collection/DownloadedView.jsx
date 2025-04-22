@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { authApi, endpoints } from "../../../apis/APIs";
-import { useAuth } from "../../../context/AuthContext";
 import DownloadedItem from "./DownloadedItem";
 import LoadingView from "../../lotties/LoadingView";
 import { useDownload } from "../../../context/DownloadContext";

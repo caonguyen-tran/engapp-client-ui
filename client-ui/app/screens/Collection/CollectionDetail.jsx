@@ -9,7 +9,7 @@ import ListWordView from "../Word/ListWordView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { useDownload } from "../../../context/DownloadContext";
 import { MaterialIcons } from '@expo/vector-icons';
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 
 const CollectionDetail = ({ navigation, route }) => {
   const [data, setData] = useState([]);
@@ -96,7 +96,7 @@ const CollectionDetail = ({ navigation, route }) => {
               <>
                 <View style={styles.statsContainer}>
                   <View style={styles.statItem}>
-                    <MaterialIcons name="folder" size={24} color={COLORS.primary} />
+                    <MaterialIcons name="folder" size={24} color={COLORS.blackTextColor} />
                     <Text style={styles.statNumber}>{data.length}</Text>
                     <Text style={styles.statLabel}>Từ vựng</Text>
                   </View>
@@ -128,12 +128,12 @@ const CollectionDetail = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: COLORS.backgroundColor,
   },
   headerContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.sectionBackground,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: COLORS.line,
     zIndex: 10,
   },
   scrollView: {
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.sectionBackground,
     marginBottom: 8,
     elevation: 1,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1F2937',
+    color: COLORS.blackTextColor,
     marginTop: 8,
   },
   statLabel: {
     fontSize: 14,
-    color: '#6B7280',
+    color: COLORS.footerTextColor,
     marginTop: 4,
   },
 });

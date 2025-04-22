@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Button,
 } from "react-native";
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 
 const AnswerAlert = ({
   isCorrect,

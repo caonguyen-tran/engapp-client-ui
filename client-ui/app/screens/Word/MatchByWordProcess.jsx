@@ -1,106 +1,191 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Text, TextInput, View } from "react-native";
+import { StyleSheet, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Text, TextInput, View, Animated } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+
 const MatchByWordProcess = ({word, handleChoice, visibleCallback, correctCallback}) => {
   const navigation = useNavigation();
   const [input, setInput] = useState("");
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [shakeAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    // Fade in animation when component mounts
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   const handleSubmitAnswer = () => {
-    const isCorrect = input === word.wordResponse.word
-    if(isCorrect){ 
-      correctCallback(true)
-      handleChoice(true)
+    const isCorrect = input.toLowerCase().trim() === word.wordResponse.word.toLowerCase().trim();
+    
+    if (isCorrect) {
+      correctCallback(true);
+      handleChoice(true);
+    } else {
+      // Shake animation for incorrect answer
+      Animated.sequence([
+        Animated.timing(shakeAnim, {
+          toValue: 10,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnim, {
+          toValue: -10,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnim, {
+          toValue: 10,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnim, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ]).start();
+      
+      correctCallback(false);
+      handleChoice(false);
     }
-    else{
-      correctCallback(false)
-      handleChoice(false)
+    visibleCallback();
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.nativeEvent.key === 'Enter') {
+      handleSubmitAnswer();
     }
-    visibleCallback()
-  }
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.wordView}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontSize: 26, fontWeight: "500" }}>
-            {word.wordResponse.definition}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          onChangeText={setInput}
-          value={input}
-          placeholder="Type the correct word"
-          placeholderTextColor="gray"
-          autoCapitalize="none"
-        />
-      </View>
-      <TouchableOpacity
-        onPress={() => handleSubmitAnswer()}
-        style={styles.learnButton}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Animated.View 
+        style={[
+          styles.container, 
+          { opacity: fadeAnim, transform: [{ translateX: shakeAnim }] }
+        ]}
       >
-        <Text style={styles.buttonText}>Xong</Text>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.card}>
+          <View style={styles.wordView}>
+            <MaterialIcons name="lightbulb" size={24} color="#FFC107" style={styles.icon} />
+            <Text style={styles.definitionText}>
+              {word.wordResponse.definition}
+            </Text>
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setInput}
+              value={input}
+              placeholder="Type the correct word"
+              placeholderTextColor="#9E9E9E"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onSubmitEditing={handleSubmitAnswer}
+              returnKeyType="done"
+              blurOnSubmit={true}
+            />
+          </View>
+          
+          <TouchableOpacity
+            onPress={handleSubmitAnswer}
+            style={styles.submitButton}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={['#308AFF', '#1E88E5']}
+              style={styles.gradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+              <MaterialIcons name="arrow-forward" size={20} color="#FFFFFF" />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     padding: 20,
     width: "100%",
-    marginTop: 30,
+    backgroundColor: "#F5F5F5",
+  },
+  card: {
+    width: "100%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   wordView: {
-    height: 150,
+    minHeight: 120,
     width: "100%",
     justifyContent: "center",
-    paddingHorizontal: 40,
-  },
-  definitionContainer: {
+    paddingHorizontal: 20,
     marginBottom: 20,
-    paddingHorizontal: 10,
+    backgroundColor: "#F8F9FA",
+    borderRadius: 12,
+    padding: 16,
   },
-  definition: {
-    fontSize: 16,
-    textAlign: "center",
-    width: "80%",
-    marginVertical: 10,
+  definitionText: {
+    fontSize: 22,
+    fontWeight: "500",
+    color: "#333333",
+    lineHeight: 30,
   },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    padding: 10,
-    fontSize: 18,
-    width: "90%",
-  },
-  btnSubmit: {
-    height: 40,
-    width: 60,
-    backgroundColor: "red",
+  icon: {
+    marginBottom: 10,
   },
   inputContainer: {
     width: "100%",
-    paddingHorizontal: 10,
-    alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 24,
   },
-  learnButton: {
-    backgroundColor: "#308AFF",
-    borderRadius: 10,
-    padding: 15,
+  input: {
+    height: 56,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    borderRadius: 8,
+    padding: 16,
+    fontSize: 18,
+    backgroundColor: "#FFFFFF",
+    color: "#333333",
+  },
+  submitButton: {
+    width: "100%",
+    height: 56,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  gradient: {
+    flex: 1,
+    flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 30,
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#FFFFFF",
+    marginRight: 8,
   },
 });
 

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from "react-native";
-import { COLORS } from "../../constants/Instant";
+import { COLORS } from "../../constants/Constant";
 import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const TabIcon = ({ name, focused, color }) => {

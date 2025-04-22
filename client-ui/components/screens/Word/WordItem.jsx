@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Animated } from "react-native";
-import { COLORS, wordLevel } from "../../../constants/Instant";
+import { COLORS, wordLevel } from "../../../constants/Constant";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from "react";
 

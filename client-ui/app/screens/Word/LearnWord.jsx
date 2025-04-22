@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  Animated,
-  Button,
-  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 
-const LearnWord = ({ navigation, word, handleChoice, listWord, visibleCallback, correctCallback }) => {
+const LearnWord = ({ word, handleChoice, listWord, visibleCallback, correctCallback }) => {
   const [options, setOptions] = useState([]);
 
   const fillOptions = (arrays) => {

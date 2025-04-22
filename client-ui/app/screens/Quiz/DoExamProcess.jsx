@@ -7,6 +7,7 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
+import { COLORS } from "../../../constants/Constant";
 
 const DoExamProcess = ({ route }) => {
   const [clone, setClone] = useState([]);
@@ -174,46 +175,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: COLORS.backgroundColor,
   },
   questionSetName: {
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 25,
-    color: "#333",
+    color: COLORS.blackTextColor,
   },
   questionContent: {
     fontSize: 16,
     fontWeight: "500",
     marginBottom: 20,
-    color: "#000",
+    color: COLORS.blackTextColor,
   },
   answersContainer: {
     marginVertical: 15,
   },
   answerOption: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.sectionBackground,
     padding: 15,
     borderRadius: 8,
     marginBottom: 10,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
   },
   selectedAnswer: {
-    backgroundColor: "#e0f7fa",
+    backgroundColor: COLORS.doExamAnswerBackgroundColor,
     padding: 15,
     borderRadius: 8,
     marginBottom: 10,
-    borderColor: "#00796b",
+    borderColor: COLORS.doExamAnswerBorderColor,
     borderWidth: 2,
   },
   answerText: {
     fontSize: 16,
-    color: "#333",
+    color: COLORS.lightTextColor,
   },
 });
 export default DoExamProcess;

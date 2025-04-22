@@ -1,49 +1,60 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
-  FlatList,
   StyleSheet,
   ScrollView,
   Alert,
+  SafeAreaView,
+  Platform,
+  RefreshControl,
 } from "react-native";
-import { useAuth } from "./../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
-import { TouchableOpacity } from "react-native";
 import ResultStats from "../../../components/Quiz/ResultStats";
+import QuizItem from "../../../components/Quiz/QuizItem";
 import { useNavigation } from "@react-navigation/native";
+import { COLORS } from "../../../constants/Constant";
 
 const QuizHome = () => {
   const [listQuestionSet, setListQuestionSet] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { token } = useAuth();
   const navigation = useNavigation();
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const res = await authApi(token).get(
+        endpoints["quiz-service"]["get-all-question-set"]
+      );
+      setListQuestionSet(res.data.data);
+    } catch (ex) {
+      console.log(ex);
+      Alert.alert("Lỗi", "Không thể tải dữ liệu. Vui lòng thử lại sau.", [
+        { text: "Đóng" },
+      ]);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        let res = await authApi(token).get(
-          endpoints["quiz-service"]["get-all-question-set"]
-        );
-
-        setListQuestionSet(res.data.data);
-      } catch (ex) {
-        console.log(ex);
-      }
-      setLoading(false);
-    };
-
     fetchData();
   }, []);
 
-  const alertConfirmDoQuiz = (questionSetId) => {
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  };
+
+  const handleStartQuiz = (questionSetId) => {
     Alert.alert(
-      "Thông báo",
-      "Bạn có 15 phút cho đề này, bạn có muốn bắt đầu không ?",
+      "Bắt đầu làm bài",
+      "Bạn có 15 phút để hoàn thành bài kiểm tra này. Bạn có muốn bắt đầu không?",
       [
         {
           text: "Bắt đầu",
@@ -52,120 +63,68 @@ const QuizHome = () => {
               questionSetId: questionSetId,
             }),
         },
-        { text: "Cancel", onPress: () => {}, style: "cancel" },
+        { text: "Hủy", style: "cancel" },
       ],
       { cancelable: true }
     );
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.questionSetView}>
-      <View style={styles.itemContainer}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.date}>
-          Ngày tạo: {new Date(item.createdDate).toLocaleDateString()}
-        </Text>
-        <Text style={styles.part}>Reading Part: {item.readingPart}</Text>
-        <Text
-          style={[styles.status, { color: item.isActive ? "green" : "red" }]}
-        >
-          Trạng thái: {item.isActive ? "Hoạt động" : "Không hoạt động"}
-        </Text>
-      </View>
-      {item.isActive ? (
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => alertConfirmDoQuiz(item.id)}
-        >
-          <Text style={styles.buttonText}>Làm bài</Text>
-        </TouchableOpacity>
-      ) : (
-        <></>
-      )}
-    </View>
-  );
-
-  return (
-    <>
-      <HeaderStack />
-      {loading ? (
+  if (loading && !refreshing) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <HeaderStack />
         <LoadingView />
-      ) : listQuestionSet.length <= 0 ? (
+      </SafeAreaView>
+    );
+  }
+
+  if (listQuestionSet.length === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <HeaderStack />
         <NoActiveView
           textAlert="Bộ câu hỏi chưa được cập nhật!"
           visible={false}
         />
-      ) : (
-        <>
-          <ScrollView>
-            <ResultStats detailPress={() => navigation.navigate("QuizResult")}/>
-            <FlatList
-              data={listQuestionSet}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
-              scrollEnabled={false}
-            />
-          </ScrollView>
-        </>
-      )}
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <>
+      <HeaderStack />
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <ResultStats detailPress={() => navigation.navigate("QuizResult")} />
+
+        <View style={styles.quizList}>
+          {listQuestionSet.map((item) => (
+            <QuizItem key={item.id} item={item} onStartQuiz={handleStartQuiz} />
+          ))}
+        </View>
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  questionSetView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    marginTop: 20,
-    padding: 15,
-  },
-  itemContainer: {
-    marginVertical: 10,
-    borderRadius: 8,
+  container: {
     flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+    paddingTop: Platform.OS === "android" ? 26 : 0,
   },
-  name: {
-    fontSize: 18,
-    fontWeight: "bold",
+  scrollView: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
   },
-  description: {
-    fontSize: 14,
-    marginVertical: 5,
-    color: "#666",
-  },
-  date: {
-    fontSize: 12,
-    color: "#888",
-  },
-  part: {
-    fontSize: 14,
-    marginVertical: 5,
-  },
-  status: {
-    fontSize: 14,
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
+  quizList: {
+    paddingTop: 8,
+    paddingBottom: 24,
   },
 });
 

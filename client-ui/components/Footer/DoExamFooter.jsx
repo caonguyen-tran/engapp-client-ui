@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View, Animated, ActivityIndicator, Platform } from "react-native";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/Instant";
+import { COLORS } from "../../constants/Constant";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState, useEffect } from "react";
 

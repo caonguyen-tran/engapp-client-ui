@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import LoginStyles from "../../styles/LoginStyles";
+import InputFormStyles from "./styles/InputFormStyles";
 
 const Input = ({
     label, 
@@ -17,7 +17,7 @@ const Input = ({
 }) => {
     const [visible, setVisible] = useState(false)
     return (
-        <View style={LoginStyles.inputChild}>
+        <View style={InputFormStyles.inputChild}>
           <View style={{flexDirection: "row", }}>
             <Text style={{ fontSize: 16, color: "#000", fontWeight: "600", marginVertical:2 }}>
               {label}
@@ -25,11 +25,11 @@ const Input = ({
             {isLogin ? <Text></Text> : <Text style={{color: "red", fontSize: 18}}> *</Text>}
           </View>
           {isPassword ? 
-            <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"},]}>
+            <View style={[InputFormStyles.inputView, {borderColor: error ? "red" : "#ccc"},]}>
                 <TextInput
                 value={value !== null && value !== undefined ? String(value) : ""}
                 secureTextEntry={!visible}
-                style={LoginStyles.textInput}
+                style={InputFormStyles.textInput}
                 onChangeText={onChangeHandle}
                 placeholder={holderText}
                 placeholderTextColor="gray"
@@ -48,10 +48,10 @@ const Input = ({
                     />
                 </Pressable>
             </View>:
-            <View style={[LoginStyles.inputView, {borderColor: error ? "red" : "#ccc"}]}>
+            <View style={[InputFormStyles.inputView, {borderColor: error ? "red" : "#ccc"}]}>
                 <TextInput
                 value={value !== null && value !== undefined ? String(value) : ""}
-                style={[LoginStyles.textInput, custom]}
+                style={[InputFormStyles.textInput, custom]}
                 onChangeText={onChangeHandle}
                 keyboardType={type}
                 placeholder={holderText}

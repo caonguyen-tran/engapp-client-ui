@@ -10,6 +10,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import Input from "../../../components/Input/Input";
 import { useNavigation } from "@react-navigation/native";
+import { COLORS } from "../../../constants/Constant";
 
 const CreateCollection = () => {
   const [info, setInfo] = useState({
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS.backgroundColor,
     justifyContent: "center",
   },
   title: {
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
-    color: "#333",
+    color: COLORS.blackTextColor,
   },
   input: {
     backgroundColor: "#FFF",
@@ -116,14 +117,14 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   imagePickerButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS.btnColor,
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginBottom: 20,
   },
   imagePickerButtonText: {
-    color: "#FFF",
+    color: COLORS.whiteTextColor,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -135,14 +136,14 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   saveButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: COLORS.btnColor,
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginTop: 10,
   },
   saveButtonText: {
-    color: "#FFF",
+    color: COLORS.whiteTextColor,
     fontSize: 18,
     fontWeight: "bold",
   },

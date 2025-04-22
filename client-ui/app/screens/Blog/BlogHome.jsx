@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
-  FlatList,
   StyleSheet,
   Pressable,
-  ScrollView,
+  Animated,
+  RefreshControl,
+  Platform,
 } from "react-native";
 import { useAuth } from "../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
@@ -13,24 +14,43 @@ import { useNavigation } from "@react-navigation/native";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
+import { MaterialIcons } from "@expo/vector-icons";
+import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const BlogHome = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const { token } = useAuth();
   const navigation = useNavigation();
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = async (isRefreshing = false) => {
+    if (isRefreshing) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+
     try {
       const response = await authApi(token).get(
         endpoints["blog-service"]["get-all"]
       );
-
       setBlogs(response.data.data);
-      setLoading(false);
+
+      // Trigger fade in animation when data is loaded
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
     } catch (error) {
       console.error(error);
+    } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -38,98 +58,205 @@ const BlogHome = () => {
     fetchBlogs();
   }, []);
 
-  const renderBlogItem = ({ item }) => (
-    <Pressable
-      onPress={() => navigation.navigate("BlogDetail", { id: item.id })}
-      style={styles.blogItem}
+  const onRefresh = () => {
+    fadeAnim.setValue(0);
+    fetchBlogs(true);
+  };
+
+  const renderBlogItem = ({ item, index }) => (
+    <Animated.View
+      style={[
+        styles.blogItemContainer,
+        {
+          opacity: fadeAnim,
+          transform: [
+            {
+              translateY: fadeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [50, 0],
+              }),
+            },
+          ],
+        },
+      ]}
     >
-      <View style={styles.card}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.content}>{item.content.slice(0, 100)}... </Text>
-        <View style={styles.infoContainer}>
-          <Text style={styles.username}>By: {item.userId}</Text>
-          <Text style={styles.date}>
-            Posted on: {new Date(item.createdDate).toLocaleDateString()}
+      <Pressable
+        onPress={() => navigation.navigate("BlogDetail", { id: item.id })}
+        style={({ pressed }) => [
+          styles.blogItem,
+          pressed && styles.blogItemPressed,
+        ]}
+      >
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <MaterialIcons name="article" size={24} color="black" />
+            <Text style={styles.title} numberOfLines={2}>
+              {item.title}
+            </Text>
+          </View>
+          <Text style={styles.content} numberOfLines={3}>
+            {item.content}
           </Text>
+          <View style={styles.divider} />
+          <View style={styles.infoContainer}>
+            <View style={styles.authorContainer}>
+              <MaterialIcons
+                name="person"
+                size={16}
+                color={COLORS.personalIcon}
+              />
+              <Text style={styles.username}>{item.userId}</Text>
+            </View>
+            <View style={styles.dateContainer}>
+              <MaterialIcons
+                name="schedule"
+                size={16}
+                color={COLORS.personalIcon}
+              />
+              <Text style={styles.date}>
+                {new Date(item.createdDate).toLocaleDateString()}
+              </Text>
+            </View>
+          </View>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </Animated.View>
   );
+
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [1, 0.9],
+    extrapolate: "clamp",
+  });
 
   return (
     <>
-      {loading ? (
+      <Animated.View style={[styles.header, { opacity: headerOpacity }]}>
+        <HeaderStack />
+      </Animated.View>
+      {loading && !refreshing ? (
         <LoadingView />
+      ) : blogs.length <= 0 ? (
+        <NoActiveView textAlert="Hiện chưa có blog nào" />
       ) : (
-        <>
-          <HeaderStack />
-          {blogs.length <= 0 ? (
-            <NoActiveView textAlert="Hiện chưa có blog nào" />
-          ) : (
-            <ScrollView contentContainerStyle={styles.container}>
-              <FlatList
-                data={blogs}
-                renderItem={renderBlogItem}
-                keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={styles.container}
-                scrollEnabled={false}
-              />
-            </ScrollView>
+        <Animated.FlatList
+          data={blogs}
+          renderItem={renderBlogItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.container}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
           )}
-        </>
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={COLORS.primary}
+              colors={[COLORS.primary]}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+        />
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    backgroundColor: "#F9F9F9",
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
   },
-  loading: {
-    marginTop: 100,
+  header: {
+    backgroundColor: COLORS.backgroundColor,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  container: {
+    padding: 16,
+    paddingTop: 8,
+  },
+  blogItemContainer: {
+    marginBottom: 16,
   },
   blogItem: {
-    marginBottom: 15,
+    borderRadius: 12,
+    backgroundColor: COLORS.backgroundColor,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  blogItemPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   card: {
-    backgroundColor: "#FFF",
-    padding: 20,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
+    padding: 16,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "600",
+    color: COLORS.blackTextColor,
+    marginLeft: 12,
+    lineHeight: 24,
   },
   content: {
     fontSize: 14,
-    color: "#555",
+    color: COLORS.contentColor,
     lineHeight: 20,
-    marginBottom: 10,
+    marginBottom: 12,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.line,
+    marginVertical: 12,
   },
   infoContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginTop: 10,
+  },
+  authorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   username: {
-    fontSize: 12,
-    fontStyle: "italic",
-    color: "#777",
+    fontSize: 13,
+    color: COLORS.footerTextColor,
+    marginLeft: 4,
   },
   date: {
-    fontSize: 12,
-    color: "#777",
+    fontSize: 13,
+    color: COLORS.footerTextColor,
+    marginLeft: 4,
   },
 });
 

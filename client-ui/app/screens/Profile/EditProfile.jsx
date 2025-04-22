@@ -8,10 +8,11 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import Input from "../../../components/Input/Input";
 import { useAuth } from "../../../context/AuthContext";
@@ -28,189 +29,266 @@ const EditProfile = ({ navigation }) => {
   });
 
   const change = (field, value) => {
-    setCurrentUser((current) => {
-      return { ...current, [field]: value };
-    });
+    setCurrentUser((current) => ({
+      ...current,
+      [field]: value,
+    }));
   };
-  return (
-    <SafeAreaView
-      style={{
-        paddingTop: Platform.OS == "android" ? 26 : 0,
-        flex: 1,
-        backgroundColor: COLORS.primary,
-      }}
+
+  const ActionButton = ({ icon, title, onPress, danger }) => (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={onPress}
+      style={[
+        styles.actionButton,
+        danger && styles.dangerButton
+      ]}
     >
-      <View style={EditProfileStyle.container}>
-        <HeaderScreen
-          nameIcon="edit"
-          label="Chỉnh sửa thông tin"
-          callback={() => navigation.goBack()}
-          handlePress={() => {
-            setEdit(!edit);
-          }}
-        />
-        <ScrollView
-          style={{ width: "100%" }}
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View style={EditProfileStyle.avatarView}>
+      <MaterialIcons
+        name={icon}
+        size={24}
+        color={danger ? COLORS.dangerColor : COLORS.blackTextColor}
+        style={styles.actionIcon}
+      />
+      <Text style={[
+        styles.actionText,
+        danger && styles.dangerText
+      ]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundColor} />
+      
+      <HeaderScreen
+        nameIcon="edit"
+        label="Chỉnh sửa thông tin"
+        callback={() => navigation.goBack()}
+        handlePress={() => setEdit(!edit)}
+      />
+
+      <ScrollView 
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.profileSection}>
+          <View style={styles.avatarContainer}>
             <Image
               source={require("../../../assets/images/EngApp.png")}
-              style={{ height: 90, width: 90, borderRadius: 5 }}
+              style={styles.avatar}
             />
-            <Pressable style={EditProfileStyle.editText}>
-              <Text style={{ fontWeight: "600", color: "#fff" }}>Edit</Text>
+            <Pressable style={styles.editAvatarButton}>
+              <MaterialIcons name="photo-camera" size={20} color={COLORS.whiteTextColor} />
             </Pressable>
           </View>
-          <View style={{ marginVertical: 15, justifyContent: "flex-start" }}>
-            <Input
-              value={currentUser.first_name}
-              label="Họ"
-              holderText="Họ"
-              isLogin
-              onChangeHandle={(t) => {
-                change("first_name", t);
-              }}
-            />
-            <Input
-              value={currentUser.last_name}
-              label="Tên"
-              holderText="Tên"
-              onChangeHandle={(t) => {
-                change("last_name", t);
-              }}
-              isLogin
-            />
-            <Input
-              value={currentUser.address}
-              label="Địa chỉ"
-              holderText="Địa chỉ"
-              onChangeHandle={(t) => {
-                change("address", t);
-              }}
-              isLogin
-            />
-            <Input
-              value={currentUser.email}
-              label="Email"
-              holderText="Email"
-              onChangeHandle={(t) => {
-                change("email", t);
-              }}
-              isLogin
-            />
-          </View>
-          <View
-            style={{
-              width: "100%",
-              height: 180,
-              justifyContent: "flex-start",
-              padding: 15,
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                height: 56,
-                borderBottomColor: "#ccc",
-                borderBottomWidth: 1,
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <MaterialIcons
-                name="password"
-                size={28}
-                color="black"
-                style={{ paddingHorizontal: 8 }}
-              />
-              <Text style={{ fontSize: 18, fontWeight: "600" }}>
-                Đổi mật khẩu
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                height: 56,
-                borderBottomColor: "#ccc",
-                borderBottomWidth: 1,
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-              onPress={() => {
-                removeToken();
-              }}
-            >
-              <MaterialIcons
-                name="logout"
-                size={28}
-                color="black"
-                style={{ paddingHorizontal: 8 }}
-              />
-              <Text style={{ fontSize: 18, fontWeight: "600", color: "red" }}>
-                Đăng xuất
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: "100%", height: 120, alignItems: "center" }}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={{
-                width: "90%",
-                height: 58,
-                backgroundColor: COLORS.active,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 6,
-                elevation: 20,
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "600", color: "white" }}>
-                Lưu thay đổi
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
+          <Input
+            value={currentUser.first_name}
+            label="Họ"
+            holderText="Nhập họ của bạn"
+            isLogin
+            onChangeHandle={(t) => change("first_name", t)}
+          />
+          <Input
+            value={currentUser.last_name}
+            label="Tên"
+            holderText="Nhập tên của bạn"
+            onChangeHandle={(t) => change("last_name", t)}
+            isLogin
+          />
+          <Input
+            value={currentUser.address}
+            label="Địa chỉ"
+            holderText="Nhập địa chỉ của bạn"
+            onChangeHandle={(t) => change("address", t)}
+            isLogin
+          />
+          <Input
+            value={currentUser.email}
+            label="Email"
+            holderText="Nhập email của bạn"
+            onChangeHandle={(t) => change("email", t)}
+            isLogin
+          />
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Cài đặt tài khoản</Text>
+          <ActionButton
+            icon="password"
+            title="Đổi mật khẩu"
+            onPress={() => {}}
+          />
+          <ActionButton
+            icon="logout"
+            title="Đăng xuất"
+            onPress={removeToken}
+            danger
+          />
+        </View>
+
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.saveButton}
+          onPress={() => {}}
+        >
+          <Text style={styles.saveButtonText}>Lưu thay đổi</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default EditProfile;
 
-const EditProfileStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    backgroundColor: "#f0f0f0",
-    height: "100%",
-    alignItems: "center",
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+    paddingTop: Platform.OS === "android" ? 26 : 0,
   },
-  avatarView: {
-    width: 110,
-    height: 110,
-    borderRadius: 15,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 20,
-    marginTop: 40,
+  scrollView: {
+    flex: 1,
   },
-  editText: {
-    width: 90,
-    height: 20,
-    backgroundColor: "#000",
-    position: "absolute",
-    bottom: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    opacity: 0.7,
+  profileSection: {
+    alignItems: 'center',
+    paddingVertical: 24,
+    backgroundColor: COLORS.sectionBackground,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  avatarContainer: {
+    position: 'relative',
+    padding: 4,
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 70,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
+  editAvatarButton: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: COLORS.active,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: COLORS.sectionBackground,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  card: {
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 16,
+    padding: 20,
+    margin: 16,
+    marginTop: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.blackTextColor,
+    marginBottom: 16,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  actionIcon: {
+    marginRight: 12,
+  },
+  actionText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.blackTextColor,
+  },
+  dangerButton: {
+    backgroundColor: 'rgba(255, 59, 48, 0.1)',
+  },
+  dangerText: {
+    color: COLORS.dangerColor,
+  },
+  saveButton: {
+    backgroundColor: COLORS.active,
+    margin: 16,
+    marginTop: 8,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.active,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
+  saveButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.whiteTextColor,
   },
 });

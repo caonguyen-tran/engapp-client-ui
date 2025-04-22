@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 import { MaterialIcons } from '@expo/vector-icons';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -131,7 +131,7 @@ const CollectionHome = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.backgroundColor,
   },
   headerContainer: {
     position: 'absolute',
@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 100,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.sectionBackground,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -149,17 +149,17 @@ const styles = StyleSheet.create({
   headerSection: {
     marginTop: 50,
     paddingHorizontal: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.sectionBackground,
   },
   sectionTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1F2937',
+    color: COLORS.blackTextColor,
     marginBottom: 4,
   },
   sectionSubtitle: {
     fontSize: 16,
-    color: '#6B7280',
+    color: COLORS.footerTextColor,
   },
   listContainer: {
     paddingHorizontal: 16,
@@ -177,12 +177,12 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#374151',
+    color: COLORS.blackTextColor,
     marginTop: 16,
   },
   emptySubText: {
     fontSize: 14,
-    color: '#6B7280',
+    color: COLORS.footerTextColor,
     marginTop: 8,
   },
 });

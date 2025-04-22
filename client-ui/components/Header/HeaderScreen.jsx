@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/Instant";
+import { COLORS } from "../../constants/Constant";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 
 const HeaderScreen = ({ nameIcon, label, callback, handlePress }) => {

@@ -1,6 +1,6 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/Instant";
-import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { Image, View } from "react-native";
+import { COLORS } from "../../constants/Constant";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 const HeaderStack = ({ nameIcon, label, callback, handlePress }) => {
   return (

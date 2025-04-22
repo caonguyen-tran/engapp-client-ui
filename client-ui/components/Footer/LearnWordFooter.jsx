@@ -6,7 +6,7 @@ import {
   Animated,
   Platform,
 } from "react-native";
-import { COLORS } from "../../constants/Instant";
+import { COLORS } from "../../constants/Constant";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";

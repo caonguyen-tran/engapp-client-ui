@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Platform,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
 import LoadingView from "../../../components/lotties/LoadingView";
-import WordTypeItem from "../../../components/screens/Blog/WordTypeItem"
+import WordTypeItem from "../../../components/screens/Blog/WordTypeItem";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import APIs, { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
+import { formatDate } from "../../../utils/common";
+import { COLORS } from "../../../constants/Constant";
 
 const BlogDetail = ({ route }) => {
   const [data, setData] = useState({});
@@ -39,78 +49,177 @@ const BlogDetail = ({ route }) => {
 
     fetchData();
   }, []);
+
   return (
-    <>
-      <HeaderScreen
-        label="Nhật ký NLP"
-        callback={() => navigation.goBack()}
-      />
+    <SafeAreaView style={styles.safeArea}>
+      <HeaderScreen label="Nhật ký NLP" callback={() => navigation.goBack()} />
       {loading ? (
         <LoadingView />
       ) : (
-        <>
-          <ScrollView style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.contentWrapper}>
             <View style={styles.header}>
               <Text style={styles.title}>{data.title}</Text>
-              <Text style={styles.date}>
-                {new Date(data.createdDate).toLocaleDateString()}
-              </Text>
+              <View style={styles.metaInfo}>
+                <View style={styles.metaWrapper}>
+                  <MaterialIcons name="event" size={16} color={COLORS.footerTextColor} />
+                  <Text style={styles.date}>
+                    {formatDate(data.createdDate)}
+                  </Text>
+                </View>
+                <View style={styles.metaWrapper}>
+                  <MaterialIcons name="person" size={16} color={COLORS.footerTextColor} />
+                  <Text style={styles.author}>ID: {data.userId}</Text>
+                </View>
+              </View>
             </View>
+
             <View style={styles.contentContainer}>
               <Text style={styles.content}>{data.content}</Text>
             </View>
-            <View>
-              <Text style={styles.author}>Author ID: {data.userId}</Text>
-            </View>
-            <View style={{paddingTop: 20}}>
-              <View style={{alignItems: "center", height: 50}}>
-                <Text style={{fontSize: 26, color: "#555", fontWeight: "bold", backgroundColor: "#ccc"}}>Các từ vựng bạn có thể học</Text>
+
+            <View style={styles.vocabularySection}>
+              <View style={styles.sectionHeader}>
+                <MaterialIcons name="school" size={24} color={COLORS.blackTextColor} />
+                <Text style={styles.sectionTitle}>Từ vựng gợi ý học tập</Text>
               </View>
-              <WordTypeItem label="Tính từ" data={analyzeData.adjectives} />
-              <WordTypeItem label="Danh từ" data={analyzeData.nouns} />
-              <WordTypeItem label="Động từ" data={analyzeData.verbs} />
+
+              <View style={styles.wordTypesContainer}>
+                <WordTypeItem
+                  label="Tính từ"
+                  data={analyzeData.adjectives}
+                  icon="format-color-text"
+                />
+                <WordTypeItem
+                  label="Danh từ"
+                  data={analyzeData.nouns}
+                  icon="category"
+                />
+                <WordTypeItem
+                  label="Động từ"
+                  data={analyzeData.verbs}
+                  icon="directions-run"
+                />
+              </View>
             </View>
-          </ScrollView>
-        </>
+          </View>
+        </ScrollView>
       )}
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+  },
   container: {
     flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+  },
+  contentWrapper: {
     padding: 16,
-    backgroundColor: "#f5f5f5",
   },
   header: {
-    marginBottom: 20,
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    color: COLORS.blackTextColor,
+    marginBottom: 12,
+    lineHeight: 32,
+  },
+  metaWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  metaInfo: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    flexWrap: "wrap",
   },
   date: {
-    fontSize: 16,
-    color: "#777",
-    marginVertical: 5,
-  },
-  contentContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 20,
-    elevation: 2,
-  },
-  content: {
-    fontSize: 18,
-    lineHeight: 24,
-    color: "#444",
+    fontSize: 14,
+    color: COLORS.footerTextColor,
+    marginLeft: 4,
+    marginRight: 12,
   },
   author: {
-    marginTop: 20,
+    fontSize: 14,
+    color: COLORS.footerTextColor,
+    marginLeft: 4,
+  },
+  contentContainer: {
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  content: {
     fontSize: 16,
-    color: "#555",
+    lineHeight: 24,
+    color: COLORS.contentColor,
+  },
+  vocabularySection: {
+    backgroundColor: COLORS.sectionBackground,
+    borderRadius: 16,
+    padding: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: COLORS.blackTextColor,
+    marginLeft: 8,
+  },
+  wordTypesContainer: {
+    gap: 16,
   },
 });
 

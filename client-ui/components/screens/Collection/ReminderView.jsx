@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../../constants/Instant";
+import { COLORS } from "../../../constants/Constant";
 import { useCount } from "../../../context/CountContext";
 
 const ReminderView = ({custom, navHandle}) => {

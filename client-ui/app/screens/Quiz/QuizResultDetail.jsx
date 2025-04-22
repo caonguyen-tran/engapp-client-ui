@@ -4,9 +4,9 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import LoadingView from "../../../components/lotties/LoadingView";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
-import HeaderElement from "../../../components/Header/HeaderElement";
 import { useNavigation } from "@react-navigation/native";
 import ExamStats from "../../../components/Quiz/ExamStats";
+import { COLORS } from "../../../constants/Constant";
 
 const QuizResultDetail = ({ route }) => {
   const { resultId } = route.params;
@@ -121,18 +121,18 @@ const QuizResultDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS.backgroundColor,
   },
   scrollContainer: {
     paddingBottom: 16,
     marginTop: 20,
   },
   questionContainer: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 10,
     padding: 20,
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadowColor,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333333",
+    color: COLORS.blackTextColor,
     marginBottom: 12,
     textAlign: "justify",
   },
@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   defaultAnswer: {
-    backgroundColor: "#FFFFFF",
-    color: "#333333",
+    backgroundColor: COLORS.sectionBackground,
+    color: COLORS.lightTextColor,
     borderWidth: 1,
     borderColor: "#DDDDDD",
   },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   explanationText: {
     fontSize: 14,
-    color: "#666666",
+    color: COLORS.lightTextColor,
     marginTop: 12,
     textAlign: "justify",
     borderTopWidth: 1,

@@ -11,8 +11,8 @@ import {
 import Input from "../../components/Input/Input";
 import LoadingView from "../../components/lotties/LoadingView";
 import APIs, { endpoints } from "../../apis/APIs";
-import { COLORS } from "../../constants/Instant";
-import LoginStyles from "../../styles/LoginStyles";
+import { COLORS } from "../../constants/Constant";
+import InputFormStyles from "../../components/Input/styles/InputFormStyles";
 
 const Register = ({ navigation }) => {
   const [info, setInfo] = useState({
@@ -99,16 +99,16 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <View style={LoginStyles.container}>
+    <View style={InputFormStyles.container}>
       <View style={{ marginBottom: 20 }}>
-        <Text style={LoginStyles.headerText}>Tạo tài khoản</Text>
+        <Text style={InputFormStyles.headerText}>Tạo tài khoản</Text>
         <Text style={{ fontSize: 16, color: "#818181" }}>
           Tham gia EngApp để bắt đầu hành trình học tiếng Anh!
         </Text>
       </View>
 
       <ScrollView
-        style={LoginStyles.inputContainer}
+        style={InputFormStyles.inputContainer}
         showsVerticalScrollIndicator={false}
       >
         <Input
@@ -146,7 +146,7 @@ const Register = ({ navigation }) => {
           <LoadingView />
         ) : (
           <TouchableOpacity
-            style={LoginStyles.loginButton}
+            style={InputFormStyles.loginButton}
             onPress={register}
           >
             <Text
@@ -198,7 +198,7 @@ const Register = ({ navigation }) => {
             <Pressable key={idx} onPress={() => {}}>
               <Image
                 source={{ uri: social.uri }}
-                style={LoginStyles.imageStyle}
+                style={InputFormStyles.imageStyle}
                 accessibilityLabel={social.alt}
               />
             </Pressable>

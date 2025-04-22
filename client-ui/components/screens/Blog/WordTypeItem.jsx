@@ -4,13 +4,17 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
+  View,
+  Text,
+  StyleSheet,
+  Platform,
 } from "react-native";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { COLORS } from "../../../constants/Instant";
+import { MaterialIcons } from "@expo/vector-icons";
+import { COLORS } from "../../../constants/Constant";
 import APIs, { endpoints } from "../../../apis/APIs";
 import { Image } from "react-native";
 
-const WordTypeItem = ({ data, label }) => {
+const WordTypeItem = ({ data, label, icon }) => {
   const [translatedWord, setTranslatedWord] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -18,7 +22,6 @@ const WordTypeItem = ({ data, label }) => {
   const translateWord = async (word) => {
     try {
       setLoading(true);
-
       const response = await APIs.post(
         endpoints["blog-analyze-service"]["translate"],
         { word: word }
@@ -28,116 +31,93 @@ const WordTypeItem = ({ data, label }) => {
       setModalVisible(true);
     } catch (error) {
       setLoading(false);
-      Alert.alert("Error", "Could not translate the word");
+      Alert.alert("Lỗi", "Không thể dịch từ này");
       console.error("Translation error:", error);
     }
   };
 
-  const AdjectiveItem = ({ item }) => {
-    const isLongWord = item.length > 7;
+  const WordCard = ({ word }) => {
+    const isLongWord = word.length > 7;
     return (
       <TouchableOpacity
-        style={[styles.adjectiveBox, isLongWord ? styles.doubleColumn : null]}
+        style={[styles.wordCard, isLongWord && styles.doubleColumn]}
         activeOpacity={0.7}
-        onPress={() => translateWord(item)}
+        onPress={() => translateWord(word)}
       >
-        <Text style={styles.adjectiveText}>
-          {loading ? "Đang dịch..." : item}
+        <Text style={styles.wordText}>
+          {loading ? "Đang dịch..." : word}
         </Text>
+        <MaterialIcons name="translate" size={16} color={COLORS.primary} style={styles.translateIcon} />
       </TouchableOpacity>
     );
   };
 
   return (
-    <View>
-      <View style={styles.textHeader}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <MaterialIcons name={icon} size={24} color={COLORS.itemColor} />
         <Text style={styles.headerText}>{label}</Text>
       </View>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <AdjectiveItem item={item} />}
-        keyExtractor={(item, index) => index.toString()}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-        contentContainerStyle={styles.container}
-        scrollEnabled={false}
-      />
+
+      <View style={styles.wordsGrid}>
+        {data?.map((word, index) => (
+          <WordCard key={index} word={word} />
+        ))}
+      </View>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
             {loading ? (
               <ActivityIndicator size="large" color={COLORS.primary} />
             ) : (
               <>
-                {translateWord !== null ? (
-                  <>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        paddingHorizontal: 20,
-                      }}
-                    >
-                      <Text style={styles.modalText}>Ngôn ngữ đích:</Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <Text style={styles.modalText}>
-                          {translatedWord.lang}
-                        </Text>
-                        <Image
-                          source={{
-                            uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1728927635/1f1fb-1f1f3_mql9vk.png",
-                          }}
-                          style={{ height: 20, width: 40 }}
-                          resizeMode="contain"
-                        />
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        paddingHorizontal: 20,
-                      }}
-                    >
-                      <Text style={styles.modalText}>Từ tiếng Anh:</Text>
-                      <Text style={styles.modalText}>
-                        {translatedWord.original}
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>Bản dịch</Text>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <MaterialIcons name="close" size={24} color="#666" />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.translationContainer}>
+                  <View style={styles.translationRow}>
+                    <Text style={styles.translationLabel}>Ngôn ngữ:</Text>
+                    <View style={styles.languageInfo}>
+                      <Text style={styles.translationText}>
+                        {translatedWord.lang}
                       </Text>
+                      <Image
+                        source={{
+                          uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1728927635/1f1fb-1f1f3_mql9vk.png",
+                        }}
+                        style={styles.flagIcon}
+                        resizeMode="contain"
+                      />
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        paddingHorizontal: 20,
-                      }}
-                    >
-                      <Text style={styles.modalText}>Từ tiếng Việt:</Text>
-                      <Text style={styles.modalText}>
-                        {translatedWord.translated}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.closeButton}
-                      onPress={() => setModalVisible(false)}
-                    >
-                      <Text style={styles.closeButtonText}>Close</Text>
-                    </TouchableOpacity>
-                  </>
-                ) : (
-                  <></>
-                )}
+                  </View>
+
+                  <View style={styles.translationRow}>
+                    <Text style={styles.translationLabel}>Tiếng Anh:</Text>
+                    <Text style={styles.translationText}>
+                      {translatedWord.original}
+                    </Text>
+                  </View>
+
+                  <View style={styles.translationRow}>
+                    <Text style={styles.translationLabel}>Tiếng Việt:</Text>
+                    <Text style={styles.translationText}>
+                      {translatedWord.translated}
+                    </Text>
+                  </View>
+                </View>
               </>
             )}
           </View>
@@ -149,81 +129,126 @@ const WordTypeItem = ({ data, label }) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: COLORS.backgroundColor,
+    borderRadius: 12,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
-    backgroundColor: "#f5f5f5",
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
-    marginBottom: 16,
-  },
-  adjectiveBox: {
-    flex: 1,
-    padding: 16,
-    margin: 4,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  doubleColumn: {
-    flex: 2,
-  },
-  adjectiveText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  textHeader: {
-    width: "100%",
-    height: 45,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.line,
   },
   headerText: {
-    fontSize: 20,
-    fontFamily: "arial",
-    color: COLORS.itemColor,
-    backgroundColor: "#ccc",
-    fontWeight: "bold",
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  modalView: {
-    width: "80%",
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
-    elevation: 5,
-  },
-  modalText: {
     fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 20,
-    color: "#333",
+    fontWeight: "600",
+    color: COLORS.itemColor,
+    marginLeft: 8,
+  },
+  wordsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 8,
+    gap: 8,
+  },
+  wordCard: {
+    flex: 1,
+    minWidth: '45%',
+    backgroundColor: COLORS.backgroundColor,
+    borderRadius: 8,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  doubleColumn: {
+    minWidth: '95%',
+  },
+  wordText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: COLORS.contentColor,
+  },
+  translateIcon: {
+    opacity: 0.7,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '90%',
+    backgroundColor: 'white',
+    borderRadius: 16,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.line,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: COLORS.blackTextColor,
   },
   closeButton: {
-    backgroundColor: "#dc3545",
-    padding: 10,
-    borderRadius: 5,
-    elevation: 2,
+    padding: 4,
   },
-  closeButtonText: {
-    color: "white",
-    fontWeight: "bold",
+  translationContainer: {
+    padding: 16,
+    gap: 16,
   },
-  popupView: {
-    width: "100%",
+  translationRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  languageInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  translationLabel: {
+    fontSize: 16,
+    color: '#666',
+  },
+  translationText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: '#1a1a1a',
+  },
+  flagIcon: {
+    height: 20,
+    width: 40,
   },
 });
 

@@ -6,6 +6,7 @@ import Input from "../../../components/Input/Input";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import LoadingView from "../../../components/lotties/LoadingView";
 import { useAuth } from "../../../context/AuthContext";
+import { COLORS } from "../../../constants/Constant";
 
 const ERROR_MSG = "Trường này không được để trống!";
 const CreateNewWord = ({ route }) => {
@@ -193,14 +194,14 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS.backgroundColor,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
-    color: "#333",
+    color: COLORS.blackTextColor,
   },
   input: {
     backgroundColor: "#FFF",
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   dropdownStyle: {
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 10,
   },
   dropdownInputStyle: {
@@ -237,13 +238,13 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   saveButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS.confirmBtnColor,
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
   },
   saveButtonText: {
-    color: "#FFF",
+    color: COLORS.whiteTextColor,
     fontSize: 18,
     fontWeight: "bold",
   },
