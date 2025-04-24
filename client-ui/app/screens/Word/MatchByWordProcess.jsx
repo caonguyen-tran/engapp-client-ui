@@ -12,7 +12,6 @@ const MatchByWordProcess = ({word, handleChoice, visibleCallback, correctCallbac
   const [shakeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    // Fade in animation when component mounts
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 500,
@@ -27,7 +26,6 @@ const MatchByWordProcess = ({word, handleChoice, visibleCallback, correctCallbac
       correctCallback(true);
       handleChoice(true);
     } else {
-      // Shake animation for incorrect answer
       Animated.sequence([
         Animated.timing(shakeAnim, {
           toValue: 10,

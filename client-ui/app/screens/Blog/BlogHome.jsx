@@ -16,7 +16,6 @@ import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const BlogHome = () => {
   const [blogs, setBlogs] = useState([]);

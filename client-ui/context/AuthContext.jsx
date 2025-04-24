@@ -46,9 +46,8 @@ export const AuthProvider = ({ children }) => {
             let res = await authApi(tokenValue).get(
               endpoints["user-service"]["information"]
             );
-            
-            console.log(res.data.data);
             setInfo({
+              id: res.data.data.id,
               username: res.data.data.username,
               email: res.data.data.email,
             });

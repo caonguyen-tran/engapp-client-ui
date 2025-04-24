@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "http://34.29.166.181:8088/api";
+const AI_URL = "http://34.29.166.181:5001";
 const user_service = "/user-service";
 const collection_service = "/collection-service";
 const word_service = "/word-service";
@@ -64,6 +65,11 @@ export const endpoints = {
   "blog-analyze-service": {
     "analyze-text": `/analyze-text`,
     "translate": "/translate"
+  },
+  "image-recognition-service": {
+    "get-histories": (userId) => `/get-histories?user_id=${userId}`,
+    "get-history-by-id": (historyId) => `/get-history/${historyId}`,
+    "detect-image": "/detect-image"
   }
 };
 
@@ -74,6 +80,10 @@ export const authApi = (accessToken) =>
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
+export const aiApi = axios.create({
+  baseURL: AI_URL,
+});
 
 export default axios.create({
   baseURL: BASE_URL,

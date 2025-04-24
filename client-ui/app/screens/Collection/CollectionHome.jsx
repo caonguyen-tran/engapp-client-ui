@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, StyleSheet, Text, View, Animated } from "react-native";
+import { FlatList, StyleSheet, Text, View, Animated } from "react-native";
 import HeaderStack from "../../../components/Header/HeaderStack";
 import CollectionItem from "../../../components/screens/Collection/CollectionItem";
 import FeatureGrid from "../../../components/screens/Collection/FeatureGrid";
@@ -10,48 +10,32 @@ import { COLORS } from "../../../constants/Constant";
 import { MaterialIcons } from '@expo/vector-icons';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-const HEADER_HEIGHT = 56; // Height of your HeaderStack component
+const HEADER_HEIGHT = 56;
 
 const CollectionHome = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(0);
   const { token } = useAuth();
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const fetchData = async (pageNumber = 0, isRefreshing = false) => {
-    if (isRefreshing) {
-      setRefreshing(true);
-    } else {
-      setLoading(true);
-    }
+  const fetchData = async (pageNumber = 0) => {
+    setLoading(true);
 
     try {
       const response = await authApi(token).get(endpoints['collection-service']['get-all'](pageNumber));
       const newData = response.data.data;
-      
-      if (isRefreshing) {
-        setData(newData);
-        setPage(0);
-      } else {
-        setData((prevData) => [...prevData, ...newData]);
-      }
+      setData((prevData) => [...prevData, ...newData]);
     } catch (ex) {
       console.log(ex);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const onRefresh = () => {
-    fetchData(0, true);
-  };
 
   const loadMoreData = () => {
     if (!loading) {
@@ -104,20 +88,12 @@ const CollectionHome = ({ navigation }) => {
         keyExtractor={(item, index) => `collection-${item.id}-${index}`}
         contentContainerStyle={[
           styles.listContainer,
-          { paddingTop: HEADER_HEIGHT } // Add padding for header
+          { paddingTop: HEADER_HEIGHT }
         ]}
         onEndReached={loadMoreData}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[COLORS.primary]}
-            tintColor={COLORS.primary}
-          />
-        }
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: true }
@@ -139,7 +115,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 100,
-    backgroundColor: COLORS.sectionBackground,
+    backgroundColor: COLORS.backgroundColor,
     elevation: 4,
     shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 2 },
@@ -149,12 +125,12 @@ const styles = StyleSheet.create({
   headerSection: {
     marginTop: 50,
     paddingHorizontal: 20,
-    backgroundColor: COLORS.sectionBackground,
+    backgroundColor: COLORS.backgroundColor,
   },
   sectionTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: COLORS.blackTextColor,
+    color: COLORS.titleColor,
     marginBottom: 4,
   },
   sectionSubtitle: {

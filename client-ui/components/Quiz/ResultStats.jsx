@@ -35,7 +35,7 @@ const ResultStats = ({ detailPress }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <MaterialIcons name="analytics" size={24} color="black" />
+        <MaterialIcons name="analytics" size={24} color={COLORS.titleColor} />
         <Text style={styles.headerText}>Thống kê kết quả</Text>
       </View>
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: "600",
-    color: "#1a1a1a",
+    color: COLORS.titleColor,
   },
   statsGrid: {
     gap: 16,

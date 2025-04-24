@@ -7,45 +7,28 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  ImageBackground,
+  Dimensions,
 } from "react-native";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
 import { COLORS } from "./../../../constants/Constant";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Camera } from "expo-camera";
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width } = Dimensions.get('window');
 
 const WordHome = () => {
   const navigation = useNavigation();
-  const [hasPermission, setHasPermission] = React.useState(null);
-
-  React.useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
 
   const quickActions = [
     {
       id: 1,
-      title: "Chụp ảnh",
+      title: "AI Vision",
+      subtitle: "Chụp ảnh để học từ vựng",
       icon: "camera-alt",
-      color: COLORS.greenIconColor,
-      onPress: () => navigation.navigate("CameraScan"),
-    },
-    {
-      id: 2,
-      title: "Thư viện",
-      icon: "photo-library",
-      color: COLORS.blueIconColor,
-      onPress: () => navigation.navigate("ImageLibrary"),
-    },
-    {
-      id: 3,
-      title: "Lịch sử",
-      icon: "history",
-      color: COLORS.yellowIconColor,
-      onPress: () => navigation.navigate("ScanHistory"),
+      color: COLORS.whiteTextColor,
+      onPress: () => navigation.navigate("DetectionCamera"),
     },
   ];
 
@@ -60,7 +43,7 @@ const WordHome = () => {
         <View style={styles.headerSection}>
           <Text style={styles.title}>Học từ vựng với AI</Text>
           <Text style={styles.subtitle}>
-            Chụp ảnh hoặc chọn từ thư viện để học từ vựng mới
+            Khám phá thế giới từ vựng qua ống kính AI
           </Text>
         </View>
 
@@ -70,21 +53,25 @@ const WordHome = () => {
               key={action.id}
               style={styles.actionButton}
               onPress={action.onPress}
-              activeOpacity={0.8}
+              activeOpacity={0.9}
             >
-              <View
-                style={[
-                  styles.iconContainer,
-                  { backgroundColor: action.color + "20" },
-                ]}
+              <LinearGradient
+                colors={['#4CAF50', '#2196F3']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientContainer}
               >
-                <MaterialIcons
-                  name={action.icon}
-                  size={32}
-                  color={action.color}
-                />
-              </View>
-              <Text style={styles.actionTitle}>{action.title}</Text>
+                <View style={styles.iconContainer}>
+                  <MaterialIcons
+                    name={action.icon}
+                    size={40}
+                    color={action.color}
+                  />
+                </View>
+                <Text style={styles.actionTitle}>{action.title}</Text>
+                <Text style={styles.actionSubtitle}>{action.subtitle}</Text>
+                <View style={styles.pulseEffect} />
+              </LinearGradient>
             </TouchableOpacity>
           ))}
         </View>
@@ -109,12 +96,12 @@ const WordHome = () => {
         <View style={styles.recentScans}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Lần quét gần đây</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("ScanHistory")}
-            >
-            </TouchableOpacity>
           </View>
-          <View style={styles.scanList}>
+          <TouchableOpacity
+            style={styles.scanList}
+            onPress={() => navigation.navigate("DetectionHistory")}
+            activeOpacity={0.7}
+          >
             <View style={styles.scanItem}>
               <MaterialIcons name="photo-camera" size={24} color="#666666" />
               <View style={styles.scanInfo}>
@@ -123,7 +110,7 @@ const WordHome = () => {
               </View>
               <MaterialIcons name="chevron-right" size={24} color="#666666" />
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.recentScans}>
@@ -135,11 +122,11 @@ const WordHome = () => {
               width: "100%",
               borderRadius: 16,
               backgroundColor: COLORS.sectionBackground,
-              shadowColor: "#000",
+              shadowColor: COLORS.shadowColor,
               shadowOpacity: 0.1,
               shadowOffset: { width: 0, height: 2 },
               shadowRadius: 8,
-              elevation: 3
+              elevation: 3,
             }}
             navHandle={() => navigation.navigate("ListWordPractice")}
           />
@@ -148,11 +135,6 @@ const WordHome = () => {
         <View style={styles.downloadedSection}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Bộ sưu tập đã tải</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("MyCollection")}
-            >
-              <Text style={styles.seeAll}>Xem tất cả</Text>
-            </TouchableOpacity>
           </View>
           <DownloadedView navigation={navigation} />
         </View>
@@ -183,7 +165,7 @@ const styles = StyleSheet.create({
     paddingTop: 24,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "700",
     color: COLORS.titleColor,
     marginBottom: 8,
@@ -201,37 +183,67 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   quickActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 32,
     paddingHorizontal: 24,
+    marginBottom: 32,
   },
   actionButton: {
-    alignItems: "center",
-    width: "30%",
+    width: width - 48,
+    height: 200,
+    borderRadius: 24,
+    overflow: 'hidden',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+  },
+  gradientContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
   },
   iconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
   },
   actionTitle: {
-    fontSize: 14,
-    color: "#333333",
-    textAlign: "center",
+    fontSize: 24,
+    fontWeight: '700',
+    color: COLORS.whiteTextColor,
+    marginBottom: 8,
+  },
+  actionSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
+  },
+  pulseEffect: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    top: '50%',
+    left: '50%',
+    marginLeft: -50,
+    marginTop: -50,
+    zIndex: -1,
   },
   statsCard: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.sectionBackground,
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: COLORS.shadowColor,
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
@@ -245,7 +257,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#1a237e",
+    color: COLORS.titleColor,
     marginBottom: 4,
   },
   statLabel: {
@@ -281,7 +293,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.sectionBackground,
     borderRadius: 16,
     padding: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadowColor,
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,

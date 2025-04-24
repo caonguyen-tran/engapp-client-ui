@@ -26,6 +26,7 @@ const LearnNewWordProcess = ({ route }) => {
   const position = useState(new Animated.Value(height))[0];
   const [visible, setVisible] = useState(false);
   const [correct, setCorrect] = useState(false);
+  const [progressPercentage, setProgressPercentage] = useState(0);
 
   const genElement = () => {
     const ran = Math.floor(Math.random() * clone.length);
@@ -49,6 +50,22 @@ const LearnNewWordProcess = ({ route }) => {
       }).start();
     }
   }, [visible]);
+
+  useEffect(() => {
+    // Calculate progress percentage whenever clone changes
+    const totalWords = listWord.length;
+    const remainingWords = clone.length;
+    const completedWords = totalWords - remainingWords;
+    const percentage = (completedWords / totalWords) * 100;
+    setProgressPercentage(percentage);
+    
+    // Animate the progress bar
+    Animated.timing(progress, {
+      toValue: percentage,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [clone]);
 
   const progressBarChange = (correct) => {
     if (progress.__getValue() !== 0) {
@@ -130,7 +147,10 @@ const LearnNewWordProcess = ({ route }) => {
       {element ? (
         <>
           <View style={styles.mainView}>
-            <Animated.View style={[styles.progressBar, { width: progress }]} />
+            <View style={styles.progressContainer}>
+              <Animated.View style={[styles.progressBar, { width: `${progress.__getValue()}%` }]} />
+              <Text style={styles.progressText}>{Math.round(progressPercentage)}%</Text>
+            </View>
             {element.questionType === 0 ? (
               <LearnWord
                 word={element}
@@ -176,13 +196,28 @@ const styles = StyleSheet.create({
   mainView: {
     flex: 1,
   },
-  progressBar: {
-    alignSelf: "stretch",
-    height: 20,
-    backgroundColor: COLORS.succcess,
+  progressContainer: {
     marginHorizontal: 20,
-    borderRadius: 10,
     marginTop: 40,
+    height: 20,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 10,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.succcess,
+    borderRadius: 10,
+  },
+  progressText: {
+    position: 'absolute',
+    right: 10,
+    top: 0,
+    bottom: 0,
+    textAlignVertical: 'center',
+    color: '#000',
+    fontWeight: 'bold',
   },
 });
 
