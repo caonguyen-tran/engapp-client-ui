@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   sectionSubtitle: {
     fontSize: 16,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
   },
   listContainer: {
     paddingHorizontal: 16,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   emptySubText: {
     fontSize: 14,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
     marginTop: 8,
   },
 });

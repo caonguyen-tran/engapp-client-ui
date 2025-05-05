@@ -83,8 +83,14 @@ export const authApi = (accessToken) =>
 
 export const aiApi = axios.create({
   baseURL: AI_URL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
+  },
+  withCredentials: false
 });
 
 export default axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
 });

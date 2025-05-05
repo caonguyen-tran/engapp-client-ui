@@ -57,7 +57,7 @@ const QuizResultDetail = ({ route }) => {
               if (answer.answerKey === question.correctAnswer) {
                 answerStyle = styles.correctAnswer;
               } else if (answer.answerKey === userAnswer.answerKey) {
-                answerStyle = styles.wrongAnswer;
+                answerStyle = styles.dangerColor;
               }
             }
 

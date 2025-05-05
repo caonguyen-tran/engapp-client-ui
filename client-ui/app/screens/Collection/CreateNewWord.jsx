@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   saveButton: {
-    backgroundColor: COLORS.confirmBtnColor,
+    backgroundColor: COLORS.greenColor,
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

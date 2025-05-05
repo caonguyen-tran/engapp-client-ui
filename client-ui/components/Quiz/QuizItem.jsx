@@ -17,11 +17,11 @@ const QuizItem = ({ item, onStartQuiz }) => {
             <MaterialIcons
               name={item.isActive ? 'check-circle' : 'error'}
               size={16}
-              color={item.isActive ? COLORS.activeQuiz : COLORS.inactiveQuiz}
+              color={item.isActive ? COLORS.greenColor : COLORS.dangerColor}
             />
             <Text style={[
               styles.statusText,
-              { color: item.isActive ? COLORS.activeQuiz : COLORS.inactiveQuiz }
+              { color: item.isActive ? COLORS.greenColor : COLORS.dangerColor }
             ]}>
               {item.isActive ? 'Đang hoạt động' : 'Không hoạt động'}
             </Text>

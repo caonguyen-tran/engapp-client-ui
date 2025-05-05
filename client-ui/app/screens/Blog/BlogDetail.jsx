@@ -65,13 +65,13 @@ const BlogDetail = ({ route }) => {
               <Text style={styles.title}>{data.title}</Text>
               <View style={styles.metaInfo}>
                 <View style={styles.metaWrapper}>
-                  <MaterialIcons name="event" size={16} color={COLORS.footerTextColor} />
+                  <MaterialIcons name="event" size={16} color={COLORS.grayColor} />
                   <Text style={styles.date}>
                     {formatDate(data.createdDate)}
                   </Text>
                 </View>
                 <View style={styles.metaWrapper}>
-                  <MaterialIcons name="person" size={16} color={COLORS.footerTextColor} />
+                  <MaterialIcons name="person" size={16} color={COLORS.grayColor} />
                   <Text style={styles.author}>ID: {data.userId}</Text>
                 </View>
               </View>
@@ -160,13 +160,13 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 14,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
     marginLeft: 4,
     marginRight: 12,
   },
   author: {
     fontSize: 14,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
     marginLeft: 4,
   },
   contentContainer: {

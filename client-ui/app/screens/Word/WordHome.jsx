@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import HeaderStack from "../../../components/Header/HeaderStack";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,26 +9,67 @@ import {
   TouchableOpacity,
   ImageBackground,
   Dimensions,
+  ActivityIndicator,
+  Modal,
+  Pressable,
 } from "react-native";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
 import { COLORS } from "./../../../constants/Constant";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
+import * as ImagePicker from "expo-image-picker";
+import { Platform } from "react-native";
 
 const { width } = Dimensions.get('window');
 
 const WordHome = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleImagePick = async (type) => {
+    try {
+      setLoading(true);
+      let result;
+      
+      if (type === 'camera') {
+        result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+          base64: true,
+        });
+      } else {
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+          base64: true,
+        });
+      }
+
+      if (!result.canceled) {
+        navigation.navigate("DetectionCamera", { image: result.assets[0] });
+      }
+    } catch (error) {
+      console.error("Error picking image:", error);
+    } finally {
+      setLoading(false);
+      setShowOptions(false);
+    }
+  };
 
   const quickActions = [
     {
       id: 1,
       title: "AI Vision",
-      subtitle: "Chụp ảnh để học từ vựng",
+      subtitle: "Chụp ảnh hoặc chọn từ thư viện",
       icon: "camera-alt",
       color: COLORS.whiteTextColor,
-      onPress: () => navigation.navigate("DetectionCamera"),
+      onPress: () => setShowOptions(true),
     },
   ];
 
@@ -54,19 +95,24 @@ const WordHome = () => {
               style={styles.actionButton}
               onPress={action.onPress}
               activeOpacity={0.9}
+              disabled={loading}
             >
               <LinearGradient
-                colors={['#4CAF50', '#2196F3']}
+                colors={[COLORS.greenColor, COLORS.blueColor]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.gradientContainer}
               >
                 <View style={styles.iconContainer}>
-                  <MaterialIcons
-                    name={action.icon}
-                    size={40}
-                    color={action.color}
-                  />
+                  {loading ? (
+                    <ActivityIndicator size="large" color="white" />
+                  ) : (
+                    <MaterialIcons
+                      name={action.icon}
+                      size={40}
+                      color={action.color}
+                    />
+                  )}
                 </View>
                 <Text style={styles.actionTitle}>{action.title}</Text>
                 <Text style={styles.actionSubtitle}>{action.subtitle}</Text>
@@ -103,12 +149,12 @@ const WordHome = () => {
             activeOpacity={0.7}
           >
             <View style={styles.scanItem}>
-              <MaterialIcons name="photo-camera" size={24} color="#666666" />
+              <MaterialIcons name="photo-camera" size={24} color={COLORS.grayColor} />
               <View style={styles.scanInfo}>
                 <Text style={styles.scanTitle}>Quét hình ảnh</Text>
                 <Text style={styles.scanTime}>2 phút trước</Text>
               </View>
-              <MaterialIcons name="chevron-right" size={24} color="#666666" />
+              <MaterialIcons name="chevron-right" size={24} color={COLORS.grayColor} />
             </View>
           </TouchableOpacity>
         </View>
@@ -139,6 +185,43 @@ const WordHome = () => {
           <DownloadedView navigation={navigation} />
         </View>
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showOptions}
+        onRequestClose={() => setShowOptions(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Chọn ảnh</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.cameraButton]}
+                onPress={() => handleImagePick('camera')}
+                disabled={loading}
+              >
+                <MaterialIcons name="camera-alt" size={24} color="white" />
+                <Text style={styles.modalButtonText}>Chụp ảnh mới</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.galleryButton]}
+                onPress={() => handleImagePick('gallery')}
+                disabled={loading}
+              >
+                <MaterialIcons name="photo-library" size={24} color="white" />
+                <Text style={styles.modalButtonText}>Chọn từ thư viện</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setShowOptions(false)}
+            >
+              <Text style={styles.cancelButtonText}>Hủy</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -178,7 +261,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: "#666666",
+    color: COLORS.grayColor,
     textAlign: "center",
     lineHeight: 24,
   },
@@ -192,7 +275,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     overflow: 'hidden',
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -262,12 +345,12 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
-    color: "#666666",
+    color: COLORS.grayColor,
   },
   statDivider: {
     width: 1,
     height: 40,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: COLORS.lightGrayColor,
   },
   recentScans: {
     marginBottom: 24,
@@ -315,10 +398,76 @@ const styles = StyleSheet.create({
   },
   scanTime: {
     fontSize: 14,
-    color: "#666666",
+    color: COLORS.grayColor,
   },
   downloadedSection: {
     paddingHorizontal: 24,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    paddingBottom: Platform.OS === 'ios' ? 40 : 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: COLORS.blackTextColor,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  modalButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 25,
+    minWidth: 140,
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  cameraButton: {
+    backgroundColor: COLORS.active,
+  },
+  galleryButton: {
+    backgroundColor: COLORS.greenColor,
+  },
+  modalButtonText: {
+    color: COLORS.whiteTextColor,
+    marginLeft: 8,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  cancelButton: {
+    padding: 16,
+    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    alignItems: 'center',
+  },
+  cancelButtonText: {
+    color: COLORS.blackTextColor,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 

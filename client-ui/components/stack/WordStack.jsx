@@ -10,6 +10,7 @@ import PracticeComplete from "../../app/screens/Word/PracticeComplete";
 import ListWordPractice from "../../app/screens/Word/ListWordPractice";
 import DetectionHistory from "../../app/screens/Word/DetectionHistory";
 import DetectionCamera from "../../app/screens/Word/DetectionCamera";
+import DetectionHistoryDetail from "../../app/screens/Word/DetetionHistoryDetail";
 
 const Stack = createNativeStackNavigator();
 const WordStack = () => {
@@ -65,6 +66,11 @@ const WordStack = () => {
         <Stack.Screen
           name="DetectionCamera"
           component={DetectionCamera}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetectionHistoryDetail"
+          component={DetectionHistoryDetail}
           options={{ headerShown: false }}
         />
         </Stack.Navigator>

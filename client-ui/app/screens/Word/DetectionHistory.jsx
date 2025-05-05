@@ -38,6 +38,7 @@ const DetectionHistory = () => {
         <TouchableOpacity 
             style={styles.card}
             activeOpacity={0.8}
+            onPress={() => navigation.navigate("DetectionHistoryDetail", { id: item.id })}
         >
             <View style={styles.imageContainer}>
                 <Image
@@ -47,7 +48,7 @@ const DetectionHistory = () => {
                 />
                 <View style={styles.overlay}>
                     <View style={styles.dateBadge}>
-                        <Ionicons name="time-outline" size={14} color={COLORS.white} />
+                        <Ionicons name="time-outline" size={14} color={COLORS.whiteTextColor} />
                         <Text style={styles.dateBadgeText}>
                             {formatDate(item.created_date)}
                         </Text>

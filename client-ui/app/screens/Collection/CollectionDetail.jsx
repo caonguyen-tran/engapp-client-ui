@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
     marginTop: 4,
   },
 });

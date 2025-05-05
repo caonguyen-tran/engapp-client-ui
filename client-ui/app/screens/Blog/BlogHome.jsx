@@ -249,12 +249,12 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 13,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
     marginLeft: 4,
   },
   date: {
     fontSize: 13,
-    color: COLORS.footerTextColor,
+    color: COLORS.grayColor,
     marginLeft: 4,
   },
 });

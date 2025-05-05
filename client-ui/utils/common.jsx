@@ -24,3 +24,8 @@ export const formattedEndTime = (dateString) => {
     minute: '2-digit'
   });
 };
+
+export const parseBoundingBox = (boxString) => {
+  const [x1, y1, x2, y2] = boxString.split("/").map(Number);
+  return { x1, y1, x2, y2 };
+};
