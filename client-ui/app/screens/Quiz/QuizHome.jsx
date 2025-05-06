@@ -20,6 +20,7 @@ import { COLORS } from "../../../constants/Constant";
 
 const QuizHome = () => {
   const [listQuestionSet, setListQuestionSet] = useState([]);
+  const [listStats, setListStats] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { token } = useAuth();
@@ -31,7 +32,13 @@ const QuizHome = () => {
       const res = await authApi(token).get(
         endpoints["quiz-service"]["get-all-question-set"]
       );
+      const statsRes = await authApi(token).get(
+        endpoints["quiz-service"]["get-statistic"]
+      );
       setListQuestionSet(res.data.data);
+      setListStats(statsRes.data.data);
+
+      console.log(statsRes.data.data);
     } catch (ex) {
       console.log(ex);
       Alert.alert("Lỗi", "Không thể tải dữ liệu. Vui lòng thử lại sau.", [
@@ -100,7 +107,11 @@ const QuizHome = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <ResultStats detailPress={() => navigation.navigate("QuizResult")} />
+        <ResultStats
+          detailPress={() => navigation.navigate("QuizResult")}
+          data={listStats}
+          quizCount={listQuestionSet.length}
+        />
 
         <View style={styles.quizList}>
           {listQuestionSet.map((item) => (

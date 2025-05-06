@@ -1,11 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../constants/Constant";
+import { useEffect } from "react";
+import { calculateStatsData } from "../../utils/common";
 
 const StatItem = ({ icon, label, value, color = COLORS.active }) => (
   <View style={styles.statItem}>
-    <MaterialIcons name={icon} size={24} color={color} style={styles.statIcon} />
+    <MaterialIcons
+      name={icon}
+      size={24}
+      color={color}
+      style={styles.statIcon}
+    />
     <View style={styles.statContent}>
       <Text style={styles.statLabel}>{label}</Text>
       <Text style={[styles.statValue, { color }]}>{value}</Text>
@@ -17,21 +30,23 @@ const PartProgress = ({ part, count, total = 5 }) => (
   <View style={styles.partProgress}>
     <Text style={styles.partText}>Part {part}</Text>
     <View style={styles.progressBar}>
-      <View 
+      <View
         style={[
-          styles.progressFill, 
-          { 
+          styles.progressFill,
+          {
             width: `${(count / total) * 100}%`,
-            backgroundColor: COLORS.active
-          }
-        ]} 
+            backgroundColor: COLORS.active,
+          },
+        ]}
       />
     </View>
     <Text style={styles.partCount}>{count}</Text>
   </View>
 );
 
-const ResultStats = ({ detailPress }) => {
+const ResultStats = ({ detailPress, data, quizCount }) => {
+  const calData = calculateStatsData(data);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -43,19 +58,19 @@ const ResultStats = ({ detailPress }) => {
         <StatItem
           icon="check-circle"
           label="Tỉ lệ trả lời đúng"
-          value="85%"
+          value={` ${calData.avgCorrectPercentage.toFixed(2)} %`}
           color={COLORS.greenIconColor}
         />
         <StatItem
           icon="timer"
           label="Thời gian trung bình"
-          value="30 phút"
+          value={calData.avgFinishedTime < 0 ? 0 : ` ${(calData.avgFinishedTime/60).toFixed(2)} phút`}
           color={COLORS.blueIconColor}
         />
         <StatItem
           icon="star"
           label="Điểm trung bình"
-          value="7.5"
+          value={calData.avgOverallPoint}
           color={COLORS.yellowIconColor}
         />
       </View>
@@ -63,9 +78,19 @@ const ResultStats = ({ detailPress }) => {
       <View style={styles.partsSection}>
         <Text style={styles.sectionTitle}>Số đề đã làm</Text>
         <View style={styles.partsList}>
-          <PartProgress part={5} count={3} />
-          <PartProgress part={6} count={2} />
-          <PartProgress part={7} count={4} />
+          <PartProgress
+            part={5}
+            count={data[0] == null || !data[0] ? 0 : data[0].totalCount}
+            total={quizCount}
+          />
+          <PartProgress
+            part={6}
+            count={data[1] == null || !data[1] ? 0 : data[1].totalCount}
+          />
+          <PartProgress
+            part={7}
+            count={data[2] == null || !data[2] ? 0 : data[2].totalCount}
+          />
         </View>
       </View>
 

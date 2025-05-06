@@ -56,7 +56,8 @@ export const endpoints = {
     "list-by-owner": `${quiz_service}/quiz-result/get-list-by-owner`,
     "list-exam-by-result": (resultId) => `${quiz_service}/exam-responses/get-result/${resultId}`,
     "submit-quiz": `${quiz_service}/exam-responses/submit-quiz`,
-    "get-quiz-result": (resultId) => `${quiz_service}/quiz-result/get-result/${resultId}`
+    "get-quiz-result": (resultId) => `${quiz_service}/quiz-result/get-result/${resultId}`,
+    "get-statistic": `${quiz_service}/quiz-result/get-statistic`
   },
   "blog-service": {
     "get-all": `${blog_service}/blog/get-blogs`,

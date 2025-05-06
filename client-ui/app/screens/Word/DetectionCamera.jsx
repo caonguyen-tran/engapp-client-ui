@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { useState, useEffect } from "react";
+import * as FileSystem from "expo-file-system";
 import {
   View,
   Text,
@@ -18,7 +19,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
 import * as ImageManipulator from "expo-image-manipulator";
 import { useAuth } from "../../../context/AuthContext";
-import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get("window");
 const IMAGE_FRAME_SIZE = width * 0.9;
@@ -62,17 +62,29 @@ const DetectionCamera = () => {
 
   const detectImage = async () => {
     if (!image) return;
-    
     setLoading(true);
+
     try {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(
+        image.uri,
+        [{ resize: { width: 800 } }],
+        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+      );
+
+      const formData = new FormData();
+      formData.append("image", {
+        uri: manipulatedImage.uri,
+        name: "compressed.jpg",
+        type: "image/jpeg",
+      });
+      formData.append("user_id", info.id.toString());
+
       const response = await aiApi.post(
         endpoints["image-recognition-service"]["detect-image"],
-        {
-          image: image.base64,
-          user_id: info.id,
-        }
+        formData
       );
-      navigation.navigate("DetectionHistoryDetail", { id: response.data.id });
+      console.log(response.data)
+      navigation.navigate("DetectionHistoryDetail", { id: response.data.results.history_id });
     } catch (error) {
       console.error("Error detecting image:", error);
     } finally {
@@ -91,21 +103,23 @@ const DetectionCamera = () => {
           <ScrollView style={styles.scrollView}>
             <View style={styles.imageSection}>
               <View style={styles.imageFrame}>
-                <Image 
-                  source={{ uri: image.uri }} 
+                <Image
+                  source={{ uri: image.uri }}
                   style={[
                     styles.previewImage,
-                    { transform: [{ rotate: `${rotation}deg` }] }
-                  ]} 
+                    { transform: [{ rotate: `${rotation}deg` }] },
+                  ]}
                   resizeMode="contain"
                 />
                 <View style={styles.frameOverlay} />
               </View>
               <View style={styles.rotationInfo}>
-                <MaterialIcons name="rotate-right" size={20} color={COLORS.primary} />
-                <Text style={styles.rotationText}>
-                  Xoay: {rotation}°
-                </Text>
+                <MaterialIcons
+                  name="rotate-right"
+                  size={20}
+                  color={COLORS.primary}
+                />
+                <Text style={styles.rotationText}>Xoay: {rotation}°</Text>
               </View>
             </View>
 
@@ -136,7 +150,11 @@ const DetectionCamera = () => {
                   <ActivityIndicator color={COLORS.whiteTextColor} />
                 ) : (
                   <>
-                    <MaterialIcons name="search" size={24} color={COLORS.whiteTextColor} />
+                    <MaterialIcons
+                      name="search"
+                      size={24}
+                      color={COLORS.whiteTextColor}
+                    />
                     <Text style={styles.buttonText}>Bắt đầu generate</Text>
                   </>
                 )}
@@ -172,13 +190,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageSection: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: IMAGE_PADDING,
   },
   imageFrame: {
     width: IMAGE_FRAME_SIZE,
     height: IMAGE_FRAME_SIZE,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
     ...Platform.select({
@@ -194,50 +212,50 @@ const styles = StyleSheet.create({
     }),
   },
   previewImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 10,
   },
   frameOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     borderWidth: 2,
-    borderColor: 'rgba(0,0,0,0.1)',
+    borderColor: "rgba(0,0,0,0.1)",
     borderRadius: 20,
   },
   rotationInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 16,
     padding: 8,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    backgroundColor: "rgba(0,0,0,0.05)",
     borderRadius: 20,
   },
   rotationText: {
     marginLeft: 8,
     fontSize: 14,
     color: COLORS.blackTextColor,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   controlsSection: {
     padding: IMAGE_PADDING,
     paddingTop: 0,
   },
   buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginBottom: 20,
   },
   actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 12,
     borderRadius: 25,
     minWidth: 120,
-    justifyContent: 'center',
+    justifyContent: "center",
     ...Platform.select({
       ios: {
         shadowColor: COLORS.shadowColor,
@@ -251,21 +269,21 @@ const styles = StyleSheet.create({
     }),
   },
   retakeButton: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: "rgba(0,0,0,0.1)",
   },
   rotateButton: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: "rgba(0,0,0,0.1)",
   },
   analyzeButton: {
     backgroundColor: COLORS.active,
-    width: '100%',
+    width: "100%",
     padding: 16,
   },
   buttonText: {
     color: COLORS.whiteTextColor,
     marginLeft: 8,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   emptyContainer: {
     flex: 1,
