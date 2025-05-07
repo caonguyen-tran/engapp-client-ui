@@ -8,6 +8,7 @@ import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import { COLORS } from "../../../constants/Constant";
 import { MaterialIcons } from '@expo/vector-icons';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 const HEADER_HEIGHT = 56;
@@ -70,50 +71,48 @@ const CollectionHome = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <HeaderStack />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={styles.headerContainer}>
+          <HeaderStack />
+        </View>
+        <AnimatedFlatList
+          ListHeaderComponent={
+            <>
+              {renderHeader()}
+              <FeatureGrid />
+            </>
+          }
+          data={data}
+          renderItem={({ item }) => (
+            <CollectionItem item={item} navigation={navigation} />
+          )}
+          keyExtractor={(item, index) => `collection-${item.id}-${index}`}
+          contentContainerStyle={[
+            styles.listContainer,
+            { paddingTop: HEADER_HEIGHT }
+          ]}
+          onEndReached={loadMoreData}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={renderEmpty}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
-      <AnimatedFlatList
-        ListHeaderComponent={
-          <>
-            {renderHeader()}
-            <FeatureGrid />
-          </>
-        }
-        data={data}
-        renderItem={({ item }) => (
-          <CollectionItem item={item} navigation={navigation} />
-        )}
-        keyExtractor={(item, index) => `collection-${item.id}-${index}`}
-        contentContainerStyle={[
-          styles.listContainer,
-          { paddingTop: HEADER_HEIGHT }
-        ]}
-        onEndReached={loadMoreData}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={renderEmpty}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.backgroundColor,
+    backgroundColor: "red",
   },
   headerContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     zIndex: 100,
     backgroundColor: COLORS.backgroundColor,
     elevation: 4,
@@ -123,7 +122,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   headerSection: {
-    marginTop: 50,
     paddingHorizontal: 20,
     backgroundColor: COLORS.backgroundColor,
   },

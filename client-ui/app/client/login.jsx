@@ -6,6 +6,7 @@ import APIs, { endpoints } from "../../apis/APIs";
 import { useAuth } from "./../../context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 import { loginStyles } from "./styles/login.styles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -30,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <View style={loginStyles.container}>
+    <SafeAreaView style={loginStyles.container}>
       <Text style={loginStyles.headerText}>Chào mừng trở lại! 👋</Text>
       <Text style={loginStyles.subText}>Đăng nhập để tiếp tục học tiếng Anh</Text>
 
@@ -101,7 +102,7 @@ const Login = () => {
           />
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

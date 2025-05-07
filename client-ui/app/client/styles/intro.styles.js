@@ -9,7 +9,6 @@ export const introStyles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 60,
-    paddingBottom: 30,
   },
   header: {
     alignItems: "center",

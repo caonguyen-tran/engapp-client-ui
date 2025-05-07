@@ -13,6 +13,7 @@ import LoadingView from "../../components/lotties/LoadingView";
 import APIs, { endpoints } from "../../apis/APIs";
 import { COLORS } from "../../constants/Constant";
 import InputFormStyles from "../../components/Input/styles/InputFormStyles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Register = ({ navigation }) => {
   const [info, setInfo] = useState({
@@ -99,7 +100,7 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <View style={InputFormStyles.container}>
+    <SafeAreaView style={InputFormStyles.container}>
       <View style={{ marginBottom: 20 }}>
         <Text style={InputFormStyles.headerText}>Tạo tài khoản</Text>
         <Text style={{ fontSize: 16, color: "#818181" }}>
@@ -205,7 +206,7 @@ const Register = ({ navigation }) => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
