@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import LoadingView from "../../../components/lotties/LoadingView";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -39,125 +40,153 @@ const DetectionHistoryDetail = ({ route, navigation }) => {
   }, [id]);
 
   return (
-    <View style={styles.container}>
-      <HeaderScreen
-        label="Kết quả phát hiện"
-        callback={() => navigation.goBack()}
-      />
-      {loading ? (
-        <LoadingView />
-      ) : history ? (
-        <ScrollView>
-          <View style={styles.imageContainer}>
-            <View style={styles.imageCard}>
-              <Image
-                source={{ uri: history.image }}
-                style={styles.image}
-                resizeMode="contain"
-              />
-              <View style={styles.imageOverlay} />
-            </View>
-          </View>
-
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}>
-              <Icon name="image" size={20} color={COLORS.active} />
-              <Text style={styles.statText}>
-                Đối tượng phát hiện: {history.objects.length}
-              </Text>
-            </View>
-            <View style={styles.statItem}>
-              <Icon name="calendar-today" size={20} color={COLORS.active} />
-              <Text style={styles.statText}>Analysis ID: {history.id}</Text>
-            </View>
-          </View>
-
-          <View style={styles.objectsContainer}>
-            <View style={styles.sectionHeader}>
-              <Icon name="auto-awesome" size={24} color={COLORS.active} />
-              <Text style={styles.sectionTitle}>Đối tượng phát hiện</Text>
-            </View>
-
-            {history.objects.length === 0 ? (
-              <View style={styles.noObjectsContainer}>
-                <Icon name="search-off" size={48} color={COLORS.subTextColor} />
-                <Text style={styles.noObjectsText}>Không có đối tượng phát hiện</Text>
-                <Text style={styles.noObjectsSubText}>Hãy phân tích hình ảnh khác</Text>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Kết quả phát hiện"
+          callback={() => navigation.goBack()}
+        />
+        {loading ? (
+          <LoadingView />
+        ) : history ? (
+          <ScrollView>
+            <View style={styles.imageContainer}>
+              <View style={styles.imageCard}>
+                <Image
+                  source={{ uri: history.image }}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+                <View style={styles.imageOverlay} />
               </View>
-            ) : (
-              history.objects.map((object, index) => {
-                const box = parseBoundingBox(object.bounding_box);
-                return (
-                  <View key={object.id} style={styles.objectCard}>
-                    <View style={styles.objectHeader}>
-                      <View style={styles.objectNameContainer}>
-                        <Icon name="tag" size={16} color={COLORS.active} />
-                        <Text style={styles.objectName}>
-                          {object.object_name}
-                        </Text>
-                      </View>
-                      <View style={styles.confidenceChip}>
-                        <Icon
-                          name="trending-up"
-                          size={14}
-                          color={COLORS.active}
-                        />
-                        <Text style={styles.confidenceText}>
-                          {`${(object.confidence * 100).toFixed(1)}%`}
-                        </Text>
-                      </View>
-                    </View>
+            </View>
 
-                    <View style={styles.objectDetails}>
-                      <View style={styles.detailRow}>
-                        <Icon name="translate" size={16} color={COLORS.active} />
-                        <Text style={styles.definition}>
-                          <Text style={styles.label}>Nghĩa: </Text>
-                          {object.definition}
-                        </Text>
+            <View style={styles.statsContainer}>
+              <View style={styles.statItem}>
+                <Icon name="image" size={20} color={COLORS.active} />
+                <Text style={styles.statText}>
+                  Đối tượng phát hiện: {history.objects.length}
+                </Text>
+              </View>
+              <View style={styles.statItem}>
+                <Icon name="calendar-today" size={20} color={COLORS.active} />
+                <Text style={styles.statText}>Analysis ID: {history.id}</Text>
+              </View>
+            </View>
+
+            <View style={styles.objectsContainer}>
+              <View style={styles.sectionHeader}>
+                <Icon name="auto-awesome" size={24} color={COLORS.active} />
+                <Text style={styles.sectionTitle}>Đối tượng phát hiện</Text>
+              </View>
+
+              {history.objects.length === 0 ? (
+                <View style={styles.noObjectsContainer}>
+                  <Icon
+                    name="search-off"
+                    size={48}
+                    color={COLORS.subTextColor}
+                  />
+                  <Text style={styles.noObjectsText}>
+                    Không có đối tượng phát hiện
+                  </Text>
+                  <Text style={styles.noObjectsSubText}>
+                    Hãy phân tích hình ảnh khác
+                  </Text>
+                </View>
+              ) : (
+                history.objects.map((object, index) => {
+                  const box = parseBoundingBox(object.bounding_box);
+                  return (
+                    <View key={object.id} style={styles.objectCard}>
+                      <View style={styles.objectHeader}>
+                        <View style={styles.objectNameContainer}>
+                          <Icon name="tag" size={16} color={COLORS.active} />
+                          <Text style={styles.objectName}>
+                            {object.object_name}
+                          </Text>
+                        </View>
+                        <View style={styles.confidenceChip}>
+                          <Icon
+                            name="trending-up"
+                            size={14}
+                            color={COLORS.active}
+                          />
+                          <Text style={styles.confidenceText}>
+                            {`${(object.confidence * 100).toFixed(1)}%`}
+                          </Text>
+                        </View>
                       </View>
-                      <View style={styles.detailRow}>
-                        <Icon name="lightbulb" size={16} color={COLORS.active} />
-                        <Text style={styles.example}>
-                          <Text style={styles.label}>Ví dụ: </Text>
-                          {object.example}
-                        </Text>
-                      </View>
-                      <View style={styles.detailRow}>
-                        <Icon name="category" size={16} color={COLORS.active} />
-                        <Text style={styles.position}>
-                          <Text style={styles.label}>Loại từ: </Text>
-                          {object.position_of_speech === "N"
-                            ? "Danh từ"
-                            : object.position_of_speech}
-                        </Text>
-                      </View>
-                      <View style={styles.detailRow}>
-                        <Icon name="crop" size={16} color={COLORS.active} />
-                        <Text style={styles.boundingBox}>
-                          <Text style={styles.label}>Vị trí nhận diện: </Text>
-                          {`(${box.x1}, ${box.y1}) to (${box.x2}, ${box.y2})`}
-                        </Text>
+
+                      <View style={styles.objectDetails}>
+                        <View style={styles.detailRow}>
+                          <Icon
+                            name="translate"
+                            size={16}
+                            color={COLORS.active}
+                          />
+                          <Text style={styles.definition}>
+                            <Text style={styles.label}>Nghĩa: </Text>
+                            {object.definition}
+                          </Text>
+                        </View>
+                        <View style={styles.detailRow}>
+                          <Icon
+                            name="lightbulb"
+                            size={16}
+                            color={COLORS.active}
+                          />
+                          <Text style={styles.example}>
+                            <Text style={styles.label}>Ví dụ: </Text>
+                            {object.example}
+                          </Text>
+                        </View>
+                        <View style={styles.detailRow}>
+                          <Icon
+                            name="category"
+                            size={16}
+                            color={COLORS.active}
+                          />
+                          <Text style={styles.position}>
+                            <Text style={styles.label}>Loại từ: </Text>
+                            {object.position_of_speech === "N"
+                              ? "Danh từ"
+                              : object.position_of_speech}
+                          </Text>
+                        </View>
+                        <View style={styles.detailRow}>
+                          <Icon name="crop" size={16} color={COLORS.active} />
+                          <Text style={styles.boundingBox}>
+                            <Text style={styles.label}>Vị trí nhận diện: </Text>
+                            {`(${box.x1}, ${box.y1}) to (${box.x2}, ${box.y2})`}
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                );
-              })
-            )}
+                  );
+                })
+              )}
+            </View>
+          </ScrollView>
+        ) : (
+          <View style={styles.errorContainer}>
+            <Icon name="error-outline" size={48} color={COLORS.errorColor} />
+            <Text style={styles.errorText}>
+              Failed to load detection details
+            </Text>
           </View>
-        </ScrollView>
-      ) : (
-        <View style={styles.errorContainer}>
-          <Icon name="error-outline" size={48} color={COLORS.errorColor} />
-          <Text style={styles.errorText}>Failed to load detection details</Text>
-        </View>
-      )}
-    </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },

@@ -155,7 +155,11 @@ const DetectionCamera = () => {
         endpoints["image-recognition-service"]["detect-image"],
         formData
       );
-      navigation.navigate("DetectionHistoryDetail", { id: response.data.results.history_id });
+
+      navigation.navigate("DetectionResult", {
+        image: image,
+        results: response.data.results
+      });
     } catch (error) {
       console.error("Error detecting image:", error);
     } finally {
