@@ -106,7 +106,6 @@ const ProfileHome = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View style={styles.headerStyle}>
         <Text style={styles.textHeader}>Profile</Text>
       </View>
@@ -152,18 +151,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 58,
-    backgroundColor: "white",
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
   },
   textHeader: {
     fontSize: 24,

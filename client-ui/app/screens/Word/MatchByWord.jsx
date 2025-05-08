@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { StyleSheet, Text, TextInput, View, SafeAreaView } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import HeaderElement from "../../../components/Header/HeaderElement";
 import { COLORS } from "../../../constants/Constant";
 
@@ -18,24 +18,22 @@ const MatchByWord = ({ route }) => {
 
   useEffect(() => {
     if (listWord.length >= 5) {
-      navigation.navigate("LearnNewWordProcess", { 
-        listWord: listWord, 
-        flag: true 
+      navigation.navigate("LearnNewWordProcess", {
+        listWord: listWord,
+        flag: true,
       });
     }
   }, [listWord]);
 
   const handleAnswer = (value) => {
     if (queue && queue.length > 0) {
-      const isCorrect = value.toLowerCase() === queue[index].wordResponse.word.toLowerCase();
+      const isCorrect =
+        value.toLowerCase() === queue[index].wordResponse.word.toLowerCase();
       setCorrect(isCorrect);
       setShowResult(true);
 
       if (isCorrect) {
-        setListWord((prev) => [
-          ...prev,
-          { ...queue[index], questionType: 0 },
-        ]);
+        setListWord((prev) => [...prev, { ...queue[index], questionType: 0 }]);
       } else {
         setQueue((prev) => [...prev, queue[index]]);
       }
@@ -66,10 +64,10 @@ const MatchByWord = ({ route }) => {
     return (
       <View style={styles.resultCard}>
         <View style={styles.resultHeader}>
-          <MaterialIcons 
-            name={correct ? "check-circle" : "error"} 
-            size={40} 
-            color={correct ? COLORS.succcess : COLORS.dangerColor} 
+          <MaterialIcons
+            name={correct ? "check-circle" : "error"}
+            size={40}
+            color={correct ? COLORS.succcess : COLORS.dangerColor}
           />
           <Text style={styles.resultText}>
             {correct ? "Chính xác!" : "Chưa đúng"}
@@ -78,10 +76,7 @@ const MatchByWord = ({ route }) => {
         <Text style={styles.correctAnswer}>
           Từ đúng: {queue[index].wordResponse.word}
         </Text>
-        <TouchableOpacity 
-          style={styles.nextButton}
-          onPress={nextQuestion}
-        >
+        <TouchableOpacity style={styles.nextButton} onPress={nextQuestion}>
           <Text style={styles.nextButtonText}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>
@@ -89,66 +84,80 @@ const MatchByWord = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <HeaderElement textHeader="Bắt đầu" closeHandle={handleClose} />
-      {queue && queue[index] && queue[index].wordResponse ? (
-        <View style={styles.container}>
-          <View style={styles.progressBar}>
-            <View style={[styles.progress, { width: `${(index / queue.length) * 100}%` }]} />
-          </View>
-
-          <View style={styles.card}>
-            <View style={styles.wordSection}>
-              <Text style={styles.wordText}>
-                {queue[index].wordResponse.word}
-              </Text>
-              <Text style={styles.pronunciationText}>
-                {queue[index].wordResponse.pronunciation}
-              </Text>
-            </View>
-
-            <View style={styles.definitionSection}>
-              <Text style={styles.exampleText}>
-                {queue[index].wordResponse.example}
-              </Text>
-              <Text style={styles.definitionText}>
-                {queue[index].wordResponse.definition}
-              </Text>
-            </View>
-
-            <View style={styles.inputSection}>
-              <TextInput
-                style={styles.input}
-                onChangeText={setInput}
-                value={input}
-                placeholder="Nhập từ đúng"
-                placeholderTextColor="#9E9E9E"
-                autoCapitalize="none"
-                editable={!showResult}
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderElement textHeader="Bắt đầu" closeHandle={handleClose} />
+        {queue && queue[index] && queue[index].wordResponse ? (
+          <View style={styles.content}>
+            <View style={styles.progressBar}>
+              <View
+                style={[
+                  styles.progress,
+                  { width: `${(index / queue.length) * 100}%` },
+                ]}
               />
-              <TouchableOpacity
-                style={[styles.submitButton, !input && styles.submitButtonDisabled]}
-                onPress={() => handleAnswer(input)}
-                disabled={!input || showResult}
-              >
-                <Text style={styles.submitButtonText}>Kiểm tra</Text>
-              </TouchableOpacity>
             </View>
-          </View>
 
-          {renderResultCard()}
-        </View>
-      ) : null}
+            <View style={styles.card}>
+              <View style={styles.wordSection}>
+                <Text style={styles.wordText}>
+                  {queue[index].wordResponse.word}
+                </Text>
+                <Text style={styles.pronunciationText}>
+                  {queue[index].wordResponse.pronunciation}
+                </Text>
+              </View>
+
+              <View style={styles.definitionSection}>
+                <Text style={styles.exampleText}>
+                  {queue[index].wordResponse.example}
+                </Text>
+                <Text style={styles.definitionText}>
+                  {queue[index].wordResponse.definition}
+                </Text>
+              </View>
+
+              <View style={styles.inputSection}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setInput}
+                  value={input}
+                  placeholder="Nhập từ đúng"
+                  placeholderTextColor="#9E9E9E"
+                  autoCapitalize="none"
+                  editable={!showResult}
+                />
+                <TouchableOpacity
+                  style={[
+                    styles.submitButton,
+                    !input && styles.submitButtonDisabled,
+                  ]}
+                  onPress={() => handleAnswer(input)}
+                  disabled={!input || showResult}
+                >
+                  <Text style={styles.submitButtonText}>Kiểm tra</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {renderResultCard()}
+          </View>
+        ) : null}
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
-  container: {
+  content: {
     flex: 1,
     padding: 16,
   },
@@ -159,7 +168,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   progress: {
-    height: '100%',
+    height: "100%",
     backgroundColor: COLORS.blueColor,
     borderRadius: 2,
   },
@@ -174,32 +183,32 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   wordSection: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 24,
   },
   wordText: {
     fontSize: 32,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.blackTextColor,
     marginBottom: 8,
   },
   pronunciationText: {
     fontSize: 18,
-    color: '#757575',
-    fontStyle: 'italic',
+    color: "#757575",
+    fontStyle: "italic",
   },
   definitionSection: {
     marginBottom: 24,
   },
   exampleText: {
     fontSize: 16,
-    color: '#424242',
+    color: "#424242",
     marginBottom: 12,
     lineHeight: 24,
   },
   definitionText: {
     fontSize: 16,
-    color: '#616161',
+    color: "#616161",
     lineHeight: 24,
   },
   inputSection: {
@@ -208,30 +217,30 @@ const styles = StyleSheet.create({
   input: {
     height: 56,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: "#E0E0E0",
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 18,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     marginBottom: 16,
   },
   submitButton: {
     backgroundColor: COLORS.btnColor,
     height: 56,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   submitButtonDisabled: {
-    backgroundColor: '#BDBDBD',
+    backgroundColor: "#BDBDBD",
   },
   submitButtonText: {
     color: COLORS.whiteTextColor,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   resultCard: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -246,34 +255,34 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   resultHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 16,
   },
   resultText: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 12,
     color: COLORS.blackTextColor,
   },
   correctAnswer: {
     fontSize: 18,
-    color: '#616161',
-    textAlign: 'center',
+    color: "#616161",
+    textAlign: "center",
     marginBottom: 24,
   },
   nextButton: {
     backgroundColor: COLORS.blueColor,
     height: 56,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   nextButtonText: {
     color: COLORS.whiteTextColor,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

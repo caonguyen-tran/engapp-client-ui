@@ -6,17 +6,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
   Alert,
   Platform,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
-import { parseBoundingBox } from "../../../utils/common";
-
-const { width } = Dimensions.get("window");
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const WordCard = ({ word, onPress }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -85,26 +81,21 @@ const WordCard = ({ word, onPress }) => {
 
 const DetectionResult = ({ route, navigation }) => {
   const { image, results } = route.params;
-  const [loading, setLoading] = useState(true);
   const [detectedObjects, setDetectedObjects] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedWord, setSelectedWord] = useState(null);
 
   useEffect(() => {
     if (!image || !results) {
       setError("Missing required data");
-      setLoading(false);
       return;
     }
 
     try {
       const objects = results.objects || [];
       setDetectedObjects(objects);
-      setLoading(false);
     } catch (err) {
       console.error("Error processing results:", err);
       setError("Error processing detection results");
-      setLoading(false);
     }
   }, [image, results]);
 
@@ -112,7 +103,7 @@ const DetectionResult = ({ route, navigation }) => {
     navigation.navigate("WordHome");
   };
 
-  const handleLearnMore = (word) => {
+  const handleLearnMore = () => {
     if (!results?.history_id) {
       Alert.alert("Error", "Unable to save results. Please try again.");
       return;
@@ -143,95 +134,86 @@ const DetectionResult = ({ route, navigation }) => {
     );
   }
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
+  return (
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
         <HeaderScreen
-          label="Detection Results"
+          label="Kết quả nhận diện"
           callback={() => navigation.goBack()}
         />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.active} />
-          <Text style={styles.loadingText}>Processing results...</Text>
-        </View>
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      <HeaderScreen
-        label="Detection Results"
-        callback={() => navigation.goBack()}
-      />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.imageSection}>
-          <Image
-            source={{ uri: image.uri }}
-            style={styles.image}
-            resizeMode="contain"
-          />
-          <View style={styles.imageOverlay} />
-        </View>
-
-        <View style={styles.summarySection}>
-          <View style={styles.summaryCard}>
-            <MaterialIcons name="translate" size={32} color={COLORS.active} />
-            <Text style={styles.summaryTitle}>
-              {detectedObjects.length} Từ được nhận diện
-            </Text>
-            <Text style={styles.summarySubtitle}>
-              Nhấn vào từng từ để tìm hiểu thêm
-            </Text>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.imageSection}>
+            <Image
+              source={{ uri: image.uri }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <View style={styles.imageOverlay} />
           </View>
-        </View>
 
-        <View style={styles.wordsSection}>
-          {detectedObjects.length === 0 ? (
-            <View style={styles.noWordsContainer}>
-              <MaterialIcons
-                name="search-off"
-                size={48}
-                color={COLORS.subTextColor}
-              />
-              <Text style={styles.noWordsText}>Không tìm thấy từ nào</Text>
-              <Text style={styles.noWordsSubtext}>
-                Thử chụp lại hình ảnh với văn bản rõ hơn
+          <View style={styles.summarySection}>
+            <View style={styles.summaryCard}>
+              <MaterialIcons name="translate" size={32} color={COLORS.active} />
+              <Text style={styles.summaryTitle}>
+                {detectedObjects.length} Từ được nhận diện
+              </Text>
+              <Text style={styles.summarySubtitle}>
+                Nhấn vào từng từ để tìm hiểu thêm
               </Text>
             </View>
-          ) : (
-            detectedObjects.map((word, index) => (
-              <WordCard
-                key={index}
-                word={word}
-                onPress={() => handleLearnMore()}
-              />
-            ))
-          )}
-        </View>
+          </View>
 
-        <View style={styles.actionButtons}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.retakeButton]}
-            onPress={handleRetake}
-          >
-            <MaterialIcons
-              name="camera-alt"
-              size={24}
-              color={COLORS.blackIconColor}
-            />
-            <Text style={[styles.buttonText, styles.retakeButtonText]}>
-              Chụp hình ảnh khác{" "}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
+          <View style={styles.wordsSection}>
+            {detectedObjects.length === 0 ? (
+              <View style={styles.noWordsContainer}>
+                <MaterialIcons
+                  name="search-off"
+                  size={48}
+                  color={COLORS.subTextColor}
+                />
+                <Text style={styles.noWordsText}>Không tìm thấy từ nào</Text>
+                <Text style={styles.noWordsSubtext}>
+                  Thử chụp lại hình ảnh với văn bản rõ hơn
+                </Text>
+              </View>
+            ) : (
+              detectedObjects.map((word, index) => (
+                <WordCard
+                  key={index}
+                  word={word}
+                  onPress={() => handleLearnMore()}
+                />
+              ))
+            )}
+          </View>
+
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.retakeButton]}
+              onPress={handleRetake}
+            >
+              <MaterialIcons
+                name="camera-alt"
+                size={24}
+                color={COLORS.blackIconColor}
+              />
+              <Text style={[styles.buttonText, styles.retakeButtonText]}>
+                Chụp hình ảnh khác{" "}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },

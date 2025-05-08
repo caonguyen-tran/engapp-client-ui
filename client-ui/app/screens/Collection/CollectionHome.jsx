@@ -7,8 +7,9 @@ import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import { COLORS } from "../../../constants/Constant";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 const HEADER_HEIGHT = 56;
@@ -24,7 +25,9 @@ const CollectionHome = ({ navigation }) => {
     setLoading(true);
 
     try {
-      const response = await authApi(token).get(endpoints['collection-service']['get-all'](pageNumber));
+      const response = await authApi(token).get(
+        endpoints["collection-service"]["get-all"](pageNumber)
+      );
       const newData = response.data.data;
       setData((prevData) => [...prevData, ...newData]);
     } catch (ex) {
@@ -49,15 +52,9 @@ const CollectionHome = ({ navigation }) => {
   const renderHeader = () => (
     <View style={styles.headerSection}>
       <Text style={styles.sectionTitle}>Bộ sưu tập</Text>
-      <Text style={styles.sectionSubtitle}>Khám phá các bộ sưu tập từ vựng</Text>
-    </View>
-  );
-
-  const renderEmpty = () => (
-    <View style={styles.emptyContainer}>
-      <MaterialIcons name="collections-bookmark" size={64} color={COLORS.primary} />
-      <Text style={styles.emptyText}>Chưa có bộ sưu tập nào</Text>
-      <Text style={styles.emptySubText}>Hãy tạo bộ sưu tập đầu tiên của bạn</Text>
+      <Text style={styles.sectionSubtitle}>
+        Khám phá các bộ sưu tập từ vựng
+      </Text>
     </View>
   );
 
@@ -71,35 +68,40 @@ const CollectionHome = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.subContainer}>
         <HeaderStack />
-        <AnimatedFlatList
-          ListHeaderComponent={
-            <>
-              {renderHeader()}
-              <FeatureGrid />
-            </>
-          }
-          data={data}
-          renderItem={({ item }) => (
-            <CollectionItem item={item} navigation={navigation} />
-          )}
-          keyExtractor={(item, index) => `collection-${item.id}-${index}`}
-          contentContainerStyle={[
-            styles.listContainer,
-            { paddingTop: HEADER_HEIGHT }
-          ]}
-          onEndReached={loadMoreData}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={renderFooter}
-          ListEmptyComponent={renderEmpty}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
-          )}
-          showsVerticalScrollIndicator={false}
-        />
+        {loading ? (
+          <SkeletonLoading />
+        ) : (
+          <>
+            <AnimatedFlatList
+              ListHeaderComponent={
+                <>
+                  {renderHeader()}
+                  <FeatureGrid />
+                </>
+              }
+              data={data}
+              renderItem={({ item }) => (
+                <CollectionItem item={item} navigation={navigation} />
+              )}
+              keyExtractor={(item, index) => `collection-${item.id}-${index}`}
+              contentContainerStyle={[
+                styles.listContainer,
+                { paddingTop: HEADER_HEIGHT },
+              ]}
+              onEndReached={loadMoreData}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={renderFooter}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                { useNativeDriver: true }
+              )}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.titleColor,
     marginBottom: 4,
   },
@@ -134,16 +136,16 @@ const styles = StyleSheet.create({
   },
   footerLoader: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   emptyContainer: {
     padding: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.blackTextColor,
     marginTop: 16,
   },

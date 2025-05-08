@@ -17,6 +17,7 @@ import ResultStats from "../../../components/Quiz/ResultStats";
 import QuizItem from "../../../components/Quiz/QuizItem";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS } from "../../../constants/Constant";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const QuizHome = () => {
   const [listQuestionSet, setListQuestionSet] = useState([]);
@@ -76,58 +77,61 @@ const QuizHome = () => {
     );
   };
 
-  if (loading && !refreshing) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <HeaderStack />
-        <LoadingView />
-      </SafeAreaView>
-    );
-  }
-
-  if (listQuestionSet.length === 0) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <HeaderStack />
-        <NoActiveView
-          textAlert="Bộ câu hỏi chưa được cập nhật!"
-          visible={false}
-        />
-      </SafeAreaView>
-    );
-  }
-
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <HeaderStack />
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <ResultStats
-          detailPress={() => navigation.navigate("QuizResult")}
-          data={listStats}
-          quizCount={listQuestionSet.length}
-        />
+      <View style={styles.subContainer}>
+        {loading && !refreshing ? (
+          <View style={styles.skeletonLoading}>
+            <SkeletonLoading />
+          </View>
+        ) : listQuestionSet.length <= 0 ? (
+          <NoActiveView
+            textAlert="Bộ câu hỏi chưa được cập nhật!"
+            visible={false}
+          />
+        ) : (
+          <ScrollView
+            style={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <ResultStats
+              detailPress={() => navigation.navigate("QuizResult")}
+              data={listStats}
+              quizCount={listQuestionSet.length}
+            />
 
-        <View style={styles.quizList}>
-          {listQuestionSet.map((item) => (
-            <QuizItem key={item.id} item={item} onStartQuiz={handleStartQuiz} />
-          ))}
-        </View>
-      </ScrollView>
-    </>
+            <View style={styles.quizList}>
+              {listQuestionSet.map((item) => (
+                <QuizItem
+                  key={item.id}
+                  item={item}
+                  onStartQuiz={handleStartQuiz}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
-    paddingTop: Platform.OS === "android" ? 26 : 0,
+  },
+  skeletonLoading: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
   },
   scrollView: {
     flex: 1,

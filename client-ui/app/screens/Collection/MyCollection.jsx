@@ -1,4 +1,11 @@
-import { FlatList, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import AddCollectionButton from "../../../components/screens/Collection/AddCollectionButton";
 import { useNavigation } from "@react-navigation/native";
@@ -8,8 +15,10 @@ import EmptyView from "../../../components/lotties/EmptyView";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import CollectionItem from "../../../components/screens/Collection/CollectionItem";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SkeletonItemLoading from "../../../components/lotties/SkeletonItemLoading";
 
 const MyCollection = () => {
   const [data, setData] = useState([]);
@@ -60,94 +69,106 @@ const MyCollection = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      <HeaderScreen 
-        label="Bộ sưu tập của tôi" 
-        callback={() => navigation.goBack()}
-      />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.content}>
-          <View style={styles.headerSection}>
-            <Text style={styles.title}>Quản lý bộ sưu tập</Text>
-            <Text style={styles.subtitle}>
-              Tạo và quản lý các bộ sưu tập từ vựng của bạn
-            </Text>
-          </View>
-
-          <View style={styles.quickActions}>
-            {quickActions.map((action) => (
-              <TouchableOpacity
-                key={action.id}
-                style={styles.actionButton}
-                onPress={action.onPress}
-              >
-                <View style={[styles.iconContainer, { backgroundColor: action.color + '20' }]}>
-                  <MaterialIcons name={action.icon} size={24} color={action.color} />
-                </View>
-                <Text style={styles.actionTitle}>{action.title}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <View style={styles.collectionSection}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Bộ sưu tập của bạn</Text>
-              <Text style={styles.collectionCount}>
-                {data.length} bộ sưu tập
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Bộ sưu tập của tôi"
+          callback={() => navigation.goBack()}
+        />
+        {loading ? (
+          <SkeletonItemLoading />
+        ) : (
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.headerSection}>
+              <Text style={styles.title}>Quản lý bộ sưu tập</Text>
+              <Text style={styles.subtitle}>
+                Tạo và quản lý các bộ sưu tập từ vựng của bạn
               </Text>
             </View>
 
-            {loading ? (
-              <LoadingView />
-            ) : (
-              <>
-                {data.length !== 0 ? (
-                  <FlatList
-                    data={data}
-                    renderItem={({ item }) => (
-                      <CollectionItem 
-                        item={item} 
-                        navigation={navigation}
-                        style={styles.collectionItem}
-                      />
-                    )}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={styles.listContainer}
-                    scrollEnabled={false}
-                    showsVerticalScrollIndicator={false}
-                  />
-                ) : (
-                  <View style={styles.emptyContainer}>
-                    <EmptyView />
-                    <Text style={styles.emptyText}>
-                      Bạn chưa có bộ sưu tập nào
-                    </Text>
-                    <TouchableOpacity 
-                      style={styles.createButton}
-                      onPress={() => navigation.navigate("CreateCollection")}
-                    >
-                      <Text style={styles.createButtonText}>
-                        Tạo bộ sưu tập mới
-                      </Text>
-                    </TouchableOpacity>
+            <View style={styles.quickActions}>
+              {quickActions.map((action) => (
+                <TouchableOpacity
+                  key={action.id}
+                  style={styles.actionButton}
+                  onPress={action.onPress}
+                >
+                  <View
+                    style={[
+                      styles.iconContainer,
+                      { backgroundColor: action.color + "20" },
+                    ]}
+                  >
+                    <MaterialIcons
+                      name={action.icon}
+                      size={24}
+                      color={action.color}
+                    />
                   </View>
-                )}
-              </>
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+                  <Text style={styles.actionTitle}>{action.title}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View style={styles.collectionSection}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Bộ sưu tập của bạn</Text>
+                <Text style={styles.collectionCount}>
+                  {data.length} bộ sưu tập
+                </Text>
+              </View>
+
+              {data.length !== 0 ? (
+                <FlatList
+                  data={data}
+                  renderItem={({ item }) => (
+                    <CollectionItem
+                      item={item}
+                      navigation={navigation}
+                      style={styles.collectionItem}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={styles.listContainer}
+                  scrollEnabled={false}
+                  showsVerticalScrollIndicator={false}
+                />
+              ) : (
+                <View style={styles.emptyContainer}>
+                  <EmptyView />
+                  <Text style={styles.emptyText}>
+                    Bạn chưa có bộ sưu tập nào
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.createButton}
+                    onPress={() => navigation.navigate("CreateCollection")}
+                  >
+                    <Text style={styles.createButtonText}>
+                      Tạo bộ sưu tập mới
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
   scrollView: {
     flex: 1,
+    paddingTop: 30,
   },
   content: {
     flex: 1,
@@ -194,6 +215,7 @@ const styles = StyleSheet.create({
   },
   collectionSection: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   sectionHeader: {
     flexDirection: "row",

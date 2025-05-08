@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View, Animated } from "react-native";
+import { StyleSheet, Text, View, Animated, SafeAreaView } from "react-native";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import CollectionDetailFooter from "../../../components/Footer/CollectionDetailFooter";
 import { useEffect, useState, useRef } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
-import LoadingView from "../../../components/lotties/LoadingView";
 import ListWordView from "../Word/ListWordView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { useDownload } from "../../../context/DownloadContext";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
+import SkeletonItemLoading from "../../../components/lotties/SkeletonItemLoading";
 import { COLORS } from "../../../constants/Constant";
 
 const CollectionDetail = ({ navigation, route }) => {
@@ -35,68 +35,53 @@ const CollectionDetail = ({ navigation, route }) => {
         setIsOwner(ownerRes.data.data);
       } catch (ex) {
         console.log(ex);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetch();
   }, []);
 
-  const headerOpacity = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [1, 0.98],
-    extrapolate: 'clamp',
-  });
-
-  const headerElevation = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, 3],
-    extrapolate: 'clamp',
-  });
-
   return (
-    <View style={styles.container}>
-      <Animated.View
-        style={[
-          styles.headerContainer,
-          {
-            opacity: headerOpacity,
-            elevation: headerElevation,
-          },
-        ]}
-      >
-        {isOwner ? (
-          <HeaderScreen
-            label="Từ vựng"
-            callback={() => navigation.goBack()}
-            nameIcon="add"
-            handlePress={() =>
-              navigation.navigate("CreateNewWord", { collectionId: collectionId })
-            }
-          />
-        ) : (
-          <HeaderScreen label="Từ vựng" callback={() => navigation.goBack()} />
-        )}
-      </Animated.View>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      {isOwner ? (
+        <HeaderScreen
+          label="Từ vựng"
+          callback={() => navigation.goBack()}
+          nameIcon="add"
+          handlePress={() =>
+            navigation.navigate("CreateNewWord", {
+              collectionId: collectionId,
+            })
+          }
+        />
+      ) : (
+        <HeaderScreen label="Từ vựng" callback={() => navigation.goBack()} />
+      )}
 
-      <Animated.ScrollView
-        style={styles.scrollView}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
-      >
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <LoadingView />
-          </View>
-        ) : (
+      {loading ? (
+        <View style={styles.content}>
+          <SkeletonItemLoading />
+        </View>
+      ) : (
+        <Animated.ScrollView
+          style={styles.scrollView}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+          scrollEventThrottle={16}
+        >
           <View style={styles.content}>
             {data.length !== 0 ? (
               <>
                 <View style={styles.statsContainer}>
                   <View style={styles.statItem}>
-                    <MaterialIcons name="folder" size={24} color={COLORS.blackTextColor} />
+                    <MaterialIcons
+                      name="folder"
+                      size={24}
+                      color={COLORS.blackTextColor}
+                    />
                     <Text style={styles.statNumber}>{data.length}</Text>
                     <Text style={styles.statLabel}>Từ vựng</Text>
                   </View>
@@ -110,8 +95,8 @@ const CollectionDetail = ({ navigation, route }) => {
               />
             )}
           </View>
-        )}
-      </Animated.ScrollView>
+        </Animated.ScrollView>
+      )}
 
       {data.length !== 0 && (
         <CollectionDetailFooter
@@ -121,12 +106,16 @@ const CollectionDetail = ({ navigation, route }) => {
           setDownload={setDownload}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
@@ -138,19 +127,15 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 40,
+    backgroundColor: COLORS.backgroundColor,
   },
   content: {
     flex: 1,
+    backgroundColor: COLORS.backgroundColor,
   },
   statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     paddingVertical: 20,
     backgroundColor: COLORS.sectionBackground,
     marginBottom: 8,
@@ -161,12 +146,12 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   statItem: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 24,
   },
   statNumber: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.blackTextColor,
     marginTop: 8,
   },

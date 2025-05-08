@@ -8,7 +8,8 @@ import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { COLORS } from "../../../constants/Constant";
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 const ChooseListNew = ({ route }) => {
   const [index, setIndex] = useState(0);
   const [wordCount, setWordCount] = useState(0);
@@ -69,23 +70,23 @@ const ChooseListNew = ({ route }) => {
   };
 
   return (
-    <>
-      <HeaderElement
-        textHeader={`Chọn từ để học ${wordCount}/5`}
-        closeHandle={() => handleClose()}
-      />
-      {loading ? (
-        <LoadingView />
-      ) : listWord ? (
-        listWord.length < 5 ? (
-          <NoActiveView
-            textAlert="Nguồn từ vựng không đáp ứng đủ (số lượng từ vựng dưới 5)."
-            visible={true}
-          />
-        ) : (
-          <>
-            {listWord[index] ? (
-              <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderElement
+          textHeader={`Chọn từ để học ${wordCount}/5`}
+          closeHandle={() => handleClose()}
+        />
+        {loading ? (
+          <SkeletonLoading />
+        ) : listWord ? (
+          listWord.length < 5 ? (
+            <NoActiveView
+              textAlert="Nguồn từ vựng không đáp ứng đủ (số lượng từ vựng dưới 5)."
+              visible={true}
+            />
+          ) : (
+            <>
+              {listWord[index] ? (
                 <View style={styles.card}>
                   <View>
                     <Text style={styles.word}>
@@ -146,24 +147,27 @@ const ChooseListNew = ({ route }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              </View>
-            ) : (
-              <></>
-            )}
-          </>
-        )
-      ) : (
-        <></>
-      )}
-    </>
+              ) : (
+                <></>
+              )}
+            </>
+          )
+        ) : (
+          <></>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
-    padding: 10,
   },
   card: {
     backgroundColor: COLORS.chooseListNewCardBackgroundColor,
@@ -173,6 +177,7 @@ const styles = StyleSheet.create({
     height: 550,
     justifyContent: "space-between",
     marginTop: 30,
+    marginHorizontal: 10,
   },
   word: {
     fontSize: 24,

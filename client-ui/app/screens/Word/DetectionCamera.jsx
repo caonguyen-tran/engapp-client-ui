@@ -18,6 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
 import * as ImageManipulator from "expo-image-manipulator";
 import { useAuth } from "../../../context/AuthContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 const IMAGE_FRAME_SIZE = width * 0.9;
@@ -53,7 +54,11 @@ const ImagePreview = ({ image, onRetake }) => {
         <View style={styles.frameOverlay} />
       </View>
       <View style={styles.imageTips}>
-        <MaterialIcons name="lightbulb" size={20} color={COLORS.yellowIconColor} />
+        <MaterialIcons
+          name="lightbulb"
+          size={20}
+          color={COLORS.yellowIconColor}
+        />
         <Text style={styles.tipsText}>
           Đảm bảo hình ảnh rõ nét và đủ sáng để nhận diện tốt hơn
         </Text>
@@ -87,8 +92,14 @@ const ActionButtons = ({ onRetake, onAnalyze, loading }) => {
         style={[styles.actionButton, styles.retakeButton]}
         onPress={onRetake}
       >
-        <MaterialIcons name="camera-alt" size={24} color={COLORS.blackIconColor} />
-        <Text style={[styles.buttonText, styles.retakeButtonText]}>Chụp lại</Text>
+        <MaterialIcons
+          name="camera-alt"
+          size={24}
+          color={COLORS.blackIconColor}
+        />
+        <Text style={[styles.buttonText, styles.retakeButtonText]}>
+          Chụp lại
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -158,7 +169,7 @@ const DetectionCamera = () => {
 
       navigation.navigate("DetectionResult", {
         image: image,
-        results: response.data.results
+        results: response.data.results,
       });
     } catch (error) {
       console.error("Error detecting image:", error);
@@ -168,32 +179,38 @@ const DetectionCamera = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <HeaderScreen
-        label="Nhận diện hình ảnh"
-        callback={() => navigation.navigate("WordHome")}
-      />
-      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
-        {image ? (
-          <ScrollView style={styles.scrollView}>
-            <HeaderInfo />
-            <ImagePreview image={image} onRetake={handleRetake} />
-            <ActionButtons
-              onRetake={handleRetake}
-              onAnalyze={detectImage}
-              loading={loading}
-            />
-          </ScrollView>
-        ) : (
-          <EmptyState onRetake={handleRetake} />
-        )}
-      </Animated.View>
-    </View>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Nhận diện hình ảnh"
+          callback={() => navigation.navigate("WordHome")}
+        />
+        <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+          {image ? (
+            <ScrollView style={styles.scrollView}>
+              <HeaderInfo />
+              <ImagePreview image={image} onRetake={handleRetake} />
+              <ActionButtons
+                onRetake={handleRetake}
+                onAnalyze={detectImage}
+                loading={loading}
+              />
+            </ScrollView>
+          ) : (
+            <EmptyState onRetake={handleRetake} />
+          )}
+        </Animated.View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },

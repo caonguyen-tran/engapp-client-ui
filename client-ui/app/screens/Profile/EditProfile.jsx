@@ -54,92 +54,94 @@ const EditProfile = ({ navigation }) => {
   );
 
   return (
-    <>
-      <HeaderScreen
-        nameIcon="edit"
-        label="Chỉnh sửa thông tin"
-        callback={() => navigation.goBack()}
-        handlePress={() => setEdit(!edit)}
-      />
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          nameIcon="edit"
+          label="Chỉnh sửa thông tin"
+          callback={() => navigation.goBack()}
+          handlePress={() => setEdit(!edit)}
+        />
 
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.profileSection}>
-          <View style={styles.avatarContainer}>
-            <Image
-              source={require("../../../assets/images/EngApp.png")}
-              style={styles.avatar}
-            />
-            <Pressable style={styles.editAvatarButton}>
-              <MaterialIcons
-                name="photo-camera"
-                size={20}
-                color={COLORS.whiteTextColor}
-              />
-            </Pressable>
-          </View>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
-          <Input
-            value={currentUser.first_name}
-            label="Họ"
-            holderText="Nhập họ của bạn"
-            isLogin
-            onChangeHandle={(t) => change("first_name", t)}
-          />
-          <Input
-            value={currentUser.last_name}
-            label="Tên"
-            holderText="Nhập tên của bạn"
-            onChangeHandle={(t) => change("last_name", t)}
-            isLogin
-          />
-          <Input
-            value={currentUser.address}
-            label="Địa chỉ"
-            holderText="Nhập địa chỉ của bạn"
-            onChangeHandle={(t) => change("address", t)}
-            isLogin
-          />
-          <Input
-            value={currentUser.email}
-            label="Email"
-            holderText="Nhập email của bạn"
-            onChangeHandle={(t) => change("email", t)}
-            isLogin
-          />
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Cài đặt tài khoản</Text>
-          <ActionButton
-            icon="password"
-            title="Đổi mật khẩu"
-            onPress={() => {}}
-          />
-          <ActionButton
-            icon="logout"
-            title="Đăng xuất"
-            onPress={() => {
-              removeToken();
-            }}
-            danger
-          />
-        </View>
-
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.saveButton}
-          onPress={() => {}}
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.saveButtonText}>Lưu thay đổi</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </>
+          <View style={styles.profileSection}>
+            <View style={styles.avatarContainer}>
+              <Image
+                source={require("../../../assets/images/EngApp.png")}
+                style={styles.avatar}
+              />
+              <Pressable style={styles.editAvatarButton}>
+                <MaterialIcons
+                  name="photo-camera"
+                  size={20}
+                  color={COLORS.whiteTextColor}
+                />
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
+            <Input
+              value={currentUser.first_name}
+              label="Họ"
+              holderText="Nhập họ của bạn"
+              isLogin
+              onChangeHandle={(t) => change("first_name", t)}
+            />
+            <Input
+              value={currentUser.last_name}
+              label="Tên"
+              holderText="Nhập tên của bạn"
+              onChangeHandle={(t) => change("last_name", t)}
+              isLogin
+            />
+            <Input
+              value={currentUser.address}
+              label="Địa chỉ"
+              holderText="Nhập địa chỉ của bạn"
+              onChangeHandle={(t) => change("address", t)}
+              isLogin
+            />
+            <Input
+              value={currentUser.email}
+              label="Email"
+              holderText="Nhập email của bạn"
+              onChangeHandle={(t) => change("email", t)}
+              isLogin
+            />
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.sectionTitle}>Cài đặt tài khoản</Text>
+            <ActionButton
+              icon="password"
+              title="Đổi mật khẩu"
+              onPress={() => {}}
+            />
+            <ActionButton
+              icon="logout"
+              title="Đăng xuất"
+              onPress={() => {
+                removeToken();
+              }}
+              danger
+            />
+          </View>
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.saveButton}
+            onPress={() => {}}
+          >
+            <Text style={styles.saveButtonText}>Lưu thay đổi</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -148,8 +150,11 @@ export default EditProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
-    paddingTop: Platform.OS === "android" ? 26 : 0,
   },
   scrollView: {
     flex: 1,

@@ -9,6 +9,8 @@ import NoActiveView from "./../../../components/lotties/NoActiveView";
 import { MaterialIcons } from "@expo/vector-icons";
 import { formattedStartTime, formattedEndTime } from "../../../utils/common";
 import { COLORS } from "../../../constants/Constant";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const QuizResult = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -37,14 +39,20 @@ const QuizResult = ({ navigation }) => {
     const endTime = formattedEndTime(result.endTime);
 
     return (
-      <TouchableOpacity 
-        style={styles.itemContainer} 
-        activeOpacity={0.7} 
-        onPress={() => navigation.navigate("QuizResultDetail", {resultId: result.id})}
+      <TouchableOpacity
+        style={styles.itemContainer}
+        activeOpacity={0.7}
+        onPress={() =>
+          navigation.navigate("QuizResultDetail", { resultId: result.id })
+        }
       >
         <View style={styles.itemHeader}>
           <View style={styles.titleContainer}>
-            <MaterialIcons name="assignment" size={24} color={COLORS.blueColor} />
+            <MaterialIcons
+              name="assignment"
+              size={24}
+              color={COLORS.blueColor}
+            />
             <Text style={styles.title}>{result.questionSet.name}</Text>
           </View>
         </View>
@@ -53,16 +61,22 @@ const QuizResult = ({ navigation }) => {
 
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <MaterialIcons name="check-circle" size={20} color={COLORS.succcess} />
+            <MaterialIcons
+              name="check-circle"
+              size={20}
+              color={COLORS.succcess}
+            />
             <Text style={styles.statText}>
               {result.correctAnswers} câu đúng
             </Text>
           </View>
           <View style={styles.statItem}>
-            <MaterialIcons name="percent" size={20} color={COLORS.averageScore} />
-            <Text style={styles.statText}>
-              {result.correctPercentage}%
-            </Text>
+            <MaterialIcons
+              name="percent"
+              size={20}
+              color={COLORS.averageScore}
+            />
+            <Text style={styles.statText}>{result.correctPercentage}%</Text>
           </View>
         </View>
 
@@ -77,36 +91,46 @@ const QuizResult = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <HeaderScreen
-        label="Kết quả của bạn"
-        callback={() => navigation.goBack()}
-      />
-      {loading ? (
-        <LoadingView />
-      ) : data.length <= 0 ? (
-        <NoActiveView textAlert="Bạn chưa làm bài test nào" />
-      ) : (
-        <View style={styles.contentContainer}>
-          <View style={styles.headerContainer}>
-            <MaterialIcons name="history" size={24} color={COLORS.blueColor} />
-            <Text style={styles.headerText}>Danh sách bài test đã làm</Text>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Kết quả của bạn"
+          callback={() => navigation.goBack()}
+        />
+        {loading ? (
+          <SkeletonLoading />
+        ) : data.length <= 0 ? (
+          <NoActiveView textAlert="Bạn chưa làm bài test nào" />
+        ) : (
+          <View style={styles.contentContainer}>
+            <View style={styles.headerContainer}>
+              <MaterialIcons
+                name="history"
+                size={24}
+                color={COLORS.blueColor}
+              />
+              <Text style={styles.headerText}>Danh sách bài test đã làm</Text>
+            </View>
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => <TestResultItem result={item} />}
+              contentContainerStyle={styles.listContainer}
+              showsVerticalScrollIndicator={false}
+            />
           </View>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <TestResultItem result={item} />}
-            contentContainerStyle={styles.listContainer}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-      )}
-    </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
@@ -115,14 +139,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 16,
     gap: 8,
   },
   headerText: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.blueColor,
   },
   listContainer: {
@@ -146,20 +170,20 @@ const styles = StyleSheet.create({
     }),
   },
   itemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 8,
   },
   titleContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.lightTextColor,
     flex: 1,
   },
@@ -167,13 +191,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   pointText: {
     color: COLORS.whiteTextColor,
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   description: {
     fontSize: 14,
@@ -182,23 +206,23 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   statsContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 16,
     marginBottom: 12,
   },
   statItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   statText: {
     fontSize: 14,
     color: COLORS.lightTextColor,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
     borderTopWidth: 1,
     borderTopColor: COLORS.sectionBackground,

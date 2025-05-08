@@ -16,6 +16,7 @@ import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const BlogHome = () => {
   const [blogs, setBlogs] = useState([]);
@@ -122,48 +123,46 @@ const BlogHome = () => {
     </Animated.View>
   );
 
-  const headerOpacity = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [1, 0.9],
-    extrapolate: "clamp",
-  });
-
   return (
-    <>
-      <Animated.View style={[styles.header, { opacity: headerOpacity }]}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
         <HeaderStack />
-      </Animated.View>
-      {loading && !refreshing ? (
-        <LoadingView />
-      ) : blogs.length <= 0 ? (
-        <NoActiveView textAlert="Hiện chưa có blog nào" />
-      ) : (
-        <Animated.FlatList
-          data={blogs}
-          renderItem={renderBlogItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.container}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
-          )}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={COLORS.primary}
-              colors={[COLORS.primary]}
-            />
-          }
-          showsVerticalScrollIndicator={false}
-        />
-      )}
-    </>
+        {loading && !refreshing ? (
+          <LoadingView />
+        ) : blogs.length <= 0 ? (
+          <NoActiveView textAlert="Hiện chưa có blog nào" />
+        ) : (
+          <Animated.FlatList
+            data={blogs}
+            renderItem={renderBlogItem}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.flatListContainer}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={COLORS.primary}
+                colors={[COLORS.primary]}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  container: {
+  flatListContainer: {
     padding: 16,
     paddingTop: 8,
   },

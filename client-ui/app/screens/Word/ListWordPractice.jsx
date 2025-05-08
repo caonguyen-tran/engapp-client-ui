@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { TouchableOpacity } from "react-native";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ListWordPractice = () => {
   const [listWord, setListWord] = useState([]);
@@ -48,64 +49,77 @@ const ListWordPractice = () => {
   };
 
   return (
-    <>
-      <HeaderElement textHeader="ôn tập" closeHandle={() => handleClose()} />
-      {loading ? (
-        <LoadingView />
-      ) : listWord.length <= 0 ? (
-        <NoActiveView textAlert="Không có từ vựng nào cần ôn!" visible={true} />
-      ) : (
-        <>
-          <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.headerText}>Các từ vựng bạn cần ôn</Text>
-            {listWord.map((item) => (
-              <View style={styles.card} key={item.id}>
-                <Text style={styles.wordText}>{item.wordResponse.word}</Text>
-                <Text style={styles.pronunciationText}>
-                  {item.wordResponse.pronunciation}
-                </Text>
-
-                <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>Definition:</Text>
-                  <Text style={styles.definitionText}>
-                    {item.wordResponse.definition}
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderElement textHeader="Ôn tập" closeHandle={() => handleClose()} />
+        {loading ? (
+          <LoadingView />
+        ) : listWord.length <= 0 ? (
+          <NoActiveView
+            textAlert="Không có từ vựng nào cần ôn!"
+            visible={true}
+          />
+        ) : (
+          <>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+              <Text style={styles.headerText}>Các từ vựng bạn cần ôn</Text>
+              {listWord.map((item) => (
+                <View style={styles.card} key={item.id}>
+                  <Text style={styles.wordText}>{item.wordResponse.word}</Text>
+                  <Text style={styles.pronunciationText}>
+                    {item.wordResponse.pronunciation}
                   </Text>
-                </View>
 
-                <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>Example:</Text>
-                  <Text style={styles.exampleText}>
-                    {item.wordResponse.example}
-                  </Text>
-                </View>
+                  <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Definition:</Text>
+                    <Text style={styles.definitionText}>
+                      {item.wordResponse.definition}
+                    </Text>
+                  </View>
 
-                <View style={styles.button}>
-                  <Text style={styles.buttonText}>
-                    {item.learnedMaster.name}
-                  </Text>
+                  <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Example:</Text>
+                    <Text style={styles.exampleText}>
+                      {item.wordResponse.example}
+                    </Text>
+                  </View>
+
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>
+                      {item.learnedMaster.name}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            ))}
-          </ScrollView>
-          <TouchableOpacity
-            style={styles.fixedButton}
-            onPress={() =>
-              navigation.navigate("LearnNewWordProcess", {
-                listWord: listWord,
-                flag: false,
-              })
-            }
-          >
-            <Text style={styles.buttonText}>Bắt đầu ôn</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </>
+              ))}
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.fixedButton}
+              onPress={() =>
+                navigation.navigate("LearnNewWordProcess", {
+                  listWord: listWord,
+                  flag: false,
+                })
+              }
+            >
+              <Text style={styles.buttonText}>Bắt đầu ôn</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+  },
+  scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",

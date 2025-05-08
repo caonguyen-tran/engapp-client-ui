@@ -7,6 +7,7 @@ import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { useNavigation } from "@react-navigation/native";
 import ExamStats from "../../../components/Quiz/ExamStats";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const QuizResultDetail = ({ route }) => {
   const { resultId } = route.params;
@@ -102,24 +103,30 @@ const QuizResultDetail = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <HeaderScreen
-        label="Kết quả làm bài"
-        callback={() => navigation.navigate("QuizHome")}
-      />
-      {loading ? (
-        <LoadingView />
-      ) : (
-        <>
-          <QuestionList />
-        </>
-      )}
-    </View>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Kết quả làm bài"
+          callback={() => navigation.navigate("QuizHome")}
+        />
+        {loading ? (
+          <LoadingView />
+        ) : (
+          <>
+            <QuestionList />
+          </>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },

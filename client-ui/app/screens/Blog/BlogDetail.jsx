@@ -16,6 +16,7 @@ import APIs, { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import { formatDate } from "../../../utils/common";
 import { COLORS } from "../../../constants/Constant";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const BlogDetail = ({ route }) => {
   const [data, setData] = useState({});
@@ -51,75 +52,95 @@ const BlogDetail = ({ route }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <HeaderScreen label="Nhật ký NLP" callback={() => navigation.goBack()} />
-      {loading ? (
-        <LoadingView />
-      ) : (
-        <ScrollView
-          style={styles.container}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.contentWrapper}>
-            <View style={styles.header}>
-              <Text style={styles.title}>{data.title}</Text>
-              <View style={styles.metaInfo}>
-                <View style={styles.metaWrapper}>
-                  <MaterialIcons name="event" size={16} color={COLORS.grayColor} />
-                  <Text style={styles.date}>
-                    {formatDate(data.createdDate)}
-                  </Text>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Nhật ký NLP"
+          callback={() => navigation.goBack()}
+        />
+        {loading ? (
+          <SkeletonLoading />
+        ) : (
+          <ScrollView
+            style={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.contentWrapper}>
+              <View style={styles.header}>
+                <Text style={styles.title}>{data.title}</Text>
+                <View style={styles.metaInfo}>
+                  <View style={styles.metaWrapper}>
+                    <MaterialIcons
+                      name="event"
+                      size={16}
+                      color={COLORS.grayColor}
+                    />
+                    <Text style={styles.date}>
+                      {formatDate(data.createdDate)}
+                    </Text>
+                  </View>
+                  <View style={styles.metaWrapper}>
+                    <MaterialIcons
+                      name="person"
+                      size={16}
+                      color={COLORS.grayColor}
+                    />
+                    <Text style={styles.author}>ID: {data.userId}</Text>
+                  </View>
                 </View>
-                <View style={styles.metaWrapper}>
-                  <MaterialIcons name="person" size={16} color={COLORS.grayColor} />
-                  <Text style={styles.author}>ID: {data.userId}</Text>
+              </View>
+
+              <View style={styles.contentContainer}>
+                <Text style={styles.content}>{data.content}</Text>
+              </View>
+
+              <View style={styles.vocabularySection}>
+                <View style={styles.sectionHeader}>
+                  <MaterialIcons
+                    name="school"
+                    size={24}
+                    color={COLORS.blackTextColor}
+                  />
+                  <Text style={styles.sectionTitle}>Từ vựng gợi ý học tập</Text>
+                </View>
+
+                <View style={styles.wordTypesContainer}>
+                  <WordTypeItem
+                    label="Tính từ"
+                    data={analyzeData.adjectives}
+                    icon="format-color-text"
+                  />
+                  <WordTypeItem
+                    label="Danh từ"
+                    data={analyzeData.nouns}
+                    icon="category"
+                  />
+                  <WordTypeItem
+                    label="Động từ"
+                    data={analyzeData.verbs}
+                    icon="directions-run"
+                  />
                 </View>
               </View>
             </View>
-
-            <View style={styles.contentContainer}>
-              <Text style={styles.content}>{data.content}</Text>
-            </View>
-
-            <View style={styles.vocabularySection}>
-              <View style={styles.sectionHeader}>
-                <MaterialIcons name="school" size={24} color={COLORS.blackTextColor} />
-                <Text style={styles.sectionTitle}>Từ vựng gợi ý học tập</Text>
-              </View>
-
-              <View style={styles.wordTypesContainer}>
-                <WordTypeItem
-                  label="Tính từ"
-                  data={analyzeData.adjectives}
-                  icon="format-color-text"
-                />
-                <WordTypeItem
-                  label="Danh từ"
-                  data={analyzeData.nouns}
-                  icon="category"
-                />
-                <WordTypeItem
-                  label="Động từ"
-                  data={analyzeData.verbs}
-                  icon="directions-run"
-                />
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      )}
+          </ScrollView>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
-  container: {
+  scrollContainer: {
     flex: 1,
-    backgroundColor: COLORS.backgroundColor,
   },
   contentWrapper: {
     padding: 16,

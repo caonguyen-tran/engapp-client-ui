@@ -5,16 +5,14 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  Dimensions,
   SafeAreaView,
 } from "react-native";
-import LoadingView from "../../../components/lotties/LoadingView";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { aiApi, endpoints } from "../../../apis/APIs";
 import { COLORS } from "../../../constants/Constant";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { parseBoundingBox } from "../../../utils/common";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const DetectionHistoryDetail = ({ route, navigation }) => {
   const { id } = route.params;
@@ -47,7 +45,7 @@ const DetectionHistoryDetail = ({ route, navigation }) => {
           callback={() => navigation.goBack()}
         />
         {loading ? (
-          <LoadingView />
+          <SkeletonLoading />
         ) : history ? (
           <ScrollView>
             <View style={styles.imageContainer}>

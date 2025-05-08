@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  View,
+} from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { authApi, endpoints } from "../../../apis/APIs";
 import Input from "../../../components/Input/Input";
@@ -7,6 +13,8 @@ import HeaderScreen from "../../../components/Header/HeaderScreen";
 import LoadingView from "../../../components/lotties/LoadingView";
 import { useAuth } from "../../../context/AuthContext";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "expo-router";
 
 const ERROR_MSG = "Trường này không được để trống!";
 const CreateNewWord = ({ route }) => {
@@ -14,6 +22,7 @@ const CreateNewWord = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
   const { collectionId } = route.params;
+  const navigation = useNavigation();
 
   const [newWord, setNewWord] = useState({
     word: "",
@@ -108,93 +117,105 @@ const CreateNewWord = ({ route }) => {
   };
 
   return (
-    <>
-      <HeaderScreen label="Thêm từ vựng" />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Input
-          label="Từ mới"
-          value={newWord.word}
-          onChangeHandle={(t) => {
-            change("word", t);
-          }}
-          error={error.word}
-          holderText="Nhập từ mới..."
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderScreen
+          label="Thêm từ vựng"
+          callback={() => navigation.goBack()}
         />
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Input
+            label="Từ mới"
+            value={newWord.word}
+            onChangeHandle={(t) => {
+              change("word", t);
+            }}
+            error={error.word}
+            holderText="Nhập từ mới..."
+          />
 
-        <Text style={styles.label}>Loại từ</Text>
-        <SelectList
-          setSelected={(val) => change("pofSpeech", val)}
-          data={pofSpeechOptions}
-          save="key"
-          defaultOption={pofSpeechOptions[0]}
-          boxStyles={styles.dropdownBoxStyle}
-          dropdownStyles={styles.dropdownStyle}
-          inputStyles={styles.dropdownInputStyle}
-        />
+          <Text style={styles.label}>Loại từ</Text>
+          <SelectList
+            setSelected={(val) => change("pofSpeech", val)}
+            data={pofSpeechOptions}
+            save="key"
+            defaultOption={pofSpeechOptions[0]}
+            boxStyles={styles.dropdownBoxStyle}
+            dropdownStyles={styles.dropdownStyle}
+            inputStyles={styles.dropdownInputStyle}
+          />
 
-        <Input
-          label="Phát âm"
-          value={newWord.pronunciation}
-          onChangeHandle={(t) => {
-            change("pronunciation", t);
-          }}
-          error={error.pronunciation}
-          holderText="Cách phát âm..."
-        />
+          <Input
+            label="Phát âm"
+            value={newWord.pronunciation}
+            onChangeHandle={(t) => {
+              change("pronunciation", t);
+            }}
+            error={error.pronunciation}
+            holderText="Cách phát âm..."
+          />
 
-        <Input
-          label="Nghĩa"
-          value={newWord.definition}
-          onChangeHandle={(t) => {
-            change("definition", t);
-          }}
-          error={error.definition}
-          holderText="Nghĩa của từ..."
-        />
+          <Input
+            label="Nghĩa"
+            value={newWord.definition}
+            onChangeHandle={(t) => {
+              change("definition", t);
+            }}
+            error={error.definition}
+            holderText="Nghĩa của từ..."
+          />
 
-        <Input
-          label="Ví dụ"
-          value={newWord.example}
-          onChangeHandle={(t) => {
-            change("example", t);
-          }}
-          error={error.example}
-          holderText="Ví dụ..."
-          multipleLine={true}
-          custom={{ height: 100 }}
-        />
+          <Input
+            label="Ví dụ"
+            value={newWord.example}
+            onChangeHandle={(t) => {
+              change("example", t);
+            }}
+            error={error.example}
+            holderText="Ví dụ..."
+            multipleLine={true}
+            custom={{ height: 100 }}
+          />
 
-        <Text style={styles.label}>Trình độ từ</Text>
-        <SelectList
-          setSelected={(val) => change("wordLevel", val)}
-          data={wordLevelOptions}
-          save="key"
-          defaultOption={wordLevelOptions[0]}
-          boxStyles={styles.dropdownBoxStyle}
-          dropdownStyles={styles.dropdownStyle}
-          inputStyles={styles.dropdownInputStyle}
-        />
+          <Text style={styles.label}>Trình độ từ</Text>
+          <SelectList
+            setSelected={(val) => change("wordLevel", val)}
+            data={wordLevelOptions}
+            save="key"
+            defaultOption={wordLevelOptions[0]}
+            boxStyles={styles.dropdownBoxStyle}
+            dropdownStyles={styles.dropdownStyle}
+            inputStyles={styles.dropdownInputStyle}
+          />
 
-        {!loading ? (
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={() => inputValidation()}
-          >
-            <Text style={styles.saveButtonText}>Lưu từ vựng</Text>
-          </TouchableOpacity>
-        ) : (
-          <LoadingView />
-        )}
-      </ScrollView>
-    </>
+          {!loading ? (
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => inputValidation()}
+            >
+              <Text style={styles.saveButtonText}>Lưu từ vựng</Text>
+            </TouchableOpacity>
+          ) : (
+            <LoadingView />
+          )}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    padding: 20,
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
+  },
+  scrollContainer: {
+    flex: 1,
+    padding: 20,
   },
   title: {
     fontSize: 28,

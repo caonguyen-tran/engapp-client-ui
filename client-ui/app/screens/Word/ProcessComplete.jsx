@@ -9,11 +9,12 @@ import HeaderElement from "../../../components/Header/HeaderElement";
 import CompletedView from "../../../components/lotties/CompletedView";
 import LoadingView from "../../../components/lotties/LoadingView";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProcessComplete = ({ route }) => {
   const navigation = useNavigation();
   const { listWord } = route.params;
-  const listLearnedRequest = listWord.map((item) => ({ learnedId : item.id}));
+  const listLearnedRequest = listWord.map((item) => ({ learnedId: item.id }));
   const [learnedResponse, setLearnedResponse] = useState([]);
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
@@ -36,7 +37,7 @@ const ProcessComplete = ({ route }) => {
     };
 
     fetchData();
-    console.log(listLearnedRequest)
+    console.log(listLearnedRequest);
   }, []);
 
   const renderItem = ({ item }) => (
@@ -51,47 +52,53 @@ const ProcessComplete = ({ route }) => {
   );
 
   return (
-    <>
-      {!loading ? (
-        <View style={styles.container}>
-          <Text style={styles.header}>Hoàn thành tiến trình</Text>
-          <CompletedView />
-          <FlatList
-            data={learnedResponse}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            style={styles.list}
-          />
-          <View style={styles.backBtnContainer}>
-            <TouchableOpacity
-              style={styles.backBtn}
-              onPress={() => navigation.navigate("WordHome")}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  color: "white",
-                  marginRight: 5,
-                }}
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        {!loading ? (
+          <>
+            <Text style={styles.header}>Hoàn thành tiến trình</Text>
+            <CompletedView />
+            <FlatList
+              data={learnedResponse}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              style={styles.list}
+            />
+            <View style={styles.backBtnContainer}>
+              <TouchableOpacity
+                style={styles.backBtn}
+                onPress={() => navigation.navigate("WordHome")}
               >
-                Quay về
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
-        <LoadingView />
-      )}
-    </>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    color: "white",
+                    marginRight: 5,
+                  }}
+                >
+                  Quay về
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : (
+          <LoadingView />
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: COLORS.backgroundColor,
+  },
+  subContainer: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
+    padding: 20,
   },
   header: {
     fontSize: 24,
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
   },
   wordText: {
     fontSize: 18,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   completeButton: {
     backgroundColor: COLORS.succcess,

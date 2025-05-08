@@ -1,16 +1,11 @@
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Input from "../../../components/Input/Input";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CreateCollection = () => {
   const [info, setInfo] = useState({
@@ -41,60 +36,70 @@ const CreateCollection = () => {
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <HeaderScreen
         label="Thêm bộ sưu tập"
         callback={() => navigation.goBack()}
       />
+      <View style={styles.subContainer}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Tạo Bộ Sưu Tập Từ Vựng</Text>
 
-      <View style={styles.container}>
-        <Text style={styles.title}>Tạo Bộ Sưu Tập Từ Vựng</Text>
+          <Input
+            label="Tên bộ sưu tập"
+            value={info.name}
+            onChangeHandle={(t) => {
+              change("name", t);
+            }}
+            error={error.name}
+            holderText="Nhập tên bộ sưu tập"
+          />
 
-        <Input
-          label="Tên bộ sưu tập"
-          value={info.name}
-          onChangeHandle={(t) => {
-            change("name", t);
-          }}
-          error={error.name}
-          holderText="Nhập tên bộ sưu tập"
-        />
+          <Input
+            label="Mô tả"
+            value={info.description}
+            onChangeHandle={(t) => {
+              change("description", t);
+            }}
+            error={error.description}
+            custom={{ height: 100, textAlignVertical: "top", textAlign: "top" }}
+            holderText="Nhập mô tả..."
+            multipleLine={true}
+          />
 
-        <Input
-          label="Mô tả"
-          value={info.description}
-          onChangeHandle={(t) => {
-            change("description", t);
-          }}
-          error={error.description}
-          custom={{ height: 100, textAlignVertical: "top", textAlign: "top" }}
-          holderText="Nhập mô tả..."
-          multipleLine={true}
-        />
+          <TouchableOpacity
+            style={styles.imagePickerButton}
+            onPress={pickImage}
+          >
+            <Text style={styles.imagePickerButtonText}>Chọn ảnh</Text>
+          </TouchableOpacity>
 
+          {info.file && (
+            <Image source={{ uri: info.file }} style={styles.imagePreview} />
+          )}
 
-        <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>
-          <Text style={styles.imagePickerButtonText}>Chọn ảnh</Text>
-        </TouchableOpacity>
-
-        {info.file && (
-          <Image source={{ uri: info.file }} style={styles.imagePreview} />
-        )}
-
-        <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Lưu Bộ Sưu Tập</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>Lưu Bộ Sưu Tập</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
-    justifyContent: "center",
+    padding: 20
+  },
+  content: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundColor,
   },
   title: {
     fontSize: 28,

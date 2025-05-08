@@ -8,6 +8,8 @@ import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { COLORS } from "../../../constants/Constant";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const DoExamProcess = ({ route }) => {
   const [clone, setClone] = useState([]);
@@ -114,7 +116,7 @@ const DoExamProcess = ({ route }) => {
     let interval = null;
     if (isRunning) {
       interval = setInterval(() => {
-        setSeconds(prevSeconds => prevSeconds + 1);
+        setSeconds((prevSeconds) => prevSeconds + 1);
       }, 1000);
     } else if (!isRunning && seconds !== 0) {
       clearInterval(interval);
@@ -125,56 +127,65 @@ const DoExamProcess = ({ route }) => {
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const remainingSeconds = totalSeconds % 60;
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(remainingSeconds).padStart(2, "0");
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 
   return (
-    <>
-      <HeaderElement textHeader={formatTime(seconds)} closeHandle={handleClose} />
-      {loading ? (
-        <LoadingView />
-      ) : questionData.length <= 0 ? (
-        <NoActiveView
-          visible={false}
-          textAlert="Đề này không có sẵn câu hỏi hoặc bạn đã làm rồi !"
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <View style={styles.subContainer}>
+        <HeaderElement
+          textHeader={formatTime(seconds)}
+          closeHandle={handleClose}
         />
-      ) : (
-        <>
-          <View style={styles.container}>
-            <Text style={styles.questionSetName}>
-              {clone[index].question.questionSet.name}
-            </Text>
-            <Text style={styles.questionContent}>
-              {clone[index].question.questionNumber}.{" "}
-              {clone[index].question.questionContent}
-            </Text>
 
-            <View style={styles.answersContainer}>
-              {clone[index].question.answers.map((answer) =>
-                renderAnswer(answer)
-              )}
-            </View>
-          </View>
-          <DoExamFooter
-            handleNextQuestion={handleNextQuestion}
-            handlePreviousQuestion={handlePreviousQuestion}
-            index={index}
-            questionData={questionData}
-            submitOnPress={() => submitOnPress()}
-            loading={loading}
+        {loading ? (
+          <SkeletonLoading />
+        ) : questionData.length <= 0 ? (
+          <NoActiveView
+            visible={false}
+            textAlert="Đề này không có sẵn câu hỏi hoặc bạn đã làm rồi !"
           />
-        </>
-      )}
-    </>
+        ) : (
+          <>
+            <View style={styles.quizContent}>
+              <Text style={styles.questionSetName}>
+                {clone[index].question.questionSet.name}
+              </Text>
+              <Text style={styles.questionContent}>
+                {clone[index].question.questionNumber}.{" "}
+                {clone[index].question.questionContent}
+              </Text>
+
+              <View style={styles.answersContainer}>
+                {clone[index].question.answers.map((answer) =>
+                  renderAnswer(answer)
+                )}
+              </View>
+            </View>
+            <DoExamFooter
+              handleNextQuestion={handleNextQuestion}
+              handlePreviousQuestion={handlePreviousQuestion}
+              index={index}
+              questionData={questionData}
+              submitOnPress={() => submitOnPress()}
+              loading={loading}
+            />
+          </>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: COLORS.primary,
+  },
+  subContainer: {
+    flex: 1,
     backgroundColor: COLORS.backgroundColor,
   },
   questionSetName: {
@@ -183,6 +194,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 25,
     color: COLORS.blackTextColor,
+  },
+  quizContent: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: COLORS.backgroundColor,
   },
   questionContent: {
     fontSize: 16,
