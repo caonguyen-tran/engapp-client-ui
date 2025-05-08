@@ -57,7 +57,7 @@ const DetectionHistory = () => {
             </View>
             <View style={styles.cardFooter}>
                 <Text style={styles.timeText}>
-                    {formatTime(item.created_date)}
+                    {`Lúc ${formatTime(item.created_date)}`}
                 </Text>
                 <View style={styles.idContainer}>
                     <Text style={styles.idText} numberOfLines={1}>

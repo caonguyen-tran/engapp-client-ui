@@ -72,10 +72,8 @@ const CollectionHome = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={{ flex: 1, backgroundColor: "white" }}>
-        <View style={styles.headerContainer}>
-          <HeaderStack />
-        </View>
+      <View style={{ flex: 1, backgroundColor: COLORS.backgroundColor }}>
+        <HeaderStack />
         <AnimatedFlatList
           ListHeaderComponent={
             <>
@@ -110,16 +108,7 @@ const CollectionHome = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
-  },
-  headerContainer: {
-    zIndex: 100,
-    backgroundColor: COLORS.backgroundColor,
-    elevation: 4,
-    shadowColor: COLORS.shadowColor,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    backgroundColor: COLORS.primary,
   },
   headerSection: {
     paddingHorizontal: 20,

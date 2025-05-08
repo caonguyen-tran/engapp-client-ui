@@ -43,6 +43,7 @@ export const COLORS = {
     blueIconColor: "#2196F3",
     yellowIconColor: "#FF9800",
     titleColor: "#1a237e",
+    blackIconColor: "#000000",
 }
 
 export const wordLevel = {

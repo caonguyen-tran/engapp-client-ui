@@ -63,7 +63,7 @@ const DetectionHistoryDetail = ({ route, navigation }) => {
             <View style={styles.statItem}>
               <Icon name="image" size={20} color={COLORS.active} />
               <Text style={styles.statText}>
-                Detected Objects: {history.objects.length}
+                Đối tượng phát hiện: {history.objects.length}
               </Text>
             </View>
             <View style={styles.statItem}>
@@ -75,14 +75,14 @@ const DetectionHistoryDetail = ({ route, navigation }) => {
           <View style={styles.objectsContainer}>
             <View style={styles.sectionHeader}>
               <Icon name="auto-awesome" size={24} color={COLORS.active} />
-              <Text style={styles.sectionTitle}>Detected Objects</Text>
+              <Text style={styles.sectionTitle}>Đối tượng phát hiện</Text>
             </View>
 
             {history.objects.length === 0 ? (
               <View style={styles.noObjectsContainer}>
                 <Icon name="search-off" size={48} color={COLORS.subTextColor} />
-                <Text style={styles.noObjectsText}>No detected objects have been found</Text>
-                <Text style={styles.noObjectsSubText}>Try analyzing another image</Text>
+                <Text style={styles.noObjectsText}>Không có đối tượng phát hiện</Text>
+                <Text style={styles.noObjectsSubText}>Hãy phân tích hình ảnh khác</Text>
               </View>
             ) : (
               history.objects.map((object, index) => {
@@ -112,30 +112,30 @@ const DetectionHistoryDetail = ({ route, navigation }) => {
                       <View style={styles.detailRow}>
                         <Icon name="translate" size={16} color={COLORS.active} />
                         <Text style={styles.definition}>
-                          <Text style={styles.label}>Definition: </Text>
+                          <Text style={styles.label}>Nghĩa: </Text>
                           {object.definition}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
                         <Icon name="lightbulb" size={16} color={COLORS.active} />
                         <Text style={styles.example}>
-                          <Text style={styles.label}>Example: </Text>
+                          <Text style={styles.label}>Ví dụ: </Text>
                           {object.example}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
                         <Icon name="category" size={16} color={COLORS.active} />
                         <Text style={styles.position}>
-                          <Text style={styles.label}>Position: </Text>
+                          <Text style={styles.label}>Loại từ: </Text>
                           {object.position_of_speech === "N"
-                            ? "Noun"
+                            ? "Danh từ"
                             : object.position_of_speech}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
                         <Icon name="crop" size={16} color={COLORS.active} />
                         <Text style={styles.boundingBox}>
-                          <Text style={styles.label}>Location: </Text>
+                          <Text style={styles.label}>Vị trí nhận diện: </Text>
                           {`(${box.x1}, ${box.y1}) to (${box.x2}, ${box.y2})`}
                         </Text>
                       </View>
