@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import LoadingView from "../../../components/lotties/LoadingView";
 import WordTypeItem from "../../../components/screens/Blog/WordTypeItem";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import APIs, { authApi, endpoints } from "../../../apis/APIs";

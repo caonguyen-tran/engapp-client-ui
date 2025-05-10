@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { formatDate, formatTime } from "../../../utils/common";
 import { Ionicons } from "@expo/vector-icons";
-import LoadingView from "../../../components/lotties/LoadingView";
 import { COLORS } from "../../../constants/Constant";
 import SkeletonItemLoading from "../../../components/lotties/SkeletonItemLoading";
 import { SafeAreaView } from "react-native-safe-area-context";

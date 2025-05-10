@@ -42,7 +42,7 @@ const AnswerAlert = ({
           flexDirection: "row",
           justifyContent: "flex-start",
           alignItems: "center",
-          backgroundColor: isCorrect ? COLORS.succcess : COLORS.fail,
+          backgroundColor: isCorrect ? COLORS.succcess : COLORS.dangerColor,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
         }}

@@ -4,7 +4,6 @@ import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { TouchableOpacity } from "react-native";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "./../../../context/AuthContext";
-import LoadingView from "./../../../components/lotties/LoadingView";
 import NoActiveView from "./../../../components/lotties/NoActiveView";
 import { MaterialIcons } from "@expo/vector-icons";
 import { formattedStartTime, formattedEndTime } from "../../../utils/common";

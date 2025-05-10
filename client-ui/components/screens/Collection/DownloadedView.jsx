@@ -1,6 +1,5 @@
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import DownloadedItem from "./DownloadedItem";
-import LoadingView from "../../lotties/LoadingView";
 import { useDownload } from "../../../context/DownloadContext";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../../../constants/Constant";

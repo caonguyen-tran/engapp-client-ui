@@ -6,7 +6,6 @@ import { Text } from "react-native";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import CompletedView from "../../../components/lotties/CompletedView";
-import LoadingView from "../../../components/lotties/LoadingView";
 import { useCount } from "../../../context/CountContext";
 import { COLORS } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";

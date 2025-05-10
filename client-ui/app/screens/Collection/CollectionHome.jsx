@@ -6,13 +6,12 @@ import { useEffect, useState, useRef } from "react";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingView from "../../../components/lotties/LoadingView";
-import { COLORS } from "../../../constants/Constant";
-import { MaterialIcons } from "@expo/vector-icons";
+import { COLORS, HEADER_CONFIG } from "../../../constants/Constant";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-const HEADER_HEIGHT = 56;
+const HEADER_HEIGHT = 34;
 
 const CollectionHome = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -70,7 +69,14 @@ const CollectionHome = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.subContainer}>
-        <HeaderStack />
+        <HeaderStack
+          headerText={HEADER_CONFIG.collection.headerText}
+          rightIcons={HEADER_CONFIG.collection.rightIcons}
+          onRightIconPress={(index) => HEADER_CONFIG.collection.onRightIconPress(navigation, index)}
+          backgroundColor={COLORS.primary}
+          textColor={COLORS.blackTextColor}
+          iconColor={COLORS.blackTextColor}
+        />
         {loading ? (
           <SkeletonLoading />
         ) : (

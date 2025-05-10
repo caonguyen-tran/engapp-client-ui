@@ -7,10 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
-import AddCollectionButton from "../../../components/screens/Collection/AddCollectionButton";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import LoadingView from "../../../components/lotties/LoadingView";
 import EmptyView from "../../../components/lotties/EmptyView";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";

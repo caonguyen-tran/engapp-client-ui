@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import ReminderView from "../../../components/screens/Collection/ReminderView";
 import DownloadedView from "../../../components/screens/Collection/DownloadedView";
-import { COLORS } from "./../../../constants/Constant";
+import { COLORS, HEADER_CONFIG } from "./../../../constants/Constant";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
@@ -64,7 +64,7 @@ const WordHome = () => {
   const quickActions = [
     {
       id: 1,
-      title: "AI Vision",
+      title: "Detection Camera",
       subtitle: "Chụp ảnh hoặc chọn từ thư viện",
       icon: "camera-alt",
       color: COLORS.whiteTextColor,
@@ -75,7 +75,14 @@ const WordHome = () => {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.subContainer}>
-        <HeaderStack label="Học từ vựng thông minh" />
+        <HeaderStack
+          headerText={HEADER_CONFIG.word.headerText}
+          rightIcons={HEADER_CONFIG.word.rightIcons}
+          onRightIconPress={(index) => HEADER_CONFIG.word.onRightIconPress(navigation, index)}
+          backgroundColor={COLORS.primary}
+          textColor={COLORS.blackTextColor}
+          iconColor={COLORS.blackTextColor}
+        />
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
@@ -258,7 +265,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     alignItems: "center",
     paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingTop: 36,
   },
   title: {
     fontSize: 28,

@@ -81,7 +81,7 @@ const LearnWordFooter = ({ collectionId }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.sectionBackground,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     ...Platform.select({

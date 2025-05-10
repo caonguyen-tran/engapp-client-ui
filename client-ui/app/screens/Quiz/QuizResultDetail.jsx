@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
-import LoadingView from "../../../components/lotties/LoadingView";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { useNavigation } from "@react-navigation/native";
 import ExamStats from "../../../components/Quiz/ExamStats";
 import { COLORS } from "../../../constants/Constant";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const QuizResultDetail = ({ route }) => {
   const { resultId } = route.params;
@@ -110,7 +110,7 @@ const QuizResultDetail = ({ route }) => {
           callback={() => navigation.navigate("QuizHome")}
         />
         {loading ? (
-          <LoadingView />
+          <SkeletonLoading />
         ) : (
           <>
             <QuestionList />

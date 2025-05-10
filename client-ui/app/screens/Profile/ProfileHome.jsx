@@ -70,7 +70,7 @@ const ProfileHome = ({ navigation }) => {
         <MaterialCommunityIcons
           name="account-details"
           size={28}
-          color={COLORS.itemColor}
+          color={COLORS.active}
         />
       ),
       title: "Thông tin chi tiết",
@@ -81,24 +81,24 @@ const ProfileHome = ({ navigation }) => {
         <MaterialIcons
           name="collections-bookmark"
           size={28}
-          color={COLORS.itemColor}
+          color={COLORS.active}
         />
       ),
       title: "Bộ sưu tập từ vựng",
       onPress: () => {},
     },
     {
-      icon: <Foundation name="results" size={28} color={COLORS.itemColor} />,
+      icon: <Foundation name="results" size={28} color={COLORS.active} />,
       title: "Kết quả làm bài",
       onPress: () => {},
     },
     {
-      icon: <FontAwesome6 name="wallet" size={24} color={COLORS.itemColor} />,
+      icon: <FontAwesome6 name="wallet" size={24} color={COLORS.active} />,
       title: "Từ vựng đã học",
       onPress: () => {},
     },
     {
-      icon: <AntDesign name="heart" size={24} color={COLORS.itemColor} />,
+      icon: <AntDesign name="heart" size={24} color={COLORS.active} />,
       title: "Danh sách yêu thích",
       onPress: () => {},
     },

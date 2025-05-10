@@ -10,13 +10,6 @@ export const COLORS = {
     line: "#E5E7EB",
     btnColor: "#308AFF",
     succcess: "#7bcb44",
-    fail: "#fc5127",
-    level1: "#FFE0B2",
-    level2: "#FFCC80",
-    level3: "#FFB74D",
-    level4: "#FFA726",
-    level5: "#FF9800",
-    level6: "#FB8C00",
     noActive: "#616161",
     aLevel: "#4CAF50",
     bLevel: "#fca02b",
@@ -49,4 +42,51 @@ export const COLORS = {
 export const wordLevel = {
     aLevel: ["A1", "A2"],
     bLevel: ["B1", "B2"]
+}
+
+export const HEADER_CONFIG = {
+    collection: {
+        headerText: "Trang chủ",
+        rightIcons: ["search", "bell"],
+        onRightIconPress: (navigation, index) => {
+            // if (index === 0) {
+            //     navigation.navigate('Search');
+            // } else {
+            //     navigation.navigate('Notifications');
+            // }
+        }
+    },
+    word: {
+        headerText: "Học từ vựng",
+        rightIcons: ["search", "bell"],
+        onRightIconPress: (navigation, index) => {
+            // if (index === 0) {
+            //     navigation.navigate('Search');
+            // } else {
+            //     navigation.navigate('Notifications');
+            // }
+        }
+    },
+    blog: {
+        headerText: "Bài viết",
+        rightIcons: ["search", "bell"],
+        onRightIconPress: (navigation, index) => {
+            // if (index === 0) {
+            //     navigation.navigate('Search');
+            // } else {
+            //     navigation.navigate('Notifications');
+            // }
+        }
+    },
+    quiz: {
+        headerText: "Bài Reading TOEIC",
+        rightIcons: ["search", "bell"],
+        onRightIconPress: (navigation, index) => {
+            // if (index === 0) {
+            //     navigation.navigate('Search');
+            // } else {
+            //     navigation.navigate('Notifications');
+            // }
+        }
+    }
 }

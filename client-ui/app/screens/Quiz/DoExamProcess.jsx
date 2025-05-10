@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import DoExamFooter from "../../../components/Footer/DoExamFooter";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
-import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { COLORS } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";

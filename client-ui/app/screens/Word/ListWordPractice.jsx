@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import HeaderElement from "../../../components/Header/HeaderElement";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
-import LoadingView from "../../../components/lotties/LoadingView";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { TouchableOpacity } from "react-native";
 import { COLORS } from "../../../constants/Constant";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const ListWordPractice = () => {
   const [listWord, setListWord] = useState([]);
@@ -53,7 +53,7 @@ const ListWordPractice = () => {
       <View style={styles.subContainer}>
         <HeaderElement textHeader="Ôn tập" closeHandle={() => handleClose()} />
         {loading ? (
-          <LoadingView />
+          <SkeletonLoading />
         ) : listWord.length <= 0 ? (
           <NoActiveView
             textAlert="Không có từ vựng nào cần ôn!"
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "gray",
+    color: COLORS.titleColor,
     marginBottom: 20,
     textAlign: "center",
   },
@@ -162,17 +162,17 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#555",
+    color: COLORS.subTextColor,
     marginBottom: 5,
   },
   definitionText: {
     fontSize: 16,
-    color: "#444",
+    color: COLORS.subTextColor,
   },
   exampleText: {
     fontSize: 16,
     fontStyle: "italic",
-    color: "#444",
+    color: COLORS.subTextColor,
   },
   button: {
     marginTop: 20,

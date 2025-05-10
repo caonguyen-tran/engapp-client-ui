@@ -11,12 +11,11 @@ import {
 import { useAuth } from "../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
 import HeaderStack from "../../../components/Header/HeaderStack";
-import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import ResultStats from "../../../components/Quiz/ResultStats";
 import QuizItem from "../../../components/Quiz/QuizItem";
 import { useNavigation } from "@react-navigation/native";
-import { COLORS } from "../../../constants/Constant";
+import { COLORS, HEADER_CONFIG } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const QuizHome = () => {
@@ -79,7 +78,14 @@ const QuizHome = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderStack />
+      <HeaderStack
+        headerText={HEADER_CONFIG.quiz.headerText}
+        rightIcons={HEADER_CONFIG.quiz.rightIcons}
+        onRightIconPress={(index) => HEADER_CONFIG.quiz.onRightIconPress(navigation, index)}
+        backgroundColor={COLORS.primary}
+        textColor={COLORS.blackTextColor}
+        iconColor={COLORS.blackTextColor}
+      />
       <View style={styles.subContainer}>
         {loading && !refreshing ? (
           <View style={styles.skeletonLoading}>

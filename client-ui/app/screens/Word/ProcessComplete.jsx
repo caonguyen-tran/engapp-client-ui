@@ -5,9 +5,8 @@ import { View } from "react-native";
 import { Text } from "react-native";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
-import HeaderElement from "../../../components/Header/HeaderElement";
 import CompletedView from "../../../components/lotties/CompletedView";
-import LoadingView from "../../../components/lotties/LoadingView";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 import { COLORS } from "../../../constants/Constant";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -83,7 +82,7 @@ const ProcessComplete = ({ route }) => {
             </View>
           </>
         ) : (
-          <LoadingView />
+          <SkeletonLoading />
         )}
       </View>
     </SafeAreaView>

@@ -7,6 +7,7 @@ import {
   Animated,
   RefreshControl,
   Platform,
+  FlatList,
 } from "react-native";
 import { useAuth } from "../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
@@ -15,8 +16,9 @@ import HeaderStack from "../../../components/Header/HeaderStack";
 import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { MaterialIcons } from "@expo/vector-icons";
-import { COLORS } from "../../../constants/Constant";
+import { COLORS, HEADER_CONFIG } from "../../../constants/Constant";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 
 const BlogHome = () => {
   const [blogs, setBlogs] = useState([]);
@@ -126,9 +128,16 @@ const BlogHome = () => {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.subContainer}>
-        <HeaderStack />
+        <HeaderStack
+          headerText={HEADER_CONFIG.blog.headerText}
+          rightIcons={HEADER_CONFIG.blog.rightIcons}
+          onRightIconPress={(index) => HEADER_CONFIG.blog.onRightIconPress(navigation, index)}
+          backgroundColor={COLORS.primary}
+          textColor={COLORS.blackTextColor}
+          iconColor={COLORS.blackTextColor}
+        />
         {loading && !refreshing ? (
-          <LoadingView />
+          <SkeletonLoading />
         ) : blogs.length <= 0 ? (
           <NoActiveView textAlert="Hiện chưa có blog nào" />
         ) : (
