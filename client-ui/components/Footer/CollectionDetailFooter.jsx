@@ -99,9 +99,7 @@ const CollectionDetailFooter = ({ collectionId, label, setDownload }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.primary,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    backgroundColor: COLORS.sectionBackground,
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
@@ -130,7 +128,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   downloadButton: {
-    backgroundColor: COLORS.itemColor,
+    backgroundColor: COLORS.active,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

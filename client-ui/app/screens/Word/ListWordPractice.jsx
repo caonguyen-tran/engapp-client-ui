@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import HeaderElement from "../../../components/Header/HeaderElement";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useAuth } from "../../../context/AuthContext";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -9,6 +8,7 @@ import { TouchableOpacity } from "react-native";
 import { COLORS } from "../../../constants/Constant";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
+import HeaderScreen from "../../../components/Header/HeaderScreen";
 
 const ListWordPractice = () => {
   const [listWord, setListWord] = useState([]);
@@ -51,7 +51,10 @@ const ListWordPractice = () => {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.subContainer}>
-        <HeaderElement textHeader="Ôn tập" closeHandle={() => handleClose()} />
+      <HeaderScreen
+          label="Ôn tập từ vựng"
+          callback={() => navigation.goBack()}
+        />
         {loading ? (
           <SkeletonLoading />
         ) : listWord.length <= 0 ? (

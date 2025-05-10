@@ -1,8 +1,7 @@
 export const COLORS = {
-    primary: "#F8FAE5",
-    itemColor: "#739072",
-    active: "#43766C",
-    activeStrength: "#12372A",
+    primary: "#B39DDB",
+    active: "#7E57C2",
+    activeStrength: "#6A1B9A",
     blackTextColor: "#1a1a1a",
     whiteTextColor: "#FFFFFF",
     lightColor: "#D4E7C5",

@@ -57,7 +57,7 @@ const WordStack = () => {
         <Stack.Screen
           name="ListWordPractice"
           component={ListWordPractice}
-          options={{ headerShown: false , gestureEnabled: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="DetectionHistory"

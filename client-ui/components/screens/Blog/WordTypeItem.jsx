@@ -47,7 +47,7 @@ const WordTypeItem = ({ data, label, icon }) => {
         <Text style={styles.wordText}>
           {loading ? "Đang dịch..." : word}
         </Text>
-        <MaterialIcons name="translate" size={16} color={COLORS.active} style={styles.translateIcon} />
+        <MaterialIcons name="translate" size={16} color={COLORS.blackIconColor} style={styles.translateIcon} />
       </TouchableOpacity>
     );
   };
@@ -55,7 +55,7 @@ const WordTypeItem = ({ data, label, icon }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <MaterialIcons name={icon} size={24} color={COLORS.itemColor} />
+        <MaterialIcons name={icon} size={24} color={COLORS.active} />
         <Text style={styles.headerText}>{label}</Text>
       </View>
 
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: "600",
-    color: COLORS.itemColor,
+    color: COLORS.active,
     marginLeft: 8,
   },
   wordsGrid: {

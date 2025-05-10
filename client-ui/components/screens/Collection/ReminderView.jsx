@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   learnButton: {
     width: 200,
     height: 45,
-    backgroundColor: COLORS.itemColor,
+    backgroundColor: COLORS.btnColor,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
