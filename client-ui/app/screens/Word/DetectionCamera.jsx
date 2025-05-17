@@ -19,6 +19,7 @@ import { COLORS } from "../../../constants/Constant";
 import * as ImageManipulator from "expo-image-manipulator";
 import { useAuth } from "../../../context/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
+import DetectionLoading from "../../../components/lotties/DetectionLoading";
 
 const { width } = Dimensions.get("window");
 const IMAGE_FRAME_SIZE = width * 0.9;
@@ -76,7 +77,7 @@ const ActionButtons = ({ onRetake, onAnalyze, loading }) => {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color={COLORS.whiteTextColor} />
+          <DetectionLoading />
         ) : (
           <>
             <MaterialIcons
@@ -315,7 +316,8 @@ const styles = StyleSheet.create({
   },
   controlsSection: {
     padding: IMAGE_PADDING,
-    paddingTop: 0,
+    paddingTop: 5, 
+    paddingBottom: 5,
     gap: 12,
   },
   actionButton: {
