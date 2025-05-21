@@ -75,33 +75,6 @@ const Login = () => {
           <Text style={loginStyles.registerLink}> Đăng ký</Text>
         </Pressable>
       </View>
-
-      <View style={loginStyles.separatorContainer}>
-        <View style={loginStyles.separator} />
-        <Text style={loginStyles.separatorText}>HOẶC</Text>
-        <View style={loginStyles.separator} />
-      </View>
-
-      <View style={loginStyles.socialContainer}>
-        <Pressable>
-          <Image
-            source={{ uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1706947907/google_qk8s0c.jpg" }}
-            style={loginStyles.socialIcon}
-          />
-        </Pressable>
-        <Pressable>
-          <Image
-            source={{ uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1706947906/facebook_axwuyw.png" }}
-            style={loginStyles.socialIcon}
-          />
-        </Pressable>
-        <Pressable>
-          <Image
-            source={{ uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1706947965/discord_v6dvbt.png" }}
-            style={loginStyles.socialIcon}
-          />
-        </Pressable>
-      </View>
     </SafeAreaView>
   );
 };

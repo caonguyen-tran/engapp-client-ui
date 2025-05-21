@@ -174,37 +174,6 @@ const Register = ({ navigation }) => {
             </Text>
           </Pressable>
         </View>
-
-        <View style={{ marginVertical: 30, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ flex: 1, height: 1, backgroundColor: "#ccc" }} />
-          <Text style={{ marginHorizontal: 10, color: "#888" }}>hoặc</Text>
-          <View style={{ flex: 1, height: 1, backgroundColor: "#ccc" }} />
-        </View>
-
-        <View style={{ flexDirection: "row", justifyContent: "center", gap: 20, paddingBottom: 60 }}>
-          {[
-            {
-              uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1706947907/google_qk8s0c.jpg",
-              alt: "Google",
-            },
-            {
-              uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1706947906/facebook_axwuyw.png",
-              alt: "Facebook",
-            },
-            {
-              uri: "https://res.cloudinary.com/dndakokcz/image/upload/v1706947965/discord_v6dvbt.png",
-              alt: "Discord",
-            },
-          ].map((social, idx) => (
-            <Pressable key={idx} onPress={() => {}}>
-              <Image
-                source={{ uri: social.uri }}
-                style={InputFormStyles.imageStyle}
-                accessibilityLabel={social.alt}
-              />
-            </Pressable>
-          ))}
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
