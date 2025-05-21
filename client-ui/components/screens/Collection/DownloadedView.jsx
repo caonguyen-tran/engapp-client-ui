@@ -1,12 +1,18 @@
-import { FlatList, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import DownloadedItem from "./DownloadedItem";
 import { useDownload } from "../../../context/DownloadContext";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
 
 const DownloadedView = ({ navigation }) => {
   const { download } = useDownload();
-  
+
   if (!download || download.length === 0) {
     return (
       <View style={styles.emptyContainer}>
@@ -17,10 +23,7 @@ const DownloadedView = ({ navigation }) => {
         <Text style={styles.emptyDescription}>
           Tải xuống các bộ sưu tập để học offline
         </Text>
-        <TouchableOpacity 
-          style={styles.exploreButton}
-          onPress={() => navigation.navigate("Collection")}
-        >
+        <TouchableOpacity style={styles.exploreButton} onPress={() => {}}>
           <Text style={styles.exploreButtonText}>Khám phá bộ sưu tập</Text>
         </TouchableOpacity>
       </View>
@@ -54,8 +57,8 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 24,
   },
   emptyIcon: {
@@ -63,32 +66,32 @@ const styles = StyleSheet.create({
     height: 96,
     borderRadius: 48,
     backgroundColor: COLORS.backgroundColor,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 16,
   },
   emptyTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginBottom: 8,
   },
   emptyDescription: {
     fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
     marginBottom: 24,
   },
   exploreButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
   exploreButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 
