@@ -16,6 +16,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { formatDate } from "../../../utils/common";
 import { COLORS } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
+import PronunciationButton from "../../../components/common/PronunciationButton";
 
 const BlogDetail = ({ route }) => {
   const [data, setData] = useState({});
@@ -91,6 +92,13 @@ const BlogDetail = ({ route }) => {
 
               <View style={styles.contentContainer}>
                 <Text style={styles.content}>{data.content}</Text>
+                <View style={styles.pronunciationWrapper}>
+                  <PronunciationButton 
+                    text={data.content}
+                    style={styles.pronunciationButton}
+                    label="Đọc bài blog"
+                  />
+                </View>
               </View>
 
               <View style={styles.vocabularySection}>
@@ -210,6 +218,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     color: COLORS.contentColor,
+    marginBottom: 16,
+  },
+  pronunciationWrapper: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  pronunciationButton: {
+    alignSelf: 'center',
   },
   vocabularySection: {
     backgroundColor: COLORS.sectionBackground,

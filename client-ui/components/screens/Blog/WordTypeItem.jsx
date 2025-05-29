@@ -13,11 +13,15 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
 import APIs, { endpoints } from "../../../apis/APIs";
 import { Image } from "react-native";
+import { Audio } from 'expo-av';
+import PronunciationButton from "../../common/PronunciationButton";
 
 const WordTypeItem = ({ data, label, icon }) => {
   const [translatedWord, setTranslatedWord] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sound, setSound] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const translateWord = async (word) => {
     try {
@@ -36,6 +40,53 @@ const WordTypeItem = ({ data, label, icon }) => {
     }
   };
 
+  const playPronunciation = async () => {
+    try {
+      if (sound) {
+        if (isPlaying) {
+          await sound.stopAsync();
+          setIsPlaying(false);
+        } else {
+          await sound.playAsync();
+          setIsPlaying(true);
+        }
+        return;
+      }
+
+      // Call your API to get the MP3 URL
+      const response = await APIs.post(
+        endpoints["blog-analyze-service"]["pronunciation"],
+        { word: translatedWord.original }
+      );
+      
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        { uri: response.data.audioUrl },
+        { shouldPlay: true }
+      );
+      
+      setSound(newSound);
+      setIsPlaying(true);
+
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (status.didJustFinish) {
+          setIsPlaying(false);
+        }
+      });
+    } catch (error) {
+      console.error("Pronunciation error:", error);
+      Alert.alert("Lỗi", "Không thể phát âm từ này");
+    }
+  };
+
+  // Cleanup sound when component unmounts or modal closes
+  React.useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
+
   const WordCard = ({ word }) => {
     const isLongWord = word.length > 7;
     return (
@@ -49,6 +100,58 @@ const WordTypeItem = ({ data, label, icon }) => {
         </Text>
         <MaterialIcons name="translate" size={16} color={COLORS.blackIconColor} style={styles.translateIcon} />
       </TouchableOpacity>
+    );
+  };
+
+  const renderConjugationInfo = () => {
+    if (label !== "Động từ" || !translatedWord.conjugated) return null;
+
+    const conjugationItems = [
+      {
+        label: "Nguyên thể",
+        value: translatedWord.conjugated.verb_infinitive,
+        icon: "format-quote"
+      },
+      {
+        label: "Ngôi 3 số ít",
+        value: translatedWord.conjugated["3rd_person_singular"],
+        icon: "person"
+      },
+      {
+        label: "Quá khứ",
+        value: translatedWord.conjugated.past_tense,
+        icon: "history"
+      },
+      {
+        label: "Quá khứ phân từ",
+        value: translatedWord.conjugated.past_participle,
+        icon: "done-all"
+      },
+      {
+        label: "Hiện tại phân từ",
+        value: translatedWord.conjugated.present_participle,
+        icon: "schedule"
+      }
+    ];
+
+    return (
+      <View style={styles.conjugationContainer}>
+        <View style={styles.conjugationHeader}>
+          <MaterialIcons name="format-list-bulleted" size={20} color={COLORS.active} />
+          <Text style={styles.conjugationTitle}>Chia động từ</Text>
+        </View>
+        <View style={styles.conjugationGrid}>
+          {conjugationItems.map((item, index) => (
+            <View key={index} style={styles.conjugationItem}>
+              <View style={styles.conjugationItemContent}>
+                <MaterialIcons name={item.icon} size={16} color={COLORS.grayColor} />
+                <Text style={styles.conjugationLabel}>{item.label}</Text>
+                <Text style={styles.conjugationValue}>{item.value}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </View>
     );
   };
 
@@ -69,7 +172,12 @@ const WordTypeItem = ({ data, label, icon }) => {
         animationType="fade"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={() => {
+          if (sound) {
+            sound.unloadAsync();
+          }
+          setModalVisible(false);
+        }}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
@@ -81,7 +189,12 @@ const WordTypeItem = ({ data, label, icon }) => {
                   <Text style={styles.modalTitle}>Bản dịch</Text>
                   <TouchableOpacity
                     style={styles.closeButton}
-                    onPress={() => setModalVisible(false)}
+                    onPress={() => {
+                      if (sound) {
+                        sound.unloadAsync();
+                      }
+                      setModalVisible(false);
+                    }}
                   >
                     <MaterialIcons name="close" size={24} color="#666" />
                   </TouchableOpacity>
@@ -116,6 +229,12 @@ const WordTypeItem = ({ data, label, icon }) => {
                     <Text style={styles.translationText}>
                       {translatedWord.translated}
                     </Text>
+                  </View>
+
+                  {renderConjugationInfo()}
+
+                  <View style={styles.pronunciationContainer}>
+                    <PronunciationButton text={translatedWord.original} />
                   </View>
                 </View>
               </>
@@ -249,6 +368,53 @@ const styles = StyleSheet.create({
   flagIcon: {
     height: 20,
     width: 40,
+  },
+  conjugationContainer: {
+    marginTop: 16,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.line,
+  },
+  conjugationHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 6,
+  },
+  conjugationTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: COLORS.blackTextColor,
+  },
+  conjugationGrid: {
+    gap: 8,
+  },
+  conjugationItem: {
+    backgroundColor: COLORS.lightGrayColor,
+    borderRadius: 8,
+    padding: 10,
+  },
+  conjugationItemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  conjugationLabel: {
+    fontSize: 13,
+    color: COLORS.grayColor,
+    flex: 1,
+  },
+  conjugationValue: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: COLORS.blackTextColor,
+  },
+  pronunciationContainer: {
+    marginTop: 16,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.line,
+    alignItems: 'center',
   },
 });
 

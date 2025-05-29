@@ -65,7 +65,9 @@ export const endpoints = {
   },
   "blog-analyze-service": {
     "analyze-text": `/analyze-text`,
-    "translate": "/translate"
+    "translate": "/translate",
+    "text-to-speech": "/text-to-speech",
+    "create-blog": "/create-blog"
   },
   "image-recognition-service": {
     "get-histories": (userId) => `/get-histories?user_id=${userId}`,
