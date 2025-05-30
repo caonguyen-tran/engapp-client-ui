@@ -6,6 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -17,11 +18,18 @@ import { formatDate } from "../../../utils/common";
 import { COLORS } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 import PronunciationButton from "../../../components/common/PronunciationButton";
+import VoiceOptionModal from "../../../components/screens/Blog/VoiceOptionModal";
 
 const BlogDetail = ({ route }) => {
   const [data, setData] = useState({});
   const [analyzeData, setAnalyzeData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState({
+    id: "en-US-Chirp3-HD-Achernar",
+    name: "Giọng của Achernar - Nữ",
+    icon: "woman",
+  });
   const { token } = useAuth();
   const { id } = route.params;
   const navigation = useNavigation();
@@ -50,6 +58,11 @@ const BlogDetail = ({ route }) => {
 
     fetchData();
   }, []);
+
+  const handlePronunciation = (voiceId) => {
+    // Handle pronunciation with selected voice
+    console.log("Pronunciation with voice:", voiceId);
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -93,13 +106,40 @@ const BlogDetail = ({ route }) => {
               <View style={styles.contentContainer}>
                 <Text style={styles.content}>{data.content}</Text>
                 <View style={styles.pronunciationWrapper}>
-                  <PronunciationButton 
+                  <PronunciationButton
                     text={data.content}
                     style={styles.pronunciationButton}
                     label="Đọc bài blog"
+                    voice={selectedVoice}
                   />
                 </View>
               </View>
+
+              <TouchableOpacity
+                style={styles.voiceSettingsButton}
+                onPress={() => setShowVoiceModal(true)}
+              >
+                <MaterialIcons
+                  name="settings-voice"
+                  size={20}
+                  color={COLORS.primary}
+                />
+                <Text style={styles.voiceSettingsText}>
+                  {selectedVoice.name}
+                </Text>
+                <MaterialIcons
+                  name="keyboard-arrow-down"
+                  size={20}
+                  color={COLORS.primary}
+                />
+              </TouchableOpacity>
+
+              <VoiceOptionModal
+                showVoiceModal={showVoiceModal}
+                setShowVoiceModal={setShowVoiceModal}
+                selectedVoice={selectedVoice}
+                setSelectedVoice={setSelectedVoice}
+              />
 
               <View style={styles.vocabularySection}>
                 <View style={styles.sectionHeader}>
@@ -116,16 +156,19 @@ const BlogDetail = ({ route }) => {
                     label="Tính từ"
                     data={analyzeData.adjectives}
                     icon="format-color-text"
+                    voice={selectedVoice}
                   />
                   <WordTypeItem
                     label="Danh từ"
                     data={analyzeData.nouns}
                     icon="category"
+                    voice={selectedVoice}
                   />
                   <WordTypeItem
                     label="Động từ"
                     data={analyzeData.verbs}
                     icon="directions-run"
+                    voice={selectedVoice}
                   />
                 </View>
               </View>
@@ -221,11 +264,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   pronunciationWrapper: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 8,
   },
   pronunciationButton: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   vocabularySection: {
     backgroundColor: COLORS.sectionBackground,
@@ -256,6 +299,21 @@ const styles = StyleSheet.create({
   },
   wordTypesContainer: {
     gap: 16,
+  },
+  voiceSettingsButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.primary + "15",
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 16,
+    gap: 8,
+  },
+  voiceSettingsText: {
+    color: COLORS.primary,
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
 

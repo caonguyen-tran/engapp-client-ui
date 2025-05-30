@@ -13,15 +13,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/Constant";
 import APIs, { endpoints } from "../../../apis/APIs";
 import { Image } from "react-native";
-import { Audio } from 'expo-av';
 import PronunciationButton from "../../common/PronunciationButton";
 
-const WordTypeItem = ({ data, label, icon }) => {
+const WordTypeItem = ({ data, label, icon, voice }) => {
   const [translatedWord, setTranslatedWord] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [sound, setSound] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const translateWord = async (word) => {
     try {
@@ -39,53 +36,6 @@ const WordTypeItem = ({ data, label, icon }) => {
       console.error("Translation error:", error);
     }
   };
-
-  const playPronunciation = async () => {
-    try {
-      if (sound) {
-        if (isPlaying) {
-          await sound.stopAsync();
-          setIsPlaying(false);
-        } else {
-          await sound.playAsync();
-          setIsPlaying(true);
-        }
-        return;
-      }
-
-      // Call your API to get the MP3 URL
-      const response = await APIs.post(
-        endpoints["blog-analyze-service"]["pronunciation"],
-        { word: translatedWord.original }
-      );
-      
-      const { sound: newSound } = await Audio.Sound.createAsync(
-        { uri: response.data.audioUrl },
-        { shouldPlay: true }
-      );
-      
-      setSound(newSound);
-      setIsPlaying(true);
-
-      newSound.setOnPlaybackStatusUpdate((status) => {
-        if (status.didJustFinish) {
-          setIsPlaying(false);
-        }
-      });
-    } catch (error) {
-      console.error("Pronunciation error:", error);
-      Alert.alert("Lỗi", "Không thể phát âm từ này");
-    }
-  };
-
-  // Cleanup sound when component unmounts or modal closes
-  React.useEffect(() => {
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
-    };
-  }, [sound]);
 
   const WordCard = ({ word }) => {
     const isLongWord = word.length > 7;
@@ -172,12 +122,6 @@ const WordTypeItem = ({ data, label, icon }) => {
         animationType="fade"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          if (sound) {
-            sound.unloadAsync();
-          }
-          setModalVisible(false);
-        }}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
@@ -190,9 +134,6 @@ const WordTypeItem = ({ data, label, icon }) => {
                   <TouchableOpacity
                     style={styles.closeButton}
                     onPress={() => {
-                      if (sound) {
-                        sound.unloadAsync();
-                      }
                       setModalVisible(false);
                     }}
                   >
@@ -234,7 +175,7 @@ const WordTypeItem = ({ data, label, icon }) => {
                   {renderConjugationInfo()}
 
                   <View style={styles.pronunciationContainer}>
-                    <PronunciationButton text={translatedWord.original} />
+                    <PronunciationButton text={translatedWord.original} voice={voice} />
                   </View>
                 </View>
               </>

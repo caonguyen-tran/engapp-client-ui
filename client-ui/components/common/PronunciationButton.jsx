@@ -6,28 +6,20 @@ import { endpoints, authApi } from "../../apis/APIs";
 import { useAuth } from "../../context/AuthContext";
 import { Audio } from 'expo-av';
 
-const VOICE_OPTIONS = [
-  { id: 'en-US-Chirp3-HD-Achernar', name: 'Giọng của Achernar - Nữ', icon: 'woman' },
-  { id: 'en-US-Chirp3-HD-Fenrir', name: 'Giọng của Fenrir - Nam', icon: 'man' },
-  { id: 'en-US-Chirp3-HD-Pulcherrima', name: 'Giọng của Pulcherrima - Nam', icon: 'face' },
-];
-
-const PronunciationButton = ({ text, style, label = "Nghe phát âm" }) => {
+const PronunciationButton = ({ text, voice, style, label = "Nghe phát âm" }) => {
   const { token } = useAuth();
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showVoiceModal, setShowVoiceModal] = useState(false);
-  const [selectedVoice, setSelectedVoice] = useState(VOICE_OPTIONS[0]);
 
-  const handlePronunciation = async (voiceId = selectedVoice.id) => {
+  const handlePronunciation = async () => {
     try {
       setLoading(true);
       const response = await authApi(token).post(
         endpoints["blog-analyze-service"]["text-to-speech"],
         { 
           text: text,
-          name: voiceId
+          name: voice.id
         },
         { responseType: 'arraybuffer' }
       );
@@ -64,34 +56,8 @@ const PronunciationButton = ({ text, style, label = "Nghe phát âm" }) => {
       Alert.alert("Lỗi", "Không thể phát âm từ này");
     } finally {
       setLoading(false);
-      setShowVoiceModal(false);
     }
   };
-
-  const renderVoiceOption = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.voiceOption,
-        selectedVoice.id === item.id && styles.selectedVoiceOption
-      ]}
-      onPress={() => {
-        setSelectedVoice(item);
-        handlePronunciation(item.id);
-      }}
-    >
-      <MaterialIcons 
-        name={item.icon}
-        size={24} 
-        color={selectedVoice.id === item.id ? COLORS.primary : COLORS.blackTextColor} 
-      />
-      <Text style={[
-        styles.voiceOptionText,
-        selectedVoice.id === item.id && styles.selectedVoiceOptionText
-      ]}>
-        {item.name}
-      </Text>
-    </TouchableOpacity>
-  );
 
   return (
     <>
@@ -102,13 +68,7 @@ const PronunciationButton = ({ text, style, label = "Nghe phát âm" }) => {
           loading && styles.buttonLoading,
           style
         ]}
-        onPress={() => {
-          if (!isPlaying) {
-            setShowVoiceModal(true);
-          } else {
-            handlePronunciation();
-          }
-        }}
+        onPress={() => handlePronunciation()}
         disabled={loading}
         activeOpacity={0.8}
       >
@@ -121,30 +81,6 @@ const PronunciationButton = ({ text, style, label = "Nghe phát âm" }) => {
           {loading ? "Đang tải..." : isPlaying ? "Tạm dừng" : label}
         </Text>
       </TouchableOpacity>
-
-      <Modal
-        visible={showVoiceModal}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowVoiceModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Chọn giọng đọc</Text>
-              <TouchableOpacity onPress={() => setShowVoiceModal(false)}>
-                <MaterialIcons name="close" size={24} color={COLORS.blackTextColor} />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={VOICE_OPTIONS}
-              renderItem={renderVoiceOption}
-              keyExtractor={item => item.id}
-              style={styles.voiceList}
-            />
-          </View>
-        </View>
-      </Modal>
     </>
   );
 };
@@ -185,56 +121,7 @@ const styles = StyleSheet.create({
   },
   textLoading: {
     color: COLORS.grayColor,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 20,
-    width: '80%',
-    maxWidth: 400,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: COLORS.blackTextColor,
-  },
-  voiceList: {
-    maxHeight: 300,
-  },
-  voiceOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 8,
-    backgroundColor: COLORS.lightGrayColor + '20',
-    gap: 12,
-  },
-  selectedVoiceOption: {
-    backgroundColor: COLORS.primary + '15',
-    borderColor: COLORS.primary + '30',
-    borderWidth: 1,
-  },
-  voiceOptionText: {
-    fontSize: 16,
-    color: COLORS.blackTextColor,
-  },
-  selectedVoiceOptionText: {
-    color: COLORS.primary,
-    fontWeight: '600',
-  },
+  }
 });
 
 export default PronunciationButton; 
