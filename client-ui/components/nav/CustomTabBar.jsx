@@ -43,7 +43,6 @@ export const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
     <View style={styles.container}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -97,7 +96,6 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 60 : 65,
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
-    elevation: 8,
   },
   tabButton: {
     flex: 1,

@@ -2,13 +2,11 @@ import {
   Image,
   Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -16,6 +14,7 @@ import { COLORS } from "../../../constants/Constant";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import Input from "../../../components/Input/Input";
 import { useAuth } from "../../../context/AuthContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const EditProfile = ({ navigation }) => {
   const [edit, setEdit] = useState(false);

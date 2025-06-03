@@ -8,12 +8,12 @@ import {
   RefreshControl,
   Platform,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { useAuth } from "../../../context/AuthContext";
 import { authApi, endpoints } from "../../../apis/APIs";
 import { useNavigation } from "@react-navigation/native";
 import HeaderStack from "../../../components/Header/HeaderStack";
-import LoadingView from "../../../components/lotties/LoadingView";
 import NoActiveView from "../../../components/lotties/NoActiveView";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, HEADER_CONFIG } from "../../../constants/Constant";
@@ -42,7 +42,6 @@ const BlogHome = () => {
       );
       setBlogs(response.data.data);
 
-      // Trigger fade in animation when data is loaded
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 500,
@@ -131,7 +130,9 @@ const BlogHome = () => {
         <HeaderStack
           headerText={HEADER_CONFIG.blog.headerText}
           rightIcons={HEADER_CONFIG.blog.rightIcons}
-          onRightIconPress={(index) => HEADER_CONFIG.blog.onRightIconPress(navigation, index)}
+          onRightIconPress={(index) =>
+            HEADER_CONFIG.blog.onRightIconPress(navigation, index)
+          }
           backgroundColor={COLORS.primary}
           textColor={COLORS.blackTextColor}
           iconColor={COLORS.blackTextColor}
@@ -161,6 +162,12 @@ const BlogHome = () => {
             showsVerticalScrollIndicator={false}
           />
         )}
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={() => navigation.navigate("BlogCreate")}
+        >
+          <MaterialIcons name="add" size={24} color={COLORS.blackTextColor} />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -174,20 +181,6 @@ const styles = StyleSheet.create({
   subContainer: {
     flex: 1,
     backgroundColor: COLORS.backgroundColor,
-  },
-  header: {
-    backgroundColor: COLORS.backgroundColor,
-    ...Platform.select({
-      ios: {
-        shadowColor: COLORS.shadowColor,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
   },
   flatListContainer: {
     padding: 16,
@@ -264,6 +257,28 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.grayColor,
     marginLeft: 4,
+  },
+  fab: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: COLORS.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
   },
 });
 

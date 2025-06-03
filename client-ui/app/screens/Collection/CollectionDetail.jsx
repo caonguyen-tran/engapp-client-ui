@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Animated, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, Animated } from "react-native";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import CollectionDetailFooter from "../../../components/Footer/CollectionDetailFooter";
 import { useEffect, useState, useRef } from "react";
@@ -10,6 +10,7 @@ import { useDownload } from "../../../context/DownloadContext";
 import { MaterialIcons } from "@expo/vector-icons";
 import SkeletonItemLoading from "../../../components/lotties/SkeletonItemLoading";
 import { COLORS } from "../../../constants/Constant";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CollectionDetail = ({ navigation, route }) => {
   const [data, setData] = useState([]);

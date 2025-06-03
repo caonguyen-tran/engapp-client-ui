@@ -12,7 +12,20 @@ const PronunciationButton = ({ text, voice, style, label = "Nghe phát âm" }) =
   const [sound, setSound] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const stopAudio = async () => {
+    if (sound) {
+      await sound.stopAsync();
+      setIsPlaying(false);
+    }
+  };
+
   const handlePronunciation = async () => {
+    // If audio is playing, stop it
+    if (isPlaying) {
+      await stopAudio();
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await authApi(token).post(

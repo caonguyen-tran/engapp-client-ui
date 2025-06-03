@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
-  SafeAreaView,
   Platform,
   RefreshControl,
 } from "react-native";
@@ -17,6 +16,7 @@ import QuizItem from "../../../components/Quiz/QuizItem";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, HEADER_CONFIG } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const QuizHome = () => {
   const [listQuestionSet, setListQuestionSet] = useState([]);
@@ -37,8 +37,6 @@ const QuizHome = () => {
       );
       setListQuestionSet(res.data.data);
       setListStats(statsRes.data.data);
-
-      console.log(statsRes.data.data);
     } catch (ex) {
       console.log(ex);
       Alert.alert("Lỗi", "Không thể tải dữ liệu. Vui lòng thử lại sau.", [
@@ -77,50 +75,54 @@ const QuizHome = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <HeaderStack
-        headerText={HEADER_CONFIG.quiz.headerText}
-        rightIcons={HEADER_CONFIG.quiz.rightIcons}
-        onRightIconPress={(index) => HEADER_CONFIG.quiz.onRightIconPress(navigation, index)}
-        backgroundColor={COLORS.primary}
-        textColor={COLORS.blackTextColor}
-        iconColor={COLORS.blackTextColor}
-      />
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.subContainer}>
-        {loading && !refreshing ? (
-          <View style={styles.skeletonLoading}>
-            <SkeletonLoading />
-          </View>
-        ) : listQuestionSet.length <= 0 ? (
-          <NoActiveView
-            textAlert="Bộ câu hỏi chưa được cập nhật!"
-            visible={false}
-          />
-        ) : (
-          <ScrollView
-            style={styles.scrollView}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            <ResultStats
-              detailPress={() => navigation.navigate("QuizResult")}
-              data={listStats}
-              quizCount={listQuestionSet.length}
-            />
-
-            <View style={styles.quizList}>
-              {listQuestionSet.map((item) => (
-                <QuizItem
-                  key={item.id}
-                  item={item}
-                  onStartQuiz={handleStartQuiz}
-                />
-              ))}
+        <HeaderStack
+          headerText={HEADER_CONFIG.quiz.headerText}
+          rightIcons={HEADER_CONFIG.quiz.rightIcons}
+          onRightIconPress={(index) =>
+            HEADER_CONFIG.quiz.onRightIconPress(navigation, index)
+          }
+          backgroundColor={COLORS.primary}
+          textColor={COLORS.blackTextColor}
+          iconColor={COLORS.blackTextColor}
+        />
+        <View style={styles.subContainer}>
+          {loading && !refreshing ? (
+            <View style={styles.skeletonLoading}>
+              <SkeletonLoading />
             </View>
-          </ScrollView>
-        )}
+          ) : listQuestionSet.length <= 0 ? (
+            <NoActiveView
+              textAlert="Bộ câu hỏi chưa được cập nhật!"
+              visible={false}
+            />
+          ) : (
+            <ScrollView
+              style={styles.scrollView}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              <ResultStats
+                detailPress={() => navigation.navigate("QuizResult")}
+                data={listStats}
+                quizCount={listQuestionSet.length}
+              />
+
+              <View style={styles.quizList}>
+                {listQuestionSet.map((item) => (
+                  <QuizItem
+                    key={item.id}
+                    item={item}
+                    onStartQuiz={handleStartQuiz}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );

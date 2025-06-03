@@ -4,8 +4,7 @@ import {
   ScrollView,
   Image,
   StyleSheet,
-  Text,
-  SafeAreaView,
+  Text
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { aiApi, endpoints } from "../../../apis/APIs";
@@ -13,6 +12,7 @@ import { COLORS } from "../../../constants/Constant";
 import HeaderScreen from "../../../components/Header/HeaderScreen";
 import { parseBoundingBox } from "../../../utils/common";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const DetectionHistoryDetail = ({ route, navigation }) => {
   const { id } = route.params;

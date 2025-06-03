@@ -61,7 +61,8 @@ export const endpoints = {
   },
   "blog-service": {
     "get-all": `${blog_service}/blog/get-blogs`,
-    "get-by-id": (id) => `${blog_service}/blog/get-blog/${id}`
+    "get-by-id": (id) => `${blog_service}/blog/get-blog/${id}`,
+    "create-blog": `${blog_service}/blog/create`
   },
   "blog-analyze-service": {
     "analyze-text": `/analyze-text`,

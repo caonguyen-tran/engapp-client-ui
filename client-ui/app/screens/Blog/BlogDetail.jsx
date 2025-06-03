@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
   Platform,
   TouchableOpacity,
 } from "react-native";
@@ -19,6 +18,7 @@ import { COLORS } from "../../../constants/Constant";
 import SkeletonLoading from "../../../components/lotties/SkeletonLoading";
 import PronunciationButton from "../../../components/common/PronunciationButton";
 import VoiceOptionModal from "../../../components/screens/Blog/VoiceOptionModal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const BlogDetail = ({ route }) => {
   const [data, setData] = useState({});
@@ -58,11 +58,6 @@ const BlogDetail = ({ route }) => {
 
     fetchData();
   }, []);
-
-  const handlePronunciation = (voiceId) => {
-    // Handle pronunciation with selected voice
-    console.log("Pronunciation with voice:", voiceId);
-  };
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
